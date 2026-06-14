@@ -24,7 +24,7 @@ def resize_crystal(crystal, water_in_crystal, size):   ##cambia el tipo de array
 
 def get_coordinates_brick( atom_index, bond_index, pieces, v_cell, supercell, supercell_inv, brick, water_in_brick): 
 
-    charges = { 1: 2.0, 2: 4.0, 3:0.848, 4: -2.848, 5: -0.82, 6: -1.4, 7: 0.41, 8: 0.4, 9: 2.0, 10: 4.0, 11:0.848, 12:0.848 }
+    charges = { 1: 2.0, 2: 4.0, 3:0.84819, 4: -2.84819, 5: -1.1128, 6: -1.4, 7: 0.5564, 8: 0.4, 9: 2.0, 10: 4.0, 11:0.84819, 12:0.84819 }
 
     at_entries = []
     bd_entries = []

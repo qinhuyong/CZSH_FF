@@ -4,6 +4,11 @@ import argparse
 import json
 import os
 
+try:
+    from validate_forcefield import validate_database, write_report
+except ImportError:
+    from forcefields.validate_forcefield import validate_database, write_report
+
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_DB = os.path.join(os.path.dirname(os.path.abspath(__file__)), "CementFF4_Zn_parameters.json")
@@ -84,9 +89,11 @@ def build(output_dir, db_path=DEFAULT_DB):
     db = load_database(db_path)
     ff_path = os.path.join(output_dir, "in.CementFF4_Zn")
     map_path = os.path.join(output_dir, "cementff4_type_map.json")
+    report_path = os.path.join(output_dir, "forcefield_validation_report.json")
     write_forcefield(db, ff_path)
     write_type_map(db, map_path)
-    return {"forcefield": ff_path, "type_map": map_path}
+    write_report(validate_database(db), report_path)
+    return {"forcefield": ff_path, "type_map": map_path, "validation_report": report_path}
 
 
 def main():

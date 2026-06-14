@@ -6,6 +6,8 @@ import math
 import os
 import re
 
+from pbc_utils import finalize_box, minimum_image_distance, parse_box_line
+
 
 LABELS = {
     1: "Ca",
@@ -23,6 +25,15 @@ LABELS = {
 VALID_ATOM_TYPES = set(LABELS)
 VALID_BOND_TYPES = {1, 2, 3}
 VALID_ANGLE_TYPES = {1, 2, 3, 4, 5}
+ROOT = os.path.dirname(os.path.abspath(__file__))
+DEFAULT_DB = os.path.join(ROOT, "forcefields", "CementFF4_Zn_parameters.json")
+CHARGE_TOLERANCE = 1.0e-5
+
+
+def load_forcefield_charges(path=DEFAULT_DB):
+    with open(path) as f:
+        db = json.load(f)
+    return {int(k): float(v["charge"]) for k, v in db["atom_types"].items()}
 
 
 def parse_data(path):
@@ -38,14 +49,7 @@ def parse_data(path):
                 data["counts"][m.group(2)] = int(m.group(1))
                 continue
             parts = line.split()
-            if len(parts) >= 4 and parts[2:4] == ["xlo", "xhi"]:
-                data["box"]["xlo"], data["box"]["xhi"] = float(parts[0]), float(parts[1])
-                continue
-            if len(parts) >= 4 and parts[2:4] == ["ylo", "yhi"]:
-                data["box"]["ylo"], data["box"]["yhi"] = float(parts[0]), float(parts[1])
-                continue
-            if len(parts) >= 4 and parts[2:4] == ["zlo", "zhi"]:
-                data["box"]["zlo"], data["box"]["zhi"] = float(parts[0]), float(parts[1])
+            if parse_box_line(data["box"], parts):
                 continue
             header = line.split("#")[0].strip()
             if header in ("Masses", "Bonds", "Angles", "CS-Info") or header.startswith("Atoms"):
@@ -73,11 +77,16 @@ def parse_data(path):
                 data["angles"].append({"id": int(p[0]), "type": int(p[1]), "a1": int(p[2]), "a2": int(p[3]), "a3": int(p[4])})
             elif section == "CS-Info" and len(p) >= 2:
                 data["csinfo"][int(p[0])] = int(p[1])
+    data["box"] = finalize_box(data["box"])
     return data
 
 
 def distance(a, b):
     return math.sqrt((a["x"] - b["x"]) ** 2 + (a["y"] - b["y"]) ** 2 + (a["z"] - b["z"]) ** 2)
+
+
+def pbc_distance(data, a, b):
+    return minimum_image_distance(a, b, data["box"])
 
 
 def nearest(data, atom_id, types=None, exclude=None):
@@ -89,8 +98,31 @@ def nearest(data, atom_id, types=None, exclude=None):
             continue
         if types is not None and other["type"] not in types:
             continue
-        out.append({"atom_id": other_id, "type": other["type"], "label": other["label"], "distance": distance(atom, other)})
+        out.append({"atom_id": other_id, "type": other["type"], "label": other["label"], "distance": pbc_distance(data, atom, other)})
     return sorted(out, key=lambda x: x["distance"])
+
+
+def audit_charge_assignment(data, expected_charges, tolerance=CHARGE_TOLERANCE):
+    bad = []
+    for atom in sorted(data["atoms"].values(), key=lambda x: x["id"]):
+        expected = expected_charges.get(atom["type"])
+        if expected is None:
+            continue
+        delta = atom["q"] - expected
+        if abs(delta) > tolerance:
+            bad.append({
+                "atom_id": atom["id"],
+                "type": atom["type"],
+                "label": atom["label"],
+                "actual_charge": atom["q"],
+                "expected_charge": expected,
+                "delta": delta,
+            })
+    return {
+        "tolerance": tolerance,
+        "n_bad": len(bad),
+        "bad_atoms": bad,
+    }
 
 
 def audit_csinfo(data):
@@ -101,7 +133,7 @@ def audit_csinfo(data):
             t = {data["atoms"][b["a1"]]["type"], data["atoms"][b["a2"]]["type"]}
             if t == {3, 4}:
                 same = data["csinfo"].get(b["a1"]) == data["csinfo"].get(b["a2"])
-                rec = {"bond_id": b["id"], "a1": b["a1"], "a2": b["a2"], "same_csid": same, "distance": distance(data["atoms"][b["a1"]], data["atoms"][b["a2"]])}
+                rec = {"bond_id": b["id"], "a1": b["a1"], "a2": b["a2"], "same_csid": same, "distance": pbc_distance(data, data["atoms"][b["a1"]], data["atoms"][b["a2"]])}
                 pairs.append(rec)
                 if not same:
                     bad.append(rec)
@@ -141,18 +173,23 @@ def audit_zinc(data):
     return {"n_zinc": len(zns), "zinc_sites": records}
 
 
-def validate(path):
+def validate(path, db_path=DEFAULT_DB):
     data = parse_data(path)
+    expected_charges = load_forcefield_charges(db_path)
     total_charge = sum(a["q"] for a in data["atoms"].values())
     atom_type_bad = [a for a in data["atoms"].values() if a["type"] not in VALID_ATOM_TYPES]
     bond_type_bad = [b for b in data["bonds"] if b["type"] not in VALID_BOND_TYPES]
     angle_type_bad = [a for a in data["angles"] if a["type"] not in VALID_ANGLE_TYPES]
+    charge_assignment = audit_charge_assignment(data, expected_charges)
     cs = audit_csinfo(data)
     water = audit_water(data)
     zinc = audit_zinc(data)
     reasons = []
     classification = "valid_static_candidate"
-    if abs(total_charge) > 1.0e-5:
+    if charge_assignment["n_bad"]:
+        classification = "failed_charge_assignment"
+        reasons.append("{} atoms have charges inconsistent with CementFF4_Zn_parameters.json".format(charge_assignment["n_bad"]))
+    elif abs(total_charge) > CHARGE_TOLERANCE:
         classification = "failed_charge"
         reasons.append("charge residual {:.6g}".format(total_charge))
     elif atom_type_bad or bond_type_bad or angle_type_bad:
@@ -181,6 +218,7 @@ def validate(path):
             "atom_types": sorted(set(a["type"] for a in data["atoms"].values())),
         },
         "total_charge": total_charge,
+        "charge_assignment": charge_assignment,
         "csinfo": {"n_pairs": cs["n_pairs"], "n_entries": cs["n_csinfo"], "n_bad_pairs": len(cs["bad_pairs"])},
         "water": {"n_water": water["n_water"], "n_bad_water": water["n_bad_water"]},
         "zinc": zinc,
@@ -190,9 +228,10 @@ def validate(path):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("data_file")
+    parser.add_argument("--db", default=DEFAULT_DB)
     parser.add_argument("--out", default=None)
     args = parser.parse_args()
-    result = validate(args.data_file)
+    result = validate(args.data_file, args.db)
     out = args.out or os.path.splitext(args.data_file)[0] + "_validation.json"
     with open(out, "w") as f:
         json.dump(result, f, indent=2, sort_keys=True)

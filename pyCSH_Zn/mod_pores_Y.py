@@ -142,11 +142,11 @@ def mallado(supercell, rel, grid, n, shift, entries_crystal, coords_Ca):
         else:
             theta_2 = theta + ang_OO
             phi_2 = phi
-        r_Ow = [cont+1, 5, -0.82, coords_filling[i][0], coords_filling[i][1], coords_filling[i][2]]
+        r_Ow = [cont+1, 5, -1.1128, coords_filling[i][0], coords_filling[i][1], coords_filling[i][2]]
         filled_atoms.append(r_Ow)
-        r_Hw = [cont+2, 7, 0.41, coords_filling[i][0] + r*np.sin(theta)*np.cos(phi), coords_filling[i][1] + r*np.sin(theta)*np.sin(phi), coords_filling[i][2]+r*np.cos(theta)]
+        r_Hw = [cont+2, 7, 0.5564, coords_filling[i][0] + r*np.sin(theta)*np.cos(phi), coords_filling[i][1] + r*np.sin(theta)*np.sin(phi), coords_filling[i][2]+r*np.cos(theta)]
         
-        r_Hw2 = [cont+3, 7, 0.41, coords_filling[i][0] + r*np.sin(theta_2)*np.cos(phi_2), coords_filling[i][1] + r*np.sin(theta_2)*np.sin(phi_2), coords_filling[i][2]+r*np.cos(theta_2)]
+        r_Hw2 = [cont+3, 7, 0.5564, coords_filling[i][0] + r*np.sin(theta_2)*np.cos(phi_2), coords_filling[i][1] + r*np.sin(theta_2)*np.sin(phi_2), coords_filling[i][2]+r*np.cos(theta_2)]
         filled_atoms.append(r_Hw)
         filled_atoms.append(r_Hw2)
         cont += 3

@@ -31,7 +31,8 @@ This branch adds a conservative pyCSH-Zn workflow for generating CementFF4/Cemen
 - `mod_write_Y.py`: CementFF4 fixed-map LAMMPS data writer.
 - `validate_cementff_data.py`: static data validator.
 - `lammps_templates/build_inputs.py`: LAMMPS input template generator.
-- `postprocess/analyze_structure.py`: RDF, coordination, angle, and contact summaries.
+- `postprocess/analyze_structure.py`: normalized RDF, coordination, angle, and contact summaries.
+- `forcefields/validate_forcefield.py`: pair_coeff syntax and pair coverage audit.
 
 ## Quick Start
 
@@ -87,10 +88,21 @@ The validator uses static candidate classifications:
 - `valid_q2b_zn_candidate`
 - `needs_static_relaxation`
 - `failed_charge`
+- `failed_charge_assignment`
 - `failed_topology`
 - `failed_water_contacts`
 - `failed_zinc_geometry`
 - `failed_csinfo`
 - `experimental_md_only`
 
+`valid_q2b_zn_candidate` means a static CementFF4-Zn candidate only. It is not an MD-ready label.
+
 `md_ready_candidate` is intentionally not used. Finite-temperature core-shell MD must be validated separately before that label is introduced.
+
+## CS-Info Policy
+
+`CS-Info` contains entries for all atoms. Bonded `O_core`/`O_shell` pairs share the same CSID. Non-core-shell atoms have singleton CSIDs. The validator checks both complete CS-Info coverage and bonded core-shell pair consistency.
+
+## Force-Field Audit
+
+`examples/04_build_lammps_inputs.py` generates `forcefield_validation_report.json` next to `in.CementFF4_Zn`. The report checks static `pair_coeff` syntax and pair coverage. The generated `lammps_inputs/in.read_check` should be run with the target LAMMPS executable before production calculations.

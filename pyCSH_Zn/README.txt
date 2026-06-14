@@ -1,11 +1,143 @@
-pyCSH
-pyCSH is a  Python code for the automated generation of realistic bulk calcium silicate hydrate (C-S-H) structures, based on the brick model introduced by Kunhi Mohamed et al [1].
-[1] A. Kunhi Mohamed, S.C. Parker, P. Bowen, S. Galmarini. An atomistic building block description of C-S-H -  Towards a realistic C-S-H model, Cem Concr Res 107 (2018) 221–235. https://doi.org/10.1016/j.cemconres.2018.01.007.
-License
-Copyright (C) 2024  Jon López-Zorrilla (jon.lopezz@ehu.eus), Ziga Casar
-pyCSH is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-You should have received a copy of the GNU General Public License along with this program; if not, you can obtain it from https://www.gnu.org/licenses/old-licenses/gpl-2.0.html.
-Installation and usage
-The only requirement for the usage of pyCSH is having access to Python 3, with the Numpy package installed. The executable of the code is `main_brick.py`:
-python3 main_brick.py
+pyCSH-Zn v1.0-static
+====================
+
+pyCSH-Zn is a focused extension of pyCSH for generating Zn-modified
+C-S-H static candidate structures and exporting CementFF4/CementFF4-Zn
+compatible LAMMPS files.
+
+Scope
+-----
+
+This release supports:
+
+1. Pure C-S-H generation from the pyCSH brick workflow.
+2. Q2b_Zn candidate generation as the main Zn path.
+3. Charge-balanced ZnO2(OH)2-style Q2b_Zn candidate environments.
+4. CementFF4/CementFF4-Zn LAMMPS data output.
+5. CementFF4-Zn force-field include generation from
+   forcefields/CementFF4_Zn_parameters.json.
+6. Static validation of type maps, charge assignment, CS-Info, water topology,
+   and Zn coordination.
+7. Normalized RDF output, Zn-O coordination, selected angle summaries, and
+   water/contact summaries.
+
+This release does not reproduce the original CementFF4 finite-temperature MD
+workflow and does not reproduce the Morales-Melgares simulation protocol.
+Finite-temperature core-shell MD is not a v1.0-static acceptance criterion.
+
+Do not interpret valid_q2b_zn_candidate as MD-ready. It means only that the
+generated structure is a static CementFF4-Zn candidate with valid charge
+assignment, topology, CS-Info, water topology, and Zn coordination checks.
+
+Quick start
+-----------
+
+Run from this directory:
+
+    python examples/01_generate_pure_csh.py
+    python examples/02_generate_q2b_zn.py
+    python examples/03_validate_outputs.py
+    python examples/04_build_lammps_inputs.py
+    python examples/05_postprocess_q2b_zn.py
+
+Expected validation result:
+
+    pure_csh_cementff.data  -> valid_static_candidate
+    q2b_zn_cementff_zn.data -> valid_q2b_zn_candidate
+
+Outputs are written under:
+
+    output_Y/workflow_v1/
+
+CementFF4-Zn charges
+--------------------
+
+forcefields/CementFF4_Zn_parameters.json stores CementFF4 SI Table S1 charges:
+
+    O_core      +0.84819
+    O_shell     -2.84819
+    Ow          -1.1128
+    Hw          +0.5564
+    Oh          -1.4
+    Hoh/H       +0.4
+    Zn          +2.0
+
+validate_cementff_data.py checks every atom charge against this table. A
+nonzero total charge is not the only charge gate; per-type charge assignment
+must also pass.
+
+CS-Info policy
+--------------
+
+The LAMMPS data file contains a CS-Info entry for every atom.
+
+- O_core/O_shell bonded pairs share the same CSID.
+- Non-core-shell atoms receive singleton CSIDs.
+- The validator checks both CS-Info coverage and bonded core-shell pair
+  consistency.
+
+Main files
+----------
+
+- mod_zinc.py
+  Q2b_Zn site selection, substitution, hydroxylation, charge balance, and
+  zinc_summary.json generation.
+
+- mod_write_Y.py
+  CementFF4/CementFF4-Zn LAMMPS data writer with fixed type maps, molecule
+  IDs, water topology, and CS-Info.
+
+- validate_cementff_data.py
+  Static validator with per-atom charge assignment checks and orthogonal or
+  triclinic minimum-image distances.
+
+- forcefields/CementFF4_Zn_parameters.json
+  CementFF4-Zn parameter database.
+
+- forcefields/build_cementff4_zn.py
+  Generates in.CementFF4_Zn, cementff4_type_map.json, and
+  forcefield_validation_report.json.
+
+- forcefields/validate_forcefield.py
+  Audits pair_coeff syntax and pair coverage. The generated LAMMPS
+  lammps_inputs/in.read_check file should also be run with the target LAMMPS
+  executable to catch runtime pair_coeff syntax errors.
+
+- lammps_templates/build_inputs.py
+  Generates read-check, static minimization, static shell relaxation,
+  quasi-static elastic templates, and one clearly experimental short-MD
+  template.
+
+- postprocess/analyze_structure.py
+  Produces normalized RDF CSV files using PBC, shell volume, number density,
+  and box volume; also writes coordination, angle, and contact summaries.
+
+Validation classes
+------------------
+
+- valid_static_candidate
+- valid_q2b_zn_candidate
+- needs_static_relaxation
+- failed_charge
+- failed_charge_assignment
+- failed_topology
+- failed_water_contacts
+- failed_zinc_geometry
+- failed_csinfo
+- experimental_md_only
+
+The label md_ready_candidate is intentionally not used.
+
+Post-processing outputs
+-----------------------
+
+examples/05_postprocess_q2b_zn.py writes:
+
+- structure_analysis.json
+- rdf_Zn_O.csv
+- rdf_Zn_Si.csv
+- rdf_Zn_Ca.csv
+- rdf_Si_O.csv
+- rdf_Ca_O.csv
+
+These RDF files are normalized g(r), not raw distance histograms.

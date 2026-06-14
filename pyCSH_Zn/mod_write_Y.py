@@ -52,6 +52,33 @@ DEFAULT_WATER_CONTACT_CUTOFFS = {
 }
 
 
+def lammps_restricted_triclinic_bounds(supercell):
+    xlo = 0.0
+    ylo = 0.0
+    zlo = 0.0
+    lx = float(supercell[0, 0])
+    ly = float(supercell[1, 1])
+    lz = float(supercell[2, 2])
+    xy = float(supercell[1, 0])
+    xz = float(supercell[2, 0])
+    yz = float(supercell[2, 1])
+    xlo_bound = xlo + min(0.0, xy, xz, xy + xz)
+    xhi_bound = xlo + lx + max(0.0, xy, xz, xy + xz)
+    ylo_bound = ylo + min(0.0, yz)
+    yhi_bound = ylo + ly + max(0.0, yz)
+    return {
+        "xlo_bound": xlo_bound,
+        "xhi_bound": xhi_bound,
+        "ylo_bound": ylo_bound,
+        "yhi_bound": yhi_bound,
+        "zlo_bound": zlo,
+        "zhi_bound": zlo + lz,
+        "xy": xy,
+        "xz": xz,
+        "yz": yz,
+    }
+
+
 def cementff4_bond_type(entry, entries_crystal=None):
     internal_bond_type = int(entry[1])
     if entries_crystal is not None:
@@ -507,12 +534,13 @@ def get_lammps_input_cementff(name, entries_crystal, entries_bonds, entries_angl
         f.write("{: 8d} bond types\n".format(3 if entries_bonds else 0))
         f.write("{: 8d} angle types\n".format(max_angle_type if entries_angle else 0))
         f.write("\n")
-        f.write("{: 12.6f} {: 12.6f} xlo xhi\n".format(0.0, supercell[0, 0]))
-        f.write("{: 12.6f} {: 12.6f} ylo yhi\n".format(0.0, supercell[1, 1]))
-        f.write("{: 12.6f} {: 12.6f} zlo zhi\n".format(0.0, supercell[2, 2]))
+        bounds = lammps_restricted_triclinic_bounds(supercell)
+        f.write("{: 12.6f} {: 12.6f} xlo xhi\n".format(bounds["xlo_bound"], bounds["xhi_bound"]))
+        f.write("{: 12.6f} {: 12.6f} ylo yhi\n".format(bounds["ylo_bound"], bounds["yhi_bound"]))
+        f.write("{: 12.6f} {: 12.6f} zlo zhi\n".format(bounds["zlo_bound"], bounds["zhi_bound"]))
         f.write(
             "{: 12.6f} {: 12.6f} {: 12.6f} xy xz yz\n".format(
-                supercell[1, 0], supercell[2, 0], supercell[2, 1]
+                bounds["xy"], bounds["xz"], bounds["yz"]
             )
         )
         f.write("\nMasses\n\n")

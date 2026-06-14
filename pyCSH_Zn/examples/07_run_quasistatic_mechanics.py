@@ -47,12 +47,17 @@ CSV_FIELDS = [
     "target",
     "case",
     "strain",
+    "actual_strain",
     "initial_lx",
     "final_lx",
     "energy_initial",
     "energy_final",
     "stress_xx_final",
+    "stress_xx_bar",
+    "stress_xx_GPa",
     "pressure_final",
+    "pressure_bar",
+    "pressure_GPa",
     "classification",
     "case_pass",
     "charge_assignment_bad_atoms",
@@ -203,6 +208,12 @@ def summarize_values(values):
     return {"min": min(values), "mean": sum(values) / len(values), "max": max(values)}
 
 
+def divide_or_none(value, divisor):
+    if value is None:
+        return None
+    return value / divisor
+
+
 def structure_metrics(data):
     cs = audit_csinfo(data)
     water = audit_water(data)
@@ -271,16 +282,26 @@ def run_case(lmp, target, case_name, strain, mechanics_dir):
     thermo = parse_thermo(run["stdout"])
     base_box = parse_data(target["base_data"])["box"]
     final_box = parse_data(final_data)["box"] if os.path.exists(final_data) else {}
+    initial_lx = base_box.get("lx")
+    final_lx = final_box.get("lx")
+    actual_strain = final_lx / initial_lx - 1.0 if initial_lx and final_lx else None
+    stress_xx_bar = thermo["final"].get("Pxx")
+    pressure_bar = thermo["final"].get("Press")
     row = {
         "target": target["name"],
         "case": case_name,
         "strain": strain,
-        "initial_lx": base_box.get("lx"),
-        "final_lx": final_box.get("lx"),
+        "actual_strain": actual_strain,
+        "initial_lx": initial_lx,
+        "final_lx": final_lx,
         "energy_initial": thermo["initial"].get("PotEng"),
         "energy_final": thermo["final"].get("PotEng"),
-        "stress_xx_final": thermo["final"].get("Pxx"),
-        "pressure_final": thermo["final"].get("Press"),
+        "stress_xx_final": stress_xx_bar,
+        "stress_xx_bar": stress_xx_bar,
+        "stress_xx_GPa": divide_or_none(stress_xx_bar, 10000.0),
+        "pressure_final": pressure_bar,
+        "pressure_bar": pressure_bar,
+        "pressure_GPa": divide_or_none(pressure_bar, 10000.0),
         "classification": validation["classification"] if validation else None,
         "case_pass": case_ok,
         "charge_assignment_bad_atoms": validation["charge_assignment"]["n_bad"] if validation else None,
@@ -328,12 +349,18 @@ def case_report(case_result):
             "n_rows": len(thermo["rows"]),
         },
         "mechanics": {
+            "prescribed_strain": row["strain"],
+            "actual_strain": row["actual_strain"],
             "initial_lx": row["initial_lx"],
             "final_lx": row["final_lx"],
             "energy_initial": row["energy_initial"],
             "energy_final": row["energy_final"],
             "stress_xx_final": row["stress_xx_final"],
+            "stress_xx_bar": row["stress_xx_bar"],
+            "stress_xx_GPa": row["stress_xx_GPa"],
             "pressure_final": row["pressure_final"],
+            "pressure_bar": row["pressure_bar"],
+            "pressure_GPa": row["pressure_GPa"],
         },
         "validation_metrics": {
             "charge_assignment_bad_atoms": row["charge_assignment_bad_atoms"],
@@ -402,7 +429,7 @@ def plot_svg(path, title, series, x_key, y_key, y_label):
         "<text x='{}' y='28' font-family='Arial' font-size='18' font-weight='bold'>{}</text>".format(left, title),
         "<line x1='{0}' y1='{1}' x2='{2}' y2='{1}' stroke='#111'/>".format(left, height - bottom, width - right),
         "<line x1='{0}' y1='{1}' x2='{0}' y2='{2}' stroke='#111'/>".format(left, top, height - bottom),
-        "<text x='{}' y='{}' font-family='Arial' font-size='12'>strain</text>".format(width / 2 - 20, height - 25),
+        "<text x='{}' y='{}' font-family='Arial' font-size='12'>{}</text>".format(width / 2 - 45, height - 25, x_key),
         "<text x='18' y='{}' font-family='Arial' font-size='12' transform='rotate(-90 18,{})'>{}</text>".format(height / 2 + 50, height / 2 + 50, y_label),
     ]
     for idx, (label, rows) in enumerate(series):
@@ -428,14 +455,15 @@ def generate_plots(out_dir, pure_rows, q2b_rows, combined_rows):
     plots_dir = os.path.join(out_dir, "plots")
     ensure_dir(plots_dir)
     plots = {}
+    x_key = "actual_strain"
     plots["energy_pure_csh"] = os.path.join(plots_dir, "energy_vs_strain_pure_csh.svg")
-    plot_svg(plots["energy_pure_csh"], "Pure C-S-H energy vs strain", [("pure C-S-H", pure_rows)], "strain", "energy_final", "Potential energy")
+    plot_svg(plots["energy_pure_csh"], "Pure C-S-H energy vs actual strain", [("pure C-S-H", pure_rows)], x_key, "energy_final", "Potential energy")
     plots["energy_q2b_zn"] = os.path.join(plots_dir, "energy_vs_strain_q2b_zn.svg")
-    plot_svg(plots["energy_q2b_zn"], "Q2b_Zn energy vs strain", [("Q2b_Zn", q2b_rows)], "strain", "energy_final", "Potential energy")
+    plot_svg(plots["energy_q2b_zn"], "Q2b_Zn energy vs actual strain", [("Q2b_Zn", q2b_rows)], x_key, "energy_final", "Potential energy")
     plots["stress_xx_combined"] = os.path.join(plots_dir, "stress_xx_vs_strain.svg")
-    plot_svg(plots["stress_xx_combined"], "stress_xx vs strain", [("pure C-S-H", pure_rows), ("Q2b_Zn", q2b_rows)], "strain", "stress_xx_final", "Pxx")
+    plot_svg(plots["stress_xx_combined"], "stress_xx vs actual strain", [("pure C-S-H", pure_rows), ("Q2b_Zn", q2b_rows)], x_key, "stress_xx_GPa", "Pxx (GPa)")
     plots["zn_coordination_q2b_zn"] = os.path.join(plots_dir, "zn_o_coordination_vs_strain_q2b_zn.svg")
-    plot_svg(plots["zn_coordination_q2b_zn"], "Q2b_Zn Zn-O coordination vs strain", [("coordination 2.5 A", q2b_rows)], "strain", "zn_coordination_2p5", "Zn-O coordination")
+    plot_svg(plots["zn_coordination_q2b_zn"], "Q2b_Zn Zn-O coordination vs actual strain", [("coordination 2.5 A", q2b_rows)], x_key, "zn_coordination_2p5", "Zn-O coordination")
     return plots
 
 

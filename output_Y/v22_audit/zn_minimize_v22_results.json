@@ -1,0 +1,92 @@
+{
+  "example_q1_zn": {
+    "lost_atoms": false,
+    "errors": [],
+    "nrows": 149,
+    "initial": {
+      "step": 0.0,
+      "pe": -3772.3269,
+      "ebond": 1510.9687,
+      "eangle": 18.624997,
+      "evdwl": 2587.9422,
+      "ecoul": -2782.3252,
+      "elong": -5113.2023,
+      "fnorm": 11793.474,
+      "fmax": 7123.904,
+      "press": 1191327.1
+    },
+    "final": {
+      "step": 147.0,
+      "pe": -6740.533,
+      "ebond": 78.025722,
+      "eangle": 9.5634346,
+      "evdwl": 1808.1186,
+      "ecoul": -3458.5238,
+      "elong": -5177.8057,
+      "fnorm": 26.421116,
+      "fmax": 8.2592923,
+      "press": 50875.926
+    },
+    "dominant_final": "elong"
+  },
+  "example_q2b_zn": {
+    "lost_atoms": false,
+    "errors": [],
+    "nrows": 104,
+    "initial": {
+      "step": 0.0,
+      "pe": -3764.1251,
+      "ebond": 1510.9687,
+      "eangle": 18.675318,
+      "evdwl": 2594.274,
+      "ecoul": -2782.2998,
+      "elong": -5111.4081,
+      "fnorm": 11793.266,
+      "fmax": 7123.8599,
+      "press": 1199393.9
+    },
+    "final": {
+      "step": 102.0,
+      "pe": -6722.483,
+      "ebond": 79.739106,
+      "eangle": 11.608362,
+      "evdwl": 1797.6832,
+      "ecoul": -3437.6737,
+      "elong": -5173.9401,
+      "fnorm": 186.01412,
+      "fmax": 83.243683,
+      "press": 54964.276
+    },
+    "dominant_final": "elong"
+  },
+  "example_mixed_zn": {
+    "lost_atoms": false,
+    "errors": [],
+    "nrows": 177,
+    "initial": {
+      "step": 0.0,
+      "pe": -3778.5299,
+      "ebond": 1510.9688,
+      "eangle": 18.347883,
+      "evdwl": 2591.2264,
+      "ecoul": -2789.7783,
+      "elong": -5114.9593,
+      "fnorm": 11793.478,
+      "fmax": 7124.0539,
+      "press": 1193099.4
+    },
+    "final": {
+      "step": 175.0,
+      "pe": -6769.0833,
+      "ebond": 74.444207,
+      "eangle": 8.4225465,
+      "evdwl": 1800.3077,
+      "ecoul": -3468.6147,
+      "elong": -5183.7101,
+      "fnorm": 17.043931,
+      "fmax": 4.3153611,
+      "press": 42633.076
+    },
+    "dominant_final": "elong"
+  }
+}

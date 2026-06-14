@@ -1,0 +1,110 @@
+{
+  "cg": {
+    "code": 0,
+    "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v24_audit\\q2b_cg.log",
+    "parsed": {
+      "errors": [],
+      "lost": false,
+      "nrows": 62,
+      "initial": {
+        "step": 0.0,
+        "pe": -5261.8104,
+        "ebond": 18.948203,
+        "eangle": 18.675318,
+        "evdwl": 2594.274,
+        "ecoul": -2782.2998,
+        "elong": -5111.4081,
+        "fnorm": 11798.057,
+        "fmax": 7123.8599,
+        "press": 1528598.7
+      },
+      "final": {
+        "step": 60.0,
+        "pe": 15860.264,
+        "ebond": 75.98848,
+        "eangle": 10.094101,
+        "evdwl": 1818.6108,
+        "ecoul": -3485.3931,
+        "elong": -5174.3268,
+        "fnorm": 3998.8562,
+        "fmax": 1840.8057,
+        "press": -2839911.7
+      },
+      "stops": [
+        "linesearch alpha is zero"
+      ]
+    }
+  },
+  "fire": {
+    "code": 1,
+    "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v24_audit\\q2b_fire.log",
+    "parsed": {
+      "errors": [
+        "ERROR on proc 0: TIP4P hydrogen is missing (src/KSPACE/pair_lj_cut_tip4p_long.cpp:218)"
+      ],
+      "lost": false,
+      "nrows": 5,
+      "initial": {
+        "step": 0.0,
+        "pe": -5261.8104,
+        "ebond": 18.948203,
+        "eangle": 18.675318,
+        "evdwl": 2594.274,
+        "ecoul": -2782.2998,
+        "elong": -5111.4081,
+        "fnorm": 11798.057,
+        "fmax": 7123.8599,
+        "press": 1528598.7
+      },
+      "final": {
+        "step": 3.0,
+        "pe": 105640.13,
+        "ebond": 219.47733,
+        "eangle": 44.306597,
+        "evdwl": 2024.1281,
+        "ecoul": -3450.7509,
+        "elong": -5125.5194,
+        "fnorm": 10236.952,
+        "fmax": 4896.8176,
+        "press": -13299585.0
+      },
+      "stops": []
+    }
+  },
+  "quickmin": {
+    "code": 0,
+    "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v24_audit\\q2b_quickmin.log",
+    "parsed": {
+      "errors": [],
+      "lost": false,
+      "nrows": 2002,
+      "initial": {
+        "step": 0.0,
+        "pe": -5261.8104,
+        "ebond": 18.948203,
+        "eangle": 18.675318,
+        "evdwl": 2594.274,
+        "ecoul": -2782.2998,
+        "elong": -5111.4081,
+        "fnorm": 11798.057,
+        "fmax": 7123.8599,
+        "press": 1528598.7
+      },
+      "final": {
+        "step": 2000.0,
+        "pe": -2133777900.0,
+        "ebond": 3704.8061,
+        "eangle": 80.052275,
+        "evdwl": -2133883900.0,
+        "ecoul": -7123.969,
+        "elong": -5128.5079,
+        "fnorm": 437932160000.0,
+        "fmax": 239702260000.0,
+        "press": 1.3106165e+33
+      },
+      "stops": [
+        "max iterations"
+      ]
+    }
+  }
+}

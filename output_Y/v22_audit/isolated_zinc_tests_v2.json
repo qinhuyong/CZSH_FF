@@ -1,0 +1,167 @@
+{
+  "Zn_OS_pair_1.7A": {
+    "returncode": 0,
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [],
+      "nrows": 23,
+      "initial": {
+        "step": 0.0,
+        "pe": -27.501852,
+        "ebond": 0.375,
+        "eangle": 0.0,
+        "evdwl": 3.3429501,
+        "ecoul": -7.5739744,
+        "elong": -23.645827,
+        "fnorm": 29.381197,
+        "fmax": 23.495116,
+        "press": -126.18784
+      },
+      "final": {
+        "step": 21.0,
+        "pe": -31.985222,
+        "ebond": 0.87012748,
+        "eangle": 0.0,
+        "evdwl": 13.083746,
+        "ecoul": -21.822686,
+        "elong": -24.116409,
+        "fnorm": 6.3132655e-07,
+        "fmax": 4.5694885e-07,
+        "press": 0.26258119
+      },
+      "dominant_final": "elong"
+    }
+  },
+  "Zn_OS_pair_1.95A": {
+    "returncode": 0,
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [],
+      "nrows": 29,
+      "initial": {
+        "step": 0.0,
+        "pe": -25.469011,
+        "ebond": 0.375,
+        "eangle": 0.0,
+        "evdwl": 1.6676966,
+        "ecoul": -4.1035729,
+        "elong": -23.408134,
+        "fnorm": 27.650738,
+        "fmax": 22.354207,
+        "press": -155.19138
+      },
+      "final": {
+        "step": 27.0,
+        "pe": -31.987845,
+        "ebond": 0.87001832,
+        "eangle": 0.0,
+        "evdwl": 13.082592,
+        "ecoul": -21.821446,
+        "elong": -24.119008,
+        "fnorm": 0.00016832058,
+        "fmax": 0.0001245449,
+        "press": 0.39610825
+      },
+      "dominant_final": "elong"
+    }
+  },
+  "Zn_OS_pair_2.3A": {
+    "returncode": 0,
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [],
+      "nrows": 40,
+      "initial": {
+        "step": 0.0,
+        "pe": -22.585837,
+        "ebond": 0.375,
+        "eangle": 0.0,
+        "evdwl": 0.6299398,
+        "ecoul": -0.55352512,
+        "elong": -23.037251,
+        "fnorm": 24.630804,
+        "fmax": 19.960225,
+        "press": -166.35763
+      },
+      "final": {
+        "step": 38.0,
+        "pe": -31.989795,
+        "ebond": 0.86993546,
+        "eangle": 0.0,
+        "evdwl": 13.081828,
+        "ecoul": -21.820616,
+        "elong": -24.120943,
+        "fnorm": 0.00015509109,
+        "fmax": 0.00012427805,
+        "press": 0.49690215
+      },
+      "dominant_final": "elong"
+    }
+  },
+  "Zn_OS_pair_3.0A": {
+    "returncode": 0,
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [],
+      "nrows": 52,
+      "initial": {
+        "step": 0.0,
+        "pe": -17.891314,
+        "ebond": 0.375,
+        "eangle": 0.0,
+        "evdwl": 0.089879999,
+        "ecoul": 3.8302857,
+        "elong": -22.18648,
+        "fnorm": 19.574737,
+        "fmax": 15.75525,
+        "press": -151.3892
+      },
+      "final": {
+        "step": 50.0,
+        "pe": -31.085937,
+        "ebond": 0.9268632,
+        "eangle": 0.0,
+        "evdwl": 6.9396654,
+        "ecoul": -14.993937,
+        "elong": -23.958529,
+        "fnorm": 8.4282622,
+        "fmax": 6.8795416,
+        "press": -92.113634
+      },
+      "dominant_final": "elong"
+    }
+  },
+  "ZnOH4_motif_1p95A": {
+    "returncode": 0,
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [],
+      "nrows": 52,
+      "initial": {
+        "step": 0.0,
+        "pe": 124.77479,
+        "ebond": 150.0,
+        "eangle": 0.95692516,
+        "evdwl": 9.3638935,
+        "ecoul": -16.347625,
+        "elong": -19.198399,
+        "fnorm": 219.5286,
+        "fmax": 80.293947,
+        "press": -2159.401
+      },
+      "final": {
+        "step": 50.0,
+        "pe": -24.994484,
+        "ebond": 0.0038412285,
+        "eangle": 0.33132707,
+        "evdwl": 1.9689113,
+        "ecoul": -7.0243031,
+        "elong": -20.27426,
+        "fnorm": 5.1750338,
+        "fmax": 2.7759631,
+        "press": -98.476524
+      },
+      "dominant_final": "elong"
+    }
+  }
+}

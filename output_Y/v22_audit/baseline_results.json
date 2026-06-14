@@ -1,0 +1,130 @@
+[
+  {
+    "name": "A0_supplement_fileFINAL_origFF",
+    "returncode": 0,
+    "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v22_audit\\A0_supplement_fileFINAL_origFF.log",
+    "data": "C:\\Users\\Administor\\Documents\\CementFF\\CementFF4\\1-s2.0-S0008884624002898-mmc2\\file.FINAL.data",
+    "ff": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v22_audit\\orig_CementFF4_forcefield_only.in",
+    "parsed": {
+      "exists": true,
+      "lost_atoms": false,
+      "error_lines": [],
+      "nrows": 102,
+      "initial": {
+        "step": 0.0,
+        "pe": -28519.475,
+        "ebond": 193.3926,
+        "eangle": 481.33624,
+        "evdwl": 6177.6509,
+        "ecoul": -12861.381,
+        "elong": -22510.474,
+        "fnorm": 661.81683,
+        "fmax": 25.67068,
+        "press": -44335.138
+      },
+      "final": {
+        "step": 100.0,
+        "pe": -30533.544,
+        "ebond": 331.56073,
+        "eangle": 15.784173,
+        "evdwl": 8265.9938,
+        "ecoul": -16567.96,
+        "elong": -22578.922,
+        "fnorm": 10.503523,
+        "fmax": 3.4334638,
+        "press": 15425.33
+      },
+      "dominant_final": "elong"
+    }
+  },
+  {
+    "name": "A1_pyCSH_legacy_reax_origFF",
+    "returncode": 1,
+    "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v22_audit\\A1_pyCSH_legacy_reax_origFF.log",
+    "data": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\CaSi2.0_reax1_orthogonal_diferentiate_pore=10_saturation_guest_ions.data",
+    "ff": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v22_audit\\orig_CementFF4_forcefield_only.in",
+    "parsed": {
+      "exists": true,
+      "lost_atoms": false,
+      "error_lines": [
+        "ERROR: Unknown identifier in data file: 14 22.99"
+      ]
+    }
+  },
+  {
+    "name": "B_pyCSH_cementff_origFF",
+    "returncode": 0,
+    "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v22_audit\\B_pyCSH_cementff_origFF.log",
+    "data": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\CaSi2.0_cementff1.data",
+    "ff": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v22_audit\\orig_CementFF4_forcefield_only.in",
+    "parsed": {
+      "exists": true,
+      "lost_atoms": false,
+      "error_lines": [],
+      "nrows": 76,
+      "initial": {
+        "step": 0.0,
+        "pe": 1655816.2,
+        "ebond": 1701932.5,
+        "eangle": 91.311632,
+        "evdwl": 15804.942,
+        "ecoul": -22370.417,
+        "elong": -39642.124,
+        "fnorm": 526267.85,
+        "fmax": 12180.885,
+        "press": 8400496.7
+      },
+      "final": {
+        "step": 74.0,
+        "pe": -4.2411726e+85,
+        "ebond": 3111.3707,
+        "eangle": 943.97263,
+        "evdwl": -4.2411726e+85,
+        "ecoul": -2.0649358e+16,
+        "elong": -38485.748,
+        "fnorm": 4.5300916e+100,
+        "fmax": 2.8650815e+100,
+        "press": -3.6283208e+87
+      },
+      "dominant_final": "evdwl"
+    }
+  },
+  {
+    "name": "C_pyCSH_cementff_generatedNoZnFF",
+    "returncode": 0,
+    "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v22_audit\\C_pyCSH_cementff_generatedNoZnFF.log",
+    "data": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\CaSi2.0_cementff1.data",
+    "ff": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v22_audit\\generated_CementFF4_noZn_forcefield_only.in",
+    "parsed": {
+      "exists": true,
+      "lost_atoms": false,
+      "error_lines": [],
+      "nrows": 74,
+      "initial": {
+        "step": 0.0,
+        "pe": 1655814.2,
+        "ebond": 1701930.5,
+        "eangle": 91.311624,
+        "evdwl": 15804.942,
+        "ecoul": -22370.417,
+        "elong": -39642.124,
+        "fnorm": Infinity,
+        "fmax": 1.3083205e+180,
+        "press": -1.2649769e+181
+      },
+      "final": {
+        "step": 72.0,
+        "pe": -8.2835402e+85,
+        "ebond": 3099.996,
+        "eangle": 943.25077,
+        "evdwl": -8.2835402e+85,
+        "ecoul": -2.3086684e+16,
+        "elong": -38485.582,
+        "fnorm": 9.8921804e+100,
+        "fmax": 6.9948278e+100,
+        "press": -7.0865641e+87
+      },
+      "dominant_final": "evdwl"
+    }
+  }
+]

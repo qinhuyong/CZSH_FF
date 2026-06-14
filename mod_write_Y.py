@@ -11,7 +11,641 @@ import os
 import sys
 import copy
 import random
-from scipy.optimize import linear_sum_assignment
+import json
+try:
+    from scipy.optimize import linear_sum_assignment
+except ImportError:
+    linear_sum_assignment = None
+from mod_zinc import CEMENTFF4_ANGLE_MAP, CEMENTFF4_TYPE_MAP, write_zinc_summary
+
+
+CEMENTFF4_LAMMPS_TYPES = {
+    1: ("Ca", 40.08),
+    2: ("Si", 28.10),
+    3: ("O", 15.999),
+    4: ("O(S)", 0.40),
+    5: ("Ow", 15.999),
+    6: ("Oh", 15.999),
+    7: ("Hw", 1.008),
+    8: ("Hoh", 1.008),
+    9: ("Zn", 65.38),
+}
+
+DEFAULT_WATER_CONTACT_CUTOFFS = {
+    "water_min_H_Ca": 1.6,
+    "water_min_H_Si": 1.6,
+    "water_min_H_Zn": 1.4,
+    "water_min_H_O_nonbonded": 1.2,
+    "water_min_H_H_nonbonded": 1.2,
+    "water_min_Ow_Ca": 2.2,
+    "water_min_Ow_O": 2.2,
+}
+
+
+def cementff4_bond_type(entry, entries_crystal=None):
+    internal_bond_type = int(entry[1])
+    if entries_crystal is not None:
+        atom_types = {int(atom[0]): int(atom[1]) for atom in entries_crystal}
+        atom_i = CEMENTFF4_TYPE_MAP.get(atom_types.get(int(entry[2])), {}).get("lammps_type")
+        atom_j = CEMENTFF4_TYPE_MAP.get(atom_types.get(int(entry[3])), {}).get("lammps_type")
+        pair = {atom_i, atom_j}
+        if pair == {3, 4}:
+            return 1
+        if pair == {5, 7}:
+            return 2
+        if pair == {6, 8}:
+            return 3
+    return internal_bond_type
+
+
+def cementff4_atom_type(entry):
+    internal_type = int(entry[1])
+    if internal_type not in CEMENTFF4_TYPE_MAP:
+        raise ValueError("No CementFF4 type mapping for internal specie {}".format(internal_type))
+    return int(CEMENTFF4_TYPE_MAP[internal_type]["lammps_type"])
+
+
+def cementff4_atom_label(entry):
+    return CEMENTFF4_TYPE_MAP[int(entry[1])]["label"]
+
+
+def _entry_by_atom_id(entries_crystal):
+    return {int(entry[0]): entry for entry in entries_crystal}
+
+
+def _periodic_vector(coord_i, coord_j, supercell):
+    inv_supercell = np.linalg.inv(supercell)
+    delta = np.array(coord_j, dtype=float) - np.array(coord_i, dtype=float)
+    frac = np.dot(delta, inv_supercell)
+    frac -= np.rint(frac)
+    return np.dot(frac, supercell)
+
+
+def _periodic_distance(coord_i, coord_j, supercell):
+    return float(np.linalg.norm(_periodic_vector(coord_i, coord_j, supercell)))
+
+
+def _water_molecules_from_bonds(entries_crystal, entries_bonds):
+    by_id = _entry_by_atom_id(entries_crystal)
+    waters = []
+    for entry in sorted(entries_crystal, key=lambda x: int(x[0])):
+        if cementff4_atom_type(entry) != 5:
+            continue
+        ow_id = int(entry[0])
+        h_bonds = []
+        for bond in entries_bonds:
+            if cementff4_bond_type(bond, entries_crystal) != 2:
+                continue
+            a1 = int(bond[2])
+            a2 = int(bond[3])
+            if ow_id not in (a1, a2):
+                continue
+            other_id = a2 if a1 == ow_id else a1
+            if other_id in by_id and cementff4_atom_type(by_id[other_id]) == 7:
+                h_bonds.append((other_id, int(bond[0])))
+        waters.append(
+            {
+                "Ow": ow_id,
+                "Hw": sorted([x[0] for x in h_bonds]),
+                "bond_ids": [x[1] for x in h_bonds],
+            }
+        )
+    return waters
+
+
+def _water_angle_ids(entries_angle, waters):
+    by_ow = {water["Ow"]: water for water in waters}
+    for water in waters:
+        water["angle_ids"] = []
+    for angle in entries_angle:
+        if int(angle[1]) != 1:
+            continue
+        center = int(angle[3])
+        if center not in by_ow:
+            continue
+        hset = set(by_ow[center]["Hw"])
+        if set((int(angle[2]), int(angle[4]))) == hset:
+            by_ow[center]["angle_ids"].append(int(angle[0]))
+    return waters
+
+
+def cementff4_molecule_id_map(entries_crystal, entries_bonds, entries_angle, zinc_summary=None):
+    """Assign deterministic molecule IDs for CementFF4 LAMMPS output."""
+    waters = _water_angle_ids(entries_angle, _water_molecules_from_bonds(entries_crystal, entries_bonds))
+    mol_map = {int(entry[0]): 0 for entry in entries_crystal}
+    water_records = []
+    next_mol = 1
+    for water in waters:
+        atoms = [water["Ow"]] + water["Hw"]
+        if len(water["Hw"]) != 2:
+            continue
+        for atom_id in atoms:
+            mol_map[atom_id] = next_mol
+        water_records.append(
+            {
+                "molecule_id": next_mol,
+                "Ow": water["Ow"],
+                "Hw": list(water["Hw"]),
+                "bond_ids": list(water.get("bond_ids", [])),
+                "angle_ids": list(water.get("angle_ids", [])),
+            }
+        )
+        next_mol += 1
+
+    hydroxyl_records = []
+    used = set()
+    by_id = _entry_by_atom_id(entries_crystal)
+    for bond in entries_bonds:
+        if cementff4_bond_type(bond, entries_crystal) != 3:
+            continue
+        a1 = int(bond[2])
+        a2 = int(bond[3])
+        if a1 not in by_id or a2 not in by_id:
+            continue
+        types = {cementff4_atom_type(by_id[a1]), cementff4_atom_type(by_id[a2])}
+        if types != {6, 8}:
+            continue
+        if a1 in used or a2 in used:
+            continue
+        mol_map[a1] = next_mol
+        mol_map[a2] = next_mol
+        hydroxyl_records.append({"molecule_id": next_mol, "atoms": [a1, a2], "bond_id": int(bond[0])})
+        used.update([a1, a2])
+        next_mol += 1
+
+    if zinc_summary is not None:
+        zinc_summary["cementff4_molecule_id_policy"] = {
+            "framework_molecule_id": 0,
+            "water_molecules": water_records,
+            "hydroxyl_pairs": hydroxyl_records,
+        }
+    return mol_map, water_records, hydroxyl_records
+
+
+def update_zinc_classification_for_water(zinc_summary):
+    if zinc_summary is None:
+        return
+    sanitizer = zinc_summary.get("water_sanitizer")
+    if not sanitizer:
+        return
+    if sanitizer.get("rejected"):
+        zinc_summary["output_classification"] = "failed_water_sanitization"
+        zinc_summary.setdefault("classification_reasons", []).append(
+            "one or more water molecules still violate CementFF4 water contact cutoffs after sanitizer"
+        )
+    elif sanitizer.get("bad_before"):
+        if zinc_summary.get("output_classification") == "needs_minimization":
+            zinc_summary["output_classification"] = "needs_short_equilibration_test"
+        zinc_summary.setdefault("classification_reasons", []).append(
+            "water contacts were sanitized; short water-aware equilibration gate is required"
+        )
+
+
+def _water_contact_metrics(entries_crystal, entries_bonds, supercell, water):
+    by_id = _entry_by_atom_id(entries_crystal)
+    water_ids = set([water["Ow"]] + water["Hw"])
+    metrics = {}
+
+    def nearest(atom_id, target_lammps_types, exclude_ids):
+        best = None
+        atom = by_id[atom_id]
+        for other in entries_crystal:
+            other_id = int(other[0])
+            if other_id == atom_id or other_id in exclude_ids:
+                continue
+            if cementff4_atom_type(other) not in target_lammps_types:
+                continue
+            d = _periodic_distance(atom[3:], other[3:], supercell)
+            if best is None or d < best["distance"]:
+                best = {
+                    "distance": d,
+                    "atom_id": other_id,
+                    "type": cementff4_atom_type(other),
+                    "label": cementff4_atom_label(other),
+                }
+        return best
+
+    metrics["Ow_Ca"] = nearest(water["Ow"], {1}, water_ids)
+    metrics["Ow_Si"] = nearest(water["Ow"], {2}, water_ids)
+    metrics["Ow_O"] = nearest(water["Ow"], {3, 4, 5, 6}, water_ids)
+    metrics["Ow_Zn"] = nearest(water["Ow"], {9}, water_ids)
+    metrics["Hw"] = []
+    for h_id in water["Hw"]:
+        metrics["Hw"].append(
+            {
+                "H": h_id,
+                "H_O_nonbonded": nearest(h_id, {3, 4, 5, 6}, water_ids),
+                "H_H_nonbonded": nearest(h_id, {7, 8}, water_ids),
+                "H_Ca": nearest(h_id, {1}, water_ids),
+                "H_Si": nearest(h_id, {2}, water_ids),
+                "H_Zn": nearest(h_id, {9}, water_ids),
+            }
+        )
+    return metrics
+
+
+def _water_contact_violations(metrics, cutoffs):
+    checks = [
+        ("Ow_Ca", "water_min_Ow_Ca"),
+        ("Ow_O", "water_min_Ow_O"),
+    ]
+    violations = []
+    for metric_name, cutoff_name in checks:
+        value = metrics.get(metric_name)
+        if value is not None and value["distance"] < cutoffs[cutoff_name]:
+            violations.append({"contact": metric_name, "cutoff": cutoffs[cutoff_name], **value})
+    for h_metrics in metrics["Hw"]:
+        for metric_name, cutoff_name in [
+            ("H_O_nonbonded", "water_min_H_O_nonbonded"),
+            ("H_H_nonbonded", "water_min_H_H_nonbonded"),
+            ("H_Ca", "water_min_H_Ca"),
+            ("H_Si", "water_min_H_Si"),
+            ("H_Zn", "water_min_H_Zn"),
+        ]:
+            value = h_metrics.get(metric_name)
+            if value is not None and value["distance"] < cutoffs[cutoff_name]:
+                item = {"contact": metric_name, "cutoff": cutoffs[cutoff_name], "H": h_metrics["H"]}
+                item.update(value)
+                violations.append(item)
+    return violations
+
+
+def _set_water_geometry(entries_crystal, water, h1_vec, h2_vec):
+    by_id = _entry_by_atom_id(entries_crystal)
+    ow_coord = np.array(by_id[water["Ow"]][3:], dtype=float)
+    by_id[water["Hw"][0]][3:] = list(ow_coord + h1_vec)
+    by_id[water["Hw"][1]][3:] = list(ow_coord + h2_vec)
+
+
+def _water_orientation_candidates(entries_crystal, water, supercell):
+    by_id = _entry_by_atom_id(entries_crystal)
+    ow = np.array(by_id[water["Ow"]][3:], dtype=float)
+    current_h1 = _periodic_vector(ow, by_id[water["Hw"][0]][3:], supercell)
+    norm = np.linalg.norm(current_h1)
+    if norm < 1.0e-8:
+        current_h1 = np.array([1.0, 0.0, 0.0])
+    else:
+        current_h1 = current_h1 / norm
+    axes = [
+        current_h1,
+        -current_h1,
+        np.array([1.0, 0.0, 0.0]),
+        np.array([-1.0, 0.0, 0.0]),
+        np.array([0.0, 1.0, 0.0]),
+        np.array([0.0, -1.0, 0.0]),
+        np.array([0.0, 0.0, 1.0]),
+        np.array([0.0, 0.0, -1.0]),
+    ]
+    oh = 0.9572
+    theta = np.radians(104.52)
+    candidates = []
+    for axis in axes:
+        axis = axis / np.linalg.norm(axis)
+        ref = np.array([0.0, 0.0, 1.0])
+        if abs(np.dot(axis, ref)) > 0.9:
+            ref = np.array([0.0, 1.0, 0.0])
+        perp1 = np.cross(axis, ref)
+        perp1 = perp1 / np.linalg.norm(perp1)
+        perp2 = np.cross(axis, perp1)
+        for phi in np.linspace(0.0, 2.0 * np.pi, 12, endpoint=False):
+            ring = np.cos(phi) * perp1 + np.sin(phi) * perp2
+            h1 = oh * axis
+            h2 = oh * (np.cos(theta) * axis + np.sin(theta) * ring)
+            candidates.append((h1, h2))
+    return candidates
+
+
+def _translate_water(entries_crystal, water, vector):
+    by_id = _entry_by_atom_id(entries_crystal)
+    for atom_id in [water["Ow"]] + water["Hw"]:
+        by_id[atom_id][3:] = list(np.array(by_id[atom_id][3:], dtype=float) + vector)
+
+
+def sanitize_cementff4_water(entries_crystal, entries_bonds, entries_angle, supercell, zinc_summary=None, cutoffs=None):
+    """Deterministically rotate/translate water molecules away from bad contacts."""
+    cutoffs = dict(DEFAULT_WATER_CONTACT_CUTOFFS if cutoffs is None else cutoffs)
+    waters = _water_angle_ids(entries_angle, _water_molecules_from_bonds(entries_crystal, entries_bonds))
+    report = {
+        "enabled": True,
+        "cutoffs": cutoffs,
+        "n_water": len(waters),
+        "bad_before": [],
+        "repaired_by_rotation": [],
+        "repaired_by_translation": [],
+        "rejected": [],
+        "final_min_contacts": {},
+    }
+    by_id = _entry_by_atom_id(entries_crystal)
+    original_coords = {int(entry[0]): list(entry[3:]) for entry in entries_crystal}
+
+    for water in waters:
+        if len(water["Hw"]) != 2:
+            report["rejected"].append({"Ow": water["Ow"], "reason": "water does not have exactly two H atoms"})
+            continue
+        metrics = _water_contact_metrics(entries_crystal, entries_bonds, supercell, water)
+        violations = _water_contact_violations(metrics, cutoffs)
+        if not violations:
+            continue
+        report["bad_before"].append({"Ow": water["Ow"], "Hw": list(water["Hw"]), "violations": violations})
+        saved = {atom_id: list(by_id[atom_id][3:]) for atom_id in [water["Ow"]] + water["Hw"]}
+
+        repaired = False
+        best_trial = None
+        best_score = -1.0
+        for h1, h2 in _water_orientation_candidates(entries_crystal, water, supercell):
+            _set_water_geometry(entries_crystal, water, h1, h2)
+            trial_metrics = _water_contact_metrics(entries_crystal, entries_bonds, supercell, water)
+            trial_violations = _water_contact_violations(trial_metrics, cutoffs)
+            distances = []
+            for value in trial_metrics.values():
+                if isinstance(value, dict) and "distance" in value:
+                    distances.append(value["distance"])
+            for h_metrics in trial_metrics["Hw"]:
+                for value in h_metrics.values():
+                    if isinstance(value, dict) and "distance" in value:
+                        distances.append(value["distance"])
+            score = min(distances) if distances else 0.0
+            if score > best_score:
+                best_score = score
+                best_trial = (h1, h2, trial_violations)
+            if not trial_violations:
+                report["repaired_by_rotation"].append({"Ow": water["Ow"], "Hw": list(water["Hw"])})
+                repaired = True
+                break
+
+        if repaired:
+            continue
+        for atom_id, coord in saved.items():
+            by_id[atom_id][3:] = coord
+        if best_trial is not None:
+            _set_water_geometry(entries_crystal, water, best_trial[0], best_trial[1])
+
+        ow_coord = np.array(by_id[water["Ow"]][3:], dtype=float)
+        directions = []
+        for other in entries_crystal:
+            other_id = int(other[0])
+            if other_id in [water["Ow"]] + water["Hw"]:
+                continue
+            d = _periodic_distance(ow_coord, other[3:], supercell)
+            if d < 3.0:
+                v = -_periodic_vector(ow_coord, other[3:], supercell)
+                if np.linalg.norm(v) > 1.0e-8:
+                    directions.append(v / np.linalg.norm(v))
+        if not directions:
+            directions = [np.array([1.0, 0.0, 0.0])]
+        direction = np.sum(directions, axis=0)
+        if np.linalg.norm(direction) < 1.0e-8:
+            direction = directions[0]
+        direction = direction / np.linalg.norm(direction)
+
+        translated = False
+        for step in [0.1, 0.2, 0.3, 0.4, 0.5]:
+            test_saved = {atom_id: list(by_id[atom_id][3:]) for atom_id in [water["Ow"]] + water["Hw"]}
+            _translate_water(entries_crystal, water, step * direction)
+            trial_metrics = _water_contact_metrics(entries_crystal, entries_bonds, supercell, water)
+            trial_violations = _water_contact_violations(trial_metrics, cutoffs)
+            if not trial_violations:
+                report["repaired_by_translation"].append(
+                    {"Ow": water["Ow"], "Hw": list(water["Hw"]), "translation": list(step * direction)}
+                )
+                translated = True
+                break
+            for atom_id, coord in test_saved.items():
+                by_id[atom_id][3:] = coord
+        if not translated:
+            final_metrics = _water_contact_metrics(entries_crystal, entries_bonds, supercell, water)
+            report["rejected"].append(
+                {
+                    "Ow": water["Ow"],
+                    "Hw": list(water["Hw"]),
+                    "violations": _water_contact_violations(final_metrics, cutoffs),
+                }
+            )
+
+    final_min = {}
+    for water in waters:
+        metrics = _water_contact_metrics(entries_crystal, entries_bonds, supercell, water)
+        for key, value in metrics.items():
+            if key == "Hw":
+                for h_metrics in value:
+                    for h_key, h_value in h_metrics.items():
+                        if isinstance(h_value, dict) and "distance" in h_value:
+                            old = final_min.get(h_key)
+                            if old is None or h_value["distance"] < old["distance"]:
+                                final_min[h_key] = h_value
+                continue
+            if isinstance(value, dict) and "distance" in value:
+                old = final_min.get(key)
+                if old is None or value["distance"] < old["distance"]:
+                    final_min[key] = value
+    report["final_min_contacts"] = final_min
+    if zinc_summary is not None:
+        zinc_summary["water_sanitizer"] = report
+    return entries_crystal, report
+
+
+def get_lammps_input_cementff(name, entries_crystal, entries_bonds, entries_angle, supercell, zinc_summary=None, sanitize_water=True):
+    """Write a CementFF4-oriented LAMMPS data file with fixed atom type IDs."""
+    if sanitize_water:
+        entries_crystal, water_sanitizer_report = sanitize_cementff4_water(
+            entries_crystal, entries_bonds, entries_angle, supercell, zinc_summary
+        )
+    mol_map, water_molecule_records, hydroxyl_records = cementff4_molecule_id_map(
+        entries_crystal, entries_bonds, entries_angle, zinc_summary
+    )
+    has_zinc = any(int(entry[1]) == 14 for entry in entries_crystal)
+    max_atom_type = 9 if has_zinc else 8
+    max_angle_type = 5 if has_zinc else 3
+
+    with open(name, "w") as f:
+        f.write("Generated with pyCSH CementFF4 output\n")
+        f.write("# Fixed CementFF4 type map; force-field coefficients are in in.CementFF4 or in.CementFF4_Zn.\n\n")
+        if zinc_summary is not None:
+            f.write("# Zn_site_type: {}\n".format(zinc_summary.get("Zn_site_type")))
+            f.write("# target_Zn_Si_ratio: {}\n".format(zinc_summary.get("target_Zn_Si_ratio")))
+            f.write("# actual_Zn_Si_ratio: {}\n\n".format(zinc_summary.get("actual_Zn_Si_ratio")))
+        f.write("{: 8d} atoms\n".format(len(entries_crystal)))
+        f.write("{: 8d} bonds\n".format(len(entries_bonds)))
+        f.write("{: 8d} angles\n".format(len(entries_angle)))
+        f.write("{: 8d} atom types\n".format(max_atom_type))
+        f.write("{: 8d} bond types\n".format(3 if entries_bonds else 0))
+        f.write("{: 8d} angle types\n".format(max_angle_type if entries_angle else 0))
+        f.write("\n")
+        f.write("{: 12.6f} {: 12.6f} xlo xhi\n".format(0.0, supercell[0, 0]))
+        f.write("{: 12.6f} {: 12.6f} ylo yhi\n".format(0.0, supercell[1, 1]))
+        f.write("{: 12.6f} {: 12.6f} zlo zhi\n".format(0.0, supercell[2, 2]))
+        f.write(
+            "{: 12.6f} {: 12.6f} {: 12.6f} xy xz yz\n".format(
+                supercell[1, 0], supercell[2, 0], supercell[2, 1]
+            )
+        )
+        f.write("\nMasses\n\n")
+        for lammps_type in range(1, max_atom_type + 1):
+            label, mass = CEMENTFF4_LAMMPS_TYPES[lammps_type]
+            f.write("{: 4d} {: 12.6f} # {}\n".format(lammps_type, mass, label))
+
+        f.write("\nAtoms # full\n\n")
+        fmt = "{: 8d} {: 8d} {: 8d} {: 10.6f} {: 12.6f} {: 12.6f} {: 12.6f} # {}\n"
+        for entry in entries_crystal:
+            lammps_type = cementff4_atom_type(entry)
+            label = cementff4_atom_label(entry)
+            f.write(fmt.format(int(entry[0]), mol_map.get(int(entry[0]), 0), lammps_type, float(entry[2]), *entry[3:], label))
+
+        if entries_bonds:
+            f.write("\nBonds\n\n")
+            for entry in entries_bonds:
+                f.write(
+                    "{: 8d} {: 8d} {: 8d} {: 8d}\n".format(
+                        int(entry[0]), cementff4_bond_type(entry, entries_crystal), int(entry[2]), int(entry[3])
+                    )
+                )
+
+        if entries_angle:
+            f.write("\nAngles\n\n")
+            for entry in entries_angle:
+                f.write("{: 8d} {: 8d} {: 8d} {: 8d} {: 8d}\n".format(*entry))
+    return {
+        "molecule_id_policy": {
+            "framework_molecule_id": 0,
+            "water_molecules": water_molecule_records,
+            "hydroxyl_pairs": hydroxyl_records,
+        },
+        "water_sanitizer": zinc_summary.get("water_sanitizer") if zinc_summary is not None else water_sanitizer_report,
+    }
+
+
+def write_cementff4_mapping_json(name, zinc_enabled):
+    mapping = {
+        "atom_type_map": {
+            str(k): {"label": v[0], "mass": v[1]}
+            for k, v in CEMENTFF4_LAMMPS_TYPES.items()
+            if zinc_enabled or k <= 8
+        },
+        "internal_to_lammps_type_map": CEMENTFF4_TYPE_MAP,
+        "angle_type_map": {
+            str(k): v for k, v in CEMENTFF4_ANGLE_MAP.items() if zinc_enabled or k <= 3
+        },
+    }
+    with open(name, "w") as f:
+        json.dump(mapping, f, indent=2, sort_keys=True)
+        f.write("\n")
+
+
+def write_cementff4_zinc_input(name, data_file=None):
+    with open(name, "w") as f:
+        f.write("# CementFF4 Zn-enabled force-field include generated by pyCSH\n")
+        f.write("# Zn parameters from CementFF4 supplementary information, Tables S1-S7.\n")
+        f.write("group ca type 1\n")
+        f.write("group Si type 2\n")
+        f.write("group Osicore type 3\n")
+        f.write("group Osishell type 4\n")
+        f.write("group Ow type 5\n")
+        f.write("group Ooh type 6\n")
+        f.write("group Hw type 7\n")
+        f.write("group Hoh type 8\n")
+        f.write("group Zn type 9\n\n")
+        f.write("group cores type 3\n")
+        f.write("group shells type 4\n")
+        f.write("group noWater type 1 2 3 4 9\n")
+        f.write("group water type 5 7\n\n")
+        f.write("pair_style  hybrid/overlay  buck/coul/long 10  buck/coul/long/cs  10  nm/cut/coul/long 10 lj/cut/tip4p/long 5 7 2 1 0.1546 10 10\n\n")
+        f.write("pair_coeff      1      1     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      1      2     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      1      3     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      1      4     buck/coul/long 2152.3566 0.309227  0.099440\n")
+        f.write("pair_coeff      1      5     lj/cut/tip4p/long 9.84634e-3 2.996\n")
+        f.write("pair_coeff      1      6     lj/cut/tip4p/long 0.00199146 3.385 3.12655\n")
+        f.write("pair_coeff      1      7     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      1      8     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      1      9     lj/cut/tip4p/long 0.0 0.0\n\n")
+        f.write("pair_coeff      2      2     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      2      3     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      2      4     buck/coul/long 1283.9 0.3205 10.66\n")
+        f.write("pair_coeff      2      5     buck/coul/long 1283.556 0.3202 10.66\n")
+        f.write("pair_coeff      2      6     buck/coul/long 983.5 0.3255 10.66\n")
+        f.write("pair_coeff      2      7     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      2      8     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      2      9     lj/cut/tip4p/long 0.0 0.0\n\n")
+        f.write("pair_coeff      3      3     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      3      4     buck/coul/long/cs 0 1 0\n")
+        f.write("pair_coeff      3      5     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      3      6     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      3      7     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      3      8     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      3      9     lj/cut/tip4p/long 0.0 0.0\n\n")
+        f.write("pair_coeff      4      4     buck/coul/long 22764.3 0.149 27.88\n")
+        f.write("pair_coeff      4      5     buck/coul/long 22764.3 0.149 28.92\n")
+        f.write("pair_coeff      4      6     buck/coul/long 22764.3 0.149 13.94\n")
+        f.write("pair_coeff      4      7     buck/coul/long 512  0.2500  0.0000\n")
+        f.write("pair_coeff      4      8     nm/cut/coul/long 0.0073 2.71 9 6\n")
+        f.write("pair_coeff      4      9     buck/coul/long 499.60 0.3595 0.00\n\n")
+        f.write("pair_coeff      5      5     lj/cut/tip4p/long 0.008031 3.1589\n")
+        f.write("pair_coeff      5      6     lj/cut/tip4p/long 0.012299878 3.28945\n")
+        f.write("pair_coeff      5      7     lj/cut/tip4p/long 0 0\n")
+        f.write("pair_coeff      5      8     nm/cut/coul/long 0.055556 2 9 6\n")
+        f.write("pair_coeff      5      9     lj/cut/tip4p/long 7.3425e-03 3.15845\n\n")
+        f.write("pair_coeff      6      6     lj/cut/tip4p/long 0.018910874 3.42\n")
+        f.write("pair_coeff      6      7     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      6      8     nm/cut/coul/long 0.0073 2.71 9 6\n")
+        f.write("pair_coeff      6      9     buck/coul/long 370.00 0.3595 0.00\n\n")
+        f.write("pair_coeff      7      7     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      7      8     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      7      9     lj/cut/tip4p/long 0.0 0.0\n\n")
+        f.write("pair_coeff      8      8     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      8      9     lj/cut/tip4p/long 0.0 0.0\n")
+        f.write("pair_coeff      9      9     lj/cut/tip4p/long 0.0 0.0\n\n")
+        f.write("bond_style hybrid  harmonic morse\n")
+        f.write("bond_coeff   1 harmonic   37.5 0\n")
+        f.write("bond_coeff   2 harmonic 9.7563 0.9572\n")
+        f.write("bond_coeff   3 morse 7.0525     3.1749     0.942\n\n")
+        f.write("angle_style harmonic\n")
+        f.write("angle_coeff 1 1.19245 104.52\n")
+        f.write("angle_coeff 2 7.74815 109.47000\n")
+        f.write("angle_coeff 3 7.74815 141.50000\n")
+        f.write("angle_coeff 4 0.1 105.0\n")
+        f.write("angle_coeff 5 0.1 109.0\n\n")
+        f.write("kspace_style pppm/tip4p 1e-4\n")
+        f.write("fix 1 water shake 1e-4 150 0 b 2 a 1\n")
+
+
+def write_cementff4_smoke_input(name, data_file, ff_file):
+    with open(name, "w") as f:
+        f.write("# Minimal pyCSH CementFF4-Zn smoke test\n")
+        f.write("clear\n")
+        f.write("units metal\n")
+        f.write("dimension 3\n")
+        f.write("atom_style full\n")
+        f.write("boundary p p p\n")
+        f.write("box tilt large\n\n")
+        f.write("read_data {:}\n".format(os.path.basename(data_file)))
+        f.write("include {:}\n".format(os.path.basename(ff_file)))
+        f.write("run 0\n")
+
+
+def write_cementff4_minimize_input(name, data_file, ff_file, minimized_data_file, dump_file):
+    with open(name, "w") as f:
+        f.write("# Staged pyCSH CementFF4-Zn minimization; no MD is run here.\n")
+        f.write("clear\n")
+        f.write("units metal\n")
+        f.write("dimension 3\n")
+        f.write("atom_style full\n")
+        f.write("boundary p p p\n")
+        f.write("box tilt large\n\n")
+        f.write("read_data {:}\n".format(os.path.basename(data_file)))
+        f.write("include {:}\n".format(os.path.basename(ff_file)))
+        f.write("dump min_dump all custom 100 {:} id type q x y z\n".format(os.path.basename(dump_file)))
+        f.write("thermo 1\n")
+        f.write("thermo_style custom step pe ebond eangle evdwl ecoul elong fnorm fmax press\n")
+        f.write("neighbor 2.0 bin\n")
+        f.write("neigh_modify every 1 delay 0 check yes\n")
+        f.write("# Stage A: conservative line-search minimization with a small displacement cap.\n")
+        f.write("min_style cg\n")
+        f.write("min_modify dmax 0.02 line quadratic\n")
+        f.write("minimize 1.0e-6 1.0e-8 200 2000\n")
+        f.write("# Stage B: slightly larger displacement cap after the worst contacts are reduced.\n")
+        f.write("min_modify dmax 0.10 line quadratic\n")
+        f.write("minimize 1.0e-6 1.0e-8 1000 10000\n")
+        f.write("write_data {:} nocoeff\n".format(os.path.basename(minimized_data_file)))
 
 
 def get_lammps_input(input_file, entries_crystal, entries_bonds, entries_angle, supercell, unitcell, write_lammps_erica, orthogonal = None, shift = None, diferentiate = None, dpore = None, saturation =None, grid = None):
@@ -1587,7 +2221,7 @@ def get_xyz_input(name, entries_crystal, supercell, unitcell, orthogonal = None,
                 f.write( fmt.format(*i) )
 
 
-def get_log(log_file, size, crystal_rs, water_in_crystal_rs, N_Ca, N_Si, r_SiOH, r_CaOH, MCL ):
+def get_log(log_file, size, crystal_rs, water_in_crystal_rs, N_Ca, N_Si, r_SiOH, r_CaOH, MCL, zinc_summary=None ):
 
     N_Oh = 0
     for i in range(size[0]):
@@ -1601,6 +2235,48 @@ def get_log(log_file, size, crystal_rs, water_in_crystal_rs, N_Ca, N_Si, r_SiOH,
         f.write( "CaOH/Ca ratio: {: 8.6f} \n".format(r_CaOH) )
         f.write( "MCL:           {: 8.6f} \n".format(MCL) )
         f.write( " \n" )
+        if zinc_summary is not None:
+            f.write( "Zinc generation: enabled \n" )
+            f.write( "Output classification: {:} \n".format(zinc_summary.get("output_classification", "unclassified")) )
+            if zinc_summary.get("classification_reasons"):
+                f.write( "Classification reasons: {:} \n".format("; ".join(zinc_summary["classification_reasons"])) )
+            f.write( "Zn site type:    {:} \n".format(zinc_summary["Zn_site_type"]) )
+            f.write( "Zn seed:         {:d} \n".format(zinc_summary["Zn_seed"]) )
+            f.write( "Target Zn/Si:    {: 8.6f} \n".format(zinc_summary["target_Zn_Si_ratio"]) )
+            f.write( "Actual Zn/Si:    {: 8.6f} \n".format(zinc_summary["actual_Zn_Si_ratio"]) )
+            f.write( "Ca/(Si+Zn):      {: 8.6f} \n".format(zinc_summary["Ca_over_Si_plus_Zn_ratio"]) )
+            f.write( "N_Si:            {:d} \n".format(zinc_summary["N_Si"]) )
+            f.write( "N_Zn:            {:d} \n".format(zinc_summary["N_Zn"]) )
+            f.write( "N Os->Oh:        {:d} \n".format(zinc_summary.get("N_Os_converted_to_Oh", 0)) )
+            f.write( "N H added ZnOH:  {:d} \n".format(zinc_summary.get("N_H_added_for_Zn_OH", 0)) )
+            f.write( "N_Q1_Zn:         {:d} \n".format(zinc_summary["N_Q1_Zn"]) )
+            f.write( "N_Q2b_Zn:        {:d} \n".format(zinc_summary["N_Q2b_Zn"]) )
+            f.write( "Min Zn-Zn dist:  {:} \n".format(zinc_summary["minimum_Zn_Zn_distance"]) )
+            f.write( "Min Zn-O dist:   {:} \n".format(zinc_summary["minimum_Zn_O_distance"]) )
+            f.write( "Charge before Zn: {: 8.6f} \n".format(zinc_summary.get("total_charge_before_zinc", 0.0)) )
+            f.write( "Charge after Zn before hydroxylation: {: 8.6f} \n".format(
+                zinc_summary.get("total_charge_after_zinc_before_hydroxylation", 0.0)
+            ) )
+            f.write( "Charge after hydroxylation: {: 8.6f} \n".format(
+                zinc_summary.get("total_charge_after_hydroxylation", zinc_summary.get("total_charge_residual", 0.0))
+            ) )
+            f.write( "Charge residual final: {: 8.6f} \n".format(zinc_summary.get("charge_residual_final", 0.0)) )
+            if "topology_validation" in zinc_summary:
+                f.write( "Remapped O-Zn-O angles: {:d} \n".format(
+                    zinc_summary["topology_validation"]["remapped_O_Zn_O_angles"]
+                ) )
+                f.write( "Remapped Zn-Oh-H angles: {:d} \n".format(
+                    zinc_summary["topology_validation"]["remapped_Zn_Oh_H_angles"]
+                ) )
+            f.write( "Selected Zn sites: \n" )
+            for site in zinc_summary["selected_sites"]:
+                f.write( "  atom_id={:d} motif={:} cell={:} piece={:} \n".format(
+                    site["atom_id"], site["motif"], site["cell"], site["piece"]
+                ) )
+            f.write( " \n" )
+        else:
+            f.write( "Zinc generation: disabled \n" )
+            f.write( " \n" )
         f.write( "size: {: 3d} {: 3d} {: 3d} \n".format(*size) )
         f.write( " \n" )
         f.write( "Supecell Brick Code: \n" )
@@ -2022,7 +2698,8 @@ def get_sorted_log(list_properties):
 
 def write_output( isample, entries_crystal, entries_bonds, entries_angle, size, crystal_rs, water_in_crystal_rs,
                   supercell, N_Ca, N_Si, r_SiOH, r_CaOH, MCL, write_lammps, write_lammps_erica, write_vasp, write_siesta,
-                  prefix, unitcell, orthogonal, shift, diferentiate = None, dpore = None, saturation = None , grid = None, guest_ions = None):
+                  prefix, unitcell, orthogonal, shift, diferentiate = None, dpore = None, saturation = None , grid = None, guest_ions = None,
+                  write_lammps_cementff = False, zinc_summary = None, write_zinc_summary_file = True):
 
     mypath = os.path.abspath(".")
     path = os.path.join(mypath, "output_Y/")
@@ -2041,7 +2718,7 @@ def write_output( isample, entries_crystal, entries_bonds, entries_angle, size, 
         name = os.path.join(path, name)
         get_lammps_input(name, entries_crystal, entries_bonds, entries_angle, supercell, unitcell, write_lammps_erica, orthogonal, shift, diferentiate, dpore, saturation, grid) 
     
-    if write_lammps:
+    if write_lammps and zinc_summary is None:
         name=prefix+"_reax"+str(isample+1)
         if shift == True:
             name = name +"_shift"
@@ -2058,10 +2735,47 @@ def write_output( isample, entries_crystal, entries_bonds, entries_angle, size, 
         name = name +".data"
         name = os.path.join(path, name)
         get_lammps_input_reaxfff(name, entries_crystal, supercell, unitcell, orthogonal, shift, diferentiate, dpore, saturation, grid)
+    elif write_lammps and zinc_summary is not None:
+        print("Skipping legacy ReaxFF-style LAMMPS writer for Zn-enabled CementFF output.")
+
+    if write_lammps_cementff:
+        name=prefix+"_cementff"+str(isample+1)
+        if zinc_summary is not None:
+            name = name +"_zn"
+        name = name +".data"
+        name = os.path.join(path, name)
+        cementff_metadata = get_lammps_input_cementff(name, entries_crystal, entries_bonds, entries_angle, supercell, zinc_summary)
+        update_zinc_classification_for_water(zinc_summary)
+        mapping_name = os.path.join(path, prefix+"_cementff_type_mapping_"+str(isample+1)+".json")
+        write_cementff4_mapping_json(mapping_name, zinc_summary is not None)
+        water_summary_name = os.path.join(path, prefix+"_cementff_water_summary_"+str(isample+1)+".json")
+        with open(water_summary_name, "w") as f:
+            json.dump(cementff_metadata, f, indent=2, sort_keys=True)
+            f.write("\n")
+        if zinc_summary is not None:
+            ff_name = os.path.join(path, prefix+"_in.CementFF4_Zn_"+str(isample+1))
+            write_cementff4_zinc_input(ff_name, name)
+            smoke_name = os.path.join(path, prefix+"_smoke_CementFF4_Zn_"+str(isample+1)+".in")
+            write_cementff4_smoke_input(smoke_name, name, ff_name)
+            min_name = os.path.join(path, prefix+"_minimize_CementFF4_Zn_"+str(isample+1)+".in")
+            minimized_data = os.path.join(path, prefix+"_cementff"+str(isample+1)+"_zn_minimized.data")
+            minimized_dump = os.path.join(path, prefix+"_cementff"+str(isample+1)+"_zn_minimized.lammpstrj")
+            write_cementff4_minimize_input(min_name, name, ff_name, minimized_data, minimized_dump)
+            zinc_summary["cementff4_data_file"] = os.path.basename(name)
+            zinc_summary["cementff4_forcefield_file"] = os.path.basename(ff_name)
+            zinc_summary["cementff4_smoke_input"] = os.path.basename(smoke_name)
+            zinc_summary["cementff4_minimize_input"] = os.path.basename(min_name)
+            zinc_summary["cementff4_minimized_data_file"] = os.path.basename(minimized_data)
+            zinc_summary["cementff4_minimized_dump_file"] = os.path.basename(minimized_dump)
 
     name = prefix+"_"+str(isample+1)+".log"
     name = os.path.join(path, name)
-    get_log(name, size, crystal_rs, water_in_crystal_rs, N_Ca, N_Si, r_SiOH, r_CaOH, MCL )
+    get_log(name, size, crystal_rs, water_in_crystal_rs, N_Ca, N_Si, r_SiOH, r_CaOH, MCL, zinc_summary )
+
+    if zinc_summary is not None and write_zinc_summary_file:
+        name = prefix+"_zinc_summary_"+str(isample+1)+".json"
+        name = os.path.join(path, name)
+        write_zinc_summary(name, zinc_summary)
     
     
     if write_vasp:

@@ -1,0 +1,678 @@
+{
+  "molecule_id_policy": {
+    "framework_molecule_id": 0,
+    "hydroxyl_pairs": [
+      {
+        "atoms": [
+          16,
+          17
+        ],
+        "bond_id": 7,
+        "molecule_id": 9
+      },
+      {
+        "atoms": [
+          29,
+          30
+        ],
+        "bond_id": 11,
+        "molecule_id": 10
+      },
+      {
+        "atoms": [
+          31,
+          32
+        ],
+        "bond_id": 12,
+        "molecule_id": 11
+      },
+      {
+        "atoms": [
+          33,
+          34
+        ],
+        "bond_id": 13,
+        "molecule_id": 12
+      },
+      {
+        "atoms": [
+          44,
+          45
+        ],
+        "bond_id": 17,
+        "molecule_id": 13
+      },
+      {
+        "atoms": [
+          46,
+          47
+        ],
+        "bond_id": 18,
+        "molecule_id": 14
+      },
+      {
+        "atoms": [
+          56,
+          57
+        ],
+        "bond_id": 22,
+        "molecule_id": 15
+      },
+      {
+        "atoms": [
+          72,
+          73
+        ],
+        "bond_id": 29,
+        "molecule_id": 16
+      },
+      {
+        "atoms": [
+          83,
+          84
+        ],
+        "bond_id": 33,
+        "molecule_id": 17
+      },
+      {
+        "atoms": [
+          91,
+          92
+        ],
+        "bond_id": 36,
+        "molecule_id": 18
+      },
+      {
+        "atoms": [
+          94,
+          95
+        ],
+        "bond_id": 37,
+        "molecule_id": 19
+      },
+      {
+        "atoms": [
+          131,
+          132
+        ],
+        "bond_id": 51,
+        "molecule_id": 20
+      },
+      {
+        "atoms": [
+          133,
+          134
+        ],
+        "bond_id": 52,
+        "molecule_id": 21
+      },
+      {
+        "atoms": [
+          135,
+          136
+        ],
+        "bond_id": 53,
+        "molecule_id": 22
+      },
+      {
+        "atoms": [
+          146,
+          147
+        ],
+        "bond_id": 57,
+        "molecule_id": 23
+      },
+      {
+        "atoms": [
+          148,
+          149
+        ],
+        "bond_id": 58,
+        "molecule_id": 24
+      },
+      {
+        "atoms": [
+          150,
+          151
+        ],
+        "bond_id": 59,
+        "molecule_id": 25
+      },
+      {
+        "atoms": [
+          186,
+          187
+        ],
+        "bond_id": 73,
+        "molecule_id": 26
+      },
+      {
+        "atoms": [
+          188,
+          189
+        ],
+        "bond_id": 74,
+        "molecule_id": 27
+      },
+      {
+        "atoms": [
+          222,
+          223
+        ],
+        "bond_id": 88,
+        "molecule_id": 28
+      },
+      {
+        "atoms": [
+          226,
+          227
+        ],
+        "bond_id": 90,
+        "molecule_id": 29
+      },
+      {
+        "atoms": [
+          239,
+          240
+        ],
+        "bond_id": 94,
+        "molecule_id": 30
+      },
+      {
+        "atoms": [
+          241,
+          242
+        ],
+        "bond_id": 95,
+        "molecule_id": 31
+      },
+      {
+        "atoms": [
+          243,
+          244
+        ],
+        "bond_id": 96,
+        "molecule_id": 32
+      },
+      {
+        "atoms": [
+          245,
+          246
+        ],
+        "bond_id": 97,
+        "molecule_id": 33
+      },
+      {
+        "atoms": [
+          256,
+          257
+        ],
+        "bond_id": 101,
+        "molecule_id": 34
+      },
+      {
+        "atoms": [
+          282,
+          283
+        ],
+        "bond_id": 112,
+        "molecule_id": 35
+      },
+      {
+        "atoms": [
+          290,
+          291
+        ],
+        "bond_id": 115,
+        "molecule_id": 36
+      },
+      {
+        "atoms": [
+          295,
+          296
+        ],
+        "bond_id": 116,
+        "molecule_id": 37
+      },
+      {
+        "atoms": [
+          297,
+          298
+        ],
+        "bond_id": 117,
+        "molecule_id": 38
+      },
+      {
+        "atoms": [
+          312,
+          313
+        ],
+        "bond_id": 123,
+        "molecule_id": 39
+      },
+      {
+        "atoms": [
+          342,
+          343
+        ],
+        "bond_id": 136,
+        "molecule_id": 40
+      },
+      {
+        "atoms": [
+          355,
+          356
+        ],
+        "bond_id": 140,
+        "molecule_id": 41
+      },
+      {
+        "atoms": [
+          357,
+          358
+        ],
+        "bond_id": 141,
+        "molecule_id": 42
+      },
+      {
+        "atoms": [
+          359,
+          360
+        ],
+        "bond_id": 142,
+        "molecule_id": 43
+      },
+      {
+        "atoms": [
+          394,
+          395
+        ],
+        "bond_id": 156,
+        "molecule_id": 44
+      },
+      {
+        "atoms": [
+          398,
+          399
+        ],
+        "bond_id": 158,
+        "molecule_id": 45
+      },
+      {
+        "atoms": [
+          411,
+          412
+        ],
+        "bond_id": 162,
+        "molecule_id": 46
+      },
+      {
+        "atoms": [
+          413,
+          414
+        ],
+        "bond_id": 163,
+        "molecule_id": 47
+      },
+      {
+        "atoms": [
+          424,
+          425
+        ],
+        "bond_id": 167,
+        "molecule_id": 48
+      }
+    ],
+    "water_molecules": [
+      {
+        "Hw": [
+          59,
+          60
+        ],
+        "Ow": 58,
+        "angle_ids": [
+          32
+        ],
+        "bond_ids": [
+          23,
+          24
+        ],
+        "molecule_id": 1
+      },
+      {
+        "Hw": [
+          107,
+          108
+        ],
+        "Ow": 106,
+        "angle_ids": [
+          58
+        ],
+        "bond_ids": [
+          42,
+          43
+        ],
+        "molecule_id": 2
+      },
+      {
+        "Hw": [
+          163,
+          164
+        ],
+        "Ow": 162,
+        "angle_ids": [
+          89
+        ],
+        "bond_ids": [
+          64,
+          65
+        ],
+        "molecule_id": 3
+      },
+      {
+        "Hw": [
+          209,
+          210
+        ],
+        "Ow": 208,
+        "angle_ids": [
+          114
+        ],
+        "bond_ids": [
+          82,
+          83
+        ],
+        "molecule_id": 4
+      },
+      {
+        "Hw": [
+          269,
+          270
+        ],
+        "Ow": 268,
+        "angle_ids": [
+          146
+        ],
+        "bond_ids": [
+          106,
+          107
+        ],
+        "molecule_id": 5
+      },
+      {
+        "Hw": [
+          325,
+          326
+        ],
+        "Ow": 324,
+        "angle_ids": [
+          178
+        ],
+        "bond_ids": [
+          128,
+          129
+        ],
+        "molecule_id": 6
+      },
+      {
+        "Hw": [
+          381,
+          382
+        ],
+        "Ow": 380,
+        "angle_ids": [
+          209
+        ],
+        "bond_ids": [
+          150,
+          151
+        ],
+        "molecule_id": 7
+      },
+      {
+        "Hw": [
+          437,
+          438
+        ],
+        "Ow": 436,
+        "angle_ids": [
+          241
+        ],
+        "bond_ids": [
+          172,
+          173
+        ],
+        "molecule_id": 8
+      }
+    ]
+  },
+  "water_sanitizer": {
+    "bad_before": [
+      {
+        "Hw": [
+          59,
+          60
+        ],
+        "Ow": 58,
+        "violations": [
+          {
+            "atom_id": 135,
+            "contact": "Ow_O",
+            "cutoff": 2.2,
+            "distance": 1.8562510859141896,
+            "label": "Oh",
+            "type": 6
+          },
+          {
+            "H": 60,
+            "atom_id": 238,
+            "contact": "H_Ca",
+            "cutoff": 1.6,
+            "distance": 1.477220444242673,
+            "label": "Ca",
+            "type": 1
+          }
+        ]
+      },
+      {
+        "Hw": [
+          107,
+          108
+        ],
+        "Ow": 106,
+        "violations": [
+          {
+            "atom_id": 185,
+            "contact": "Ow_Ca",
+            "cutoff": 2.2,
+            "distance": 2.029663680429054,
+            "label": "Ca",
+            "type": 1
+          },
+          {
+            "H": 108,
+            "atom_id": 185,
+            "contact": "H_Ca",
+            "cutoff": 1.6,
+            "distance": 1.4841816546120783,
+            "label": "Ca",
+            "type": 1
+          }
+        ]
+      },
+      {
+        "Hw": [
+          163,
+          164
+        ],
+        "Ow": 162,
+        "violations": [
+          {
+            "atom_id": 27,
+            "contact": "Ow_Ca",
+            "cutoff": 2.2,
+            "distance": 2.029663680429056,
+            "label": "Ca",
+            "type": 1
+          }
+        ]
+      },
+      {
+        "Hw": [
+          381,
+          382
+        ],
+        "Ow": 380,
+        "violations": [
+          {
+            "atom_id": 237,
+            "contact": "Ow_Ca",
+            "cutoff": 2.2,
+            "distance": 2.029663680429056,
+            "label": "Ca",
+            "type": 1
+          },
+          {
+            "H": 381,
+            "atom_id": 237,
+            "contact": "H_Ca",
+            "cutoff": 1.6,
+            "distance": 1.3229981885886166,
+            "label": "Ca",
+            "type": 1
+          }
+        ]
+      }
+    ],
+    "cutoffs": {
+      "water_min_H_Ca": 1.6,
+      "water_min_H_H_nonbonded": 1.2,
+      "water_min_H_O_nonbonded": 1.2,
+      "water_min_H_Si": 1.6,
+      "water_min_H_Zn": 1.4,
+      "water_min_Ow_Ca": 2.2,
+      "water_min_Ow_O": 2.2
+    },
+    "enabled": true,
+    "final_min_contacts": {
+      "H_Ca": {
+        "atom_id": 183,
+        "distance": 1.638421034587198,
+        "label": "Ca",
+        "type": 1
+      },
+      "H_H_nonbonded": {
+        "atom_id": 412,
+        "distance": 1.6498994032747591,
+        "label": "Hoh",
+        "type": 8
+      },
+      "H_O_nonbonded": {
+        "atom_id": 9,
+        "distance": 1.6162960853319657,
+        "label": "O",
+        "type": 3
+      },
+      "H_Si": {
+        "atom_id": 11,
+        "distance": 1.9730202501552736,
+        "label": "Si",
+        "type": 2
+      },
+      "H_Zn": {
+        "atom_id": 145,
+        "distance": 3.194554815063293,
+        "label": "Zn",
+        "type": 9
+      },
+      "Ow_Ca": {
+        "atom_id": 185,
+        "distance": 2.029663680429054,
+        "label": "Ca",
+        "type": 1
+      },
+      "Ow_O": {
+        "atom_id": 135,
+        "distance": 1.8562510859141896,
+        "label": "Oh",
+        "type": 6
+      },
+      "Ow_Si": {
+        "atom_id": 11,
+        "distance": 2.355842112083656,
+        "label": "Si",
+        "type": 2
+      },
+      "Ow_Zn": {
+        "atom_id": 145,
+        "distance": 3.7633410741695568,
+        "label": "Zn",
+        "type": 9
+      }
+    },
+    "n_water": 8,
+    "rejected": [
+      {
+        "Hw": [
+          59,
+          60
+        ],
+        "Ow": 58,
+        "violations": [
+          {
+            "atom_id": 135,
+            "contact": "Ow_O",
+            "cutoff": 2.2,
+            "distance": 1.8562510859141896,
+            "label": "Oh",
+            "type": 6
+          }
+        ]
+      },
+      {
+        "Hw": [
+          107,
+          108
+        ],
+        "Ow": 106,
+        "violations": [
+          {
+            "atom_id": 185,
+            "contact": "Ow_Ca",
+            "cutoff": 2.2,
+            "distance": 2.029663680429054,
+            "label": "Ca",
+            "type": 1
+          }
+        ]
+      }
+    ],
+    "repaired_by_rotation": [],
+    "repaired_by_translation": [
+      {
+        "Hw": [
+          163,
+          164
+        ],
+        "Ow": 162,
+        "translation": [
+          0.04988618499432829,
+          0.03248444568078458,
+          0.29403423157095804
+        ]
+      },
+      {
+        "Hw": [
+          381,
+          382
+        ],
+        "Ow": 380,
+        "translation": [
+          0.15879185664743542,
+          0.10797153362198045,
+          0.05592221552994723
+        ]
+      }
+    ]
+  }
+}

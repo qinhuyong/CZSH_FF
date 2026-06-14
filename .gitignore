@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+*.log
+*.lammpstrj
+*.dump
+output_Y/**/*.data
+output_Y/**/*.in
+output_Y/**/*.xyz
+output_Y/**/*.vasp
+output_Y/**/*.fdf
+output_Y/**/*.cif
+created_samples.log

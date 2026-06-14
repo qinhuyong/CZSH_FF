@@ -1,0 +1,142 @@
+[
+  {
+    "name": "A0_supplement_fileFINAL_origFF",
+    "returncode": 0,
+    "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v22_audit\\A0_supplement_fileFINAL_origFF_afterBondFix.log",
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [],
+      "nrows": 102,
+      "initial": {
+        "step": 0.0,
+        "pe": -28519.475,
+        "ebond": 193.3926,
+        "eangle": 481.33624,
+        "evdwl": 6177.6509,
+        "ecoul": -12861.381,
+        "elong": -22510.474,
+        "fnorm": 661.81683,
+        "fmax": 25.67068,
+        "press": -44335.138
+      },
+      "final": {
+        "step": 100.0,
+        "pe": -30533.544,
+        "ebond": 331.56073,
+        "eangle": 15.784173,
+        "evdwl": 8265.9938,
+        "ecoul": -16567.96,
+        "elong": -22578.922,
+        "fnorm": 10.503523,
+        "fmax": 3.4334638,
+        "press": 15425.33
+      },
+      "dominant_final": "elong"
+    }
+  },
+  {
+    "name": "B_pyCSH_cementff_origFF",
+    "returncode": 0,
+    "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v22_audit\\B_pyCSH_cementff_origFF_afterBondFix.log",
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [],
+      "nrows": 102,
+      "initial": {
+        "step": 0.0,
+        "pe": -33276.384,
+        "ebond": 12839.903,
+        "eangle": 91.311632,
+        "evdwl": 15804.942,
+        "ecoul": -22370.417,
+        "elong": -39642.124,
+        "fnorm": 7697.1757,
+        "fmax": 2090.9941,
+        "press": 272749.11
+      },
+      "final": {
+        "step": 100.0,
+        "pe": -53405.908,
+        "ebond": 560.22774,
+        "eangle": 72.271228,
+        "evdwl": 14312.445,
+        "ecoul": -27950.706,
+        "elong": -40400.146,
+        "fnorm": 51.163102,
+        "fmax": 4.7037942,
+        "press": 72644.335
+      },
+      "dominant_final": "elong"
+    }
+  },
+  {
+    "name": "C_pyCSH_cementff_generatedNoZnFF",
+    "returncode": 0,
+    "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v22_audit\\C_pyCSH_cementff_generatedNoZnFF_afterBondFix.log",
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [],
+      "nrows": 57,
+      "initial": {
+        "step": 0.0,
+        "pe": -33278.35,
+        "ebond": 12837.938,
+        "eangle": 91.311624,
+        "evdwl": 15804.942,
+        "ecoul": -22370.417,
+        "elong": -39642.124,
+        "fnorm": Infinity,
+        "fmax": 1.3083205e+180,
+        "press": -1.2649769e+181
+      },
+      "final": {
+        "step": 55.0,
+        "pe": -11480.939,
+        "ebond": 712.5666,
+        "eangle": 95.064615,
+        "evdwl": 14210.559,
+        "ecoul": -27127.213,
+        "elong": -40240.2,
+        "fnorm": 6250.1828,
+        "fmax": 4010.8958,
+        "press": -529997.62
+      },
+      "dominant_final": "elong"
+    }
+  },
+  {
+    "name": "D_examplePure_cementff_origFF",
+    "returncode": 0,
+    "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v22_audit\\D_examplePure_cementff_origFF_afterBondFix.log",
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [],
+      "nrows": 91,
+      "initial": {
+        "step": 0.0,
+        "pe": -3951.6947,
+        "ebond": 1436.4422,
+        "eangle": 18.671889,
+        "evdwl": 2602.4567,
+        "ecoul": -2830.5143,
+        "elong": -5178.7512,
+        "fnorm": 11792.412,
+        "fmax": 7124.0066,
+        "press": 1213798.2
+      },
+      "final": {
+        "step": 89.0,
+        "pe": -6815.8894,
+        "ebond": 83.62237,
+        "eangle": 12.376113,
+        "evdwl": 1815.0652,
+        "ecoul": -3487.2461,
+        "elong": -5239.707,
+        "fnorm": 124.12677,
+        "fmax": 56.838303,
+        "press": 51618.212
+      },
+      "dominant_final": "elong"
+    }
+  }
+]

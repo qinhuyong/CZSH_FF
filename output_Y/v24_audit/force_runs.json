@@ -1,0 +1,16 @@
+[
+  {
+    "name": "pure_force_cg",
+    "code": 0,
+    "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v24_audit\\pure_force_cg.log",
+    "dump": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v24_audit\\pure_force_cg_forces.lammpstrj",
+    "final_data": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v24_audit\\pure_force_cg_min.data"
+  },
+  {
+    "name": "q2b_force_cg",
+    "code": 0,
+    "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v24_audit\\q2b_force_cg.log",
+    "dump": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v24_audit\\q2b_force_cg_forces.lammpstrj",
+    "final_data": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v24_audit\\q2b_force_cg_min.data"
+  }
+]

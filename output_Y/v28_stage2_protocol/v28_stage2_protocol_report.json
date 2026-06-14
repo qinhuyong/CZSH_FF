@@ -1,0 +1,5648 @@
+{
+  "current_v27_stage3_failure": {
+    "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v27_q2b_water_resampling\\v27_stage3_full_short.log",
+    "note": "Current v27 report fails at Stage 3 with missing core-shell bond atoms 300 301, not at Stage 2 with angle 340-339-346."
+  },
+  "final_classification": "needs_short_equilibration_test",
+  "old_stage2_group": {
+    "definition": "group mobile type 5 7 6 8 9",
+    "mobile_count": 94,
+    "split_topology": {
+      "examples_split_angles": [
+        {
+          "a1": 141,
+          "a2": 140,
+          "a3": 145,
+          "id": 16,
+          "type": 2
+        },
+        {
+          "a1": 143,
+          "a2": 140,
+          "a3": 145,
+          "id": 18,
+          "type": 2
+        },
+        {
+          "a1": 145,
+          "a2": 140,
+          "a3": 52,
+          "id": 20,
+          "type": 2
+        },
+        {
+          "a1": 248,
+          "a2": 247,
+          "a3": 254,
+          "id": 36,
+          "type": 2
+        },
+        {
+          "a1": 250,
+          "a2": 247,
+          "a3": 254,
+          "id": 38,
+          "type": 2
+        },
+        {
+          "a1": 252,
+          "a2": 247,
+          "a3": 254,
+          "id": 39,
+          "type": 2
+        },
+        {
+          "a1": 247,
+          "a2": 254,
+          "a3": 255,
+          "id": 40,
+          "type": 3
+        },
+        {
+          "a1": 140,
+          "a2": 145,
+          "a3": 146,
+          "id": 42,
+          "type": 3
+        },
+        {
+          "a1": 12,
+          "a2": 11,
+          "a3": 14,
+          "id": 61,
+          "type": 2
+        },
+        {
+          "a1": 12,
+          "a2": 11,
+          "a3": 9,
+          "id": 62,
+          "type": 2
+        }
+      ],
+      "examples_split_bonds": [],
+      "n_split_angles": 21,
+      "n_split_bonds": 0
+    },
+    "target_membership": {
+      "339": "mobile",
+      "340": "frozen",
+      "346": "frozen"
+    }
+  },
+  "output_summaries": {
+    "A_precise_small_dt": {
+      "water": {
+        "n_bad_water": 0,
+        "n_tip4p_compatible": 7,
+        "n_water": 7,
+        "summary": {
+          "HH_max": 1.5139178668995257,
+          "HH_min": 1.5138903768845573,
+          "HOH_max": 104.52057766082504,
+          "HOH_min": 104.51965413210479,
+          "OH_max": 0.9572124764814616,
+          "OH_min": 0.9571878117279995
+        }
+      },
+      "zinc_geometry": {
+        "OH_bond_max": 1.0000000000000018,
+        "OH_bond_min": 0.9351488931114843,
+        "O_Zn_O_angle_max": 126.20265290742277,
+        "O_Zn_O_angle_min": 81.97250850158491,
+        "Zn_id": 95,
+        "coordination_by_cutoff": {
+          "2.1": 3,
+          "2.3": 3,
+          "2.5": 4
+        },
+        "nearest_Zn_O": [
+          {
+            "atom_id": 93,
+            "distance": 1.7242329142425152,
+            "label": "O_core",
+            "type": 3
+          },
+          {
+            "atom_id": 98,
+            "distance": 1.7501154180872758,
+            "label": "Oh",
+            "type": 6
+          },
+          {
+            "atom_id": 110,
+            "distance": 1.7874384528042644,
+            "label": "O_core",
+            "type": 3
+          },
+          {
+            "atom_id": 96,
+            "distance": 2.338945549087939,
+            "label": "Oh",
+            "type": 6
+          }
+        ]
+      }
+    },
+    "B_water_only_1ps": {
+      "water": {
+        "n_bad_water": 0,
+        "n_tip4p_compatible": 7,
+        "n_water": 7,
+        "summary": {
+          "HH_max": 1.5140067965062085,
+          "HH_min": 1.5137515996313253,
+          "HOH_max": 104.52596945424528,
+          "HOH_min": 104.5088485636265,
+          "OH_max": 0.9573104100072218,
+          "OH_min": 0.9571333374999197
+        }
+      },
+      "zinc_geometry": {
+        "OH_bond_max": 1.0000000000000018,
+        "OH_bond_min": 0.9999993995883227,
+        "O_Zn_O_angle_max": 113.24415477259869,
+        "O_Zn_O_angle_min": 104.76551095325323,
+        "Zn_id": 95,
+        "coordination_by_cutoff": {
+          "2.1": 4,
+          "2.3": 4,
+          "2.5": 4
+        },
+        "nearest_Zn_O": [
+          {
+            "atom_id": 93,
+            "distance": 1.5871046446506303,
+            "label": "O_core",
+            "type": 3
+          },
+          {
+            "atom_id": 110,
+            "distance": 1.6367823778780914,
+            "label": "O_core",
+            "type": 3
+          },
+          {
+            "atom_id": 98,
+            "distance": 1.9500001851852515,
+            "label": "Oh",
+            "type": 6
+          },
+          {
+            "atom_id": 96,
+            "distance": 1.9500004419055705,
+            "label": "Oh",
+            "type": 6
+          }
+        ]
+      }
+    },
+    "C_motif_only": {
+      "water": {
+        "n_bad_water": 0,
+        "n_tip4p_compatible": 7,
+        "n_water": 7,
+        "summary": {
+          "HH_max": 1.5139006587441912,
+          "HH_min": 1.5139006545188753,
+          "HOH_max": 104.52000000028761,
+          "HOH_min": 104.51999993221932,
+          "OH_max": 0.9572000035644408,
+          "OH_min": 0.9571999999892228
+        }
+      },
+      "zinc_geometry": {
+        "OH_bond_max": 1.0000000000000018,
+        "OH_bond_min": 0.947165997712774,
+        "O_Zn_O_angle_max": 125.86690637868803,
+        "O_Zn_O_angle_min": 79.94213271090777,
+        "Zn_id": 95,
+        "coordination_by_cutoff": {
+          "2.1": 3,
+          "2.3": 3,
+          "2.5": 4
+        },
+        "nearest_Zn_O": [
+          {
+            "atom_id": 93,
+            "distance": 1.7231190036562856,
+            "label": "O_core",
+            "type": 3
+          },
+          {
+            "atom_id": 98,
+            "distance": 1.7366923716608886,
+            "label": "Oh",
+            "type": 6
+          },
+          {
+            "atom_id": 110,
+            "distance": 1.8068674419134274,
+            "label": "O_core",
+            "type": 3
+          },
+          {
+            "atom_id": 96,
+            "distance": 2.3597637871442503,
+            "label": "Oh",
+            "type": 6
+          }
+        ]
+      }
+    },
+    "E_stage3_water_motif_only": {
+      "water": {
+        "n_bad_water": 0,
+        "n_tip4p_compatible": 7,
+        "n_water": 7,
+        "summary": {
+          "HH_max": 1.5139098004269913,
+          "HH_min": 1.5138975120111278,
+          "HOH_max": 104.5203582718157,
+          "HOH_min": 104.51924179212862,
+          "OH_max": 0.9572089557313092,
+          "OH_min": 0.9571959964591754
+        }
+      },
+      "zinc_geometry": {
+        "OH_bond_max": 1.0000000000000018,
+        "OH_bond_min": 0.9531410979082829,
+        "O_Zn_O_angle_max": 123.14297994612912,
+        "O_Zn_O_angle_min": 83.44909398712744,
+        "Zn_id": 95,
+        "coordination_by_cutoff": {
+          "2.1": 3,
+          "2.3": 3,
+          "2.5": 4
+        },
+        "nearest_Zn_O": [
+          {
+            "atom_id": 93,
+            "distance": 1.71818548031861,
+            "label": "O_core",
+            "type": 3
+          },
+          {
+            "atom_id": 98,
+            "distance": 1.8275286490080287,
+            "label": "Oh",
+            "type": 6
+          },
+          {
+            "atom_id": 110,
+            "distance": 1.8552745254966003,
+            "label": "O_core",
+            "type": 3
+          },
+          {
+            "atom_id": 96,
+            "distance": 2.3057706851190285,
+            "label": "Oh",
+            "type": 6
+          }
+        ]
+      }
+    }
+  },
+  "precise_stage2_group": {
+    "definition": "water atoms plus Zn and converted Oh/Hoh from zinc_summary only",
+    "mobile_count": 26,
+    "motif_ids": [
+      95,
+      96,
+      97,
+      98,
+      99
+    ],
+    "split_topology": {
+      "examples_split_angles": [
+        {
+          "a1": 96,
+          "a2": 95,
+          "a3": 110,
+          "id": 129,
+          "type": 4
+        },
+        {
+          "a1": 96,
+          "a2": 95,
+          "a3": 93,
+          "id": 130,
+          "type": 4
+        },
+        {
+          "a1": 98,
+          "a2": 95,
+          "a3": 110,
+          "id": 131,
+          "type": 4
+        },
+        {
+          "a1": 98,
+          "a2": 95,
+          "a3": 93,
+          "id": 132,
+          "type": 4
+        },
+        {
+          "a1": 110,
+          "a2": 95,
+          "a3": 93,
+          "id": 133,
+          "type": 4
+        }
+      ],
+      "examples_split_bonds": [],
+      "n_split_angles": 5,
+      "n_split_bonds": 0
+    },
+    "target_membership": {
+      "339": "frozen",
+      "340": "frozen",
+      "346": "frozen"
+    },
+    "water_ids": [
+      56,
+      57,
+      58,
+      112,
+      113,
+      114,
+      160,
+      161,
+      162,
+      210,
+      211,
+      212,
+      256,
+      257,
+      258,
+      302,
+      303,
+      304,
+      363,
+      364,
+      365
+    ]
+  },
+  "protocol_inputs": {
+    "A_precise_small_dt": {
+      "ids": [
+        56,
+        57,
+        58,
+        95,
+        96,
+        97,
+        98,
+        99,
+        112,
+        113,
+        114,
+        160,
+        161,
+        162,
+        210,
+        211,
+        212,
+        256,
+        257,
+        258,
+        302,
+        303,
+        304,
+        363,
+        364,
+        365
+      ],
+      "input": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v28_stage2_protocol\\A_precise_small_dt.in",
+      "output": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v28_stage2_protocol\\v28_A_precise_small_dt.data"
+    },
+    "B_water_only_1ps": {
+      "ids": [
+        56,
+        57,
+        58,
+        112,
+        113,
+        114,
+        160,
+        161,
+        162,
+        210,
+        211,
+        212,
+        256,
+        257,
+        258,
+        302,
+        303,
+        304,
+        363,
+        364,
+        365
+      ],
+      "input": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v28_stage2_protocol\\B_water_only_1ps.in",
+      "output": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v28_stage2_protocol\\v28_B_water_only_1ps.data"
+    },
+    "C_motif_only": {
+      "ids": [
+        95,
+        96,
+        97,
+        98,
+        99
+      ],
+      "input": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v28_stage2_protocol\\C_motif_only.in",
+      "output": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v28_stage2_protocol\\v28_C_motif_only.data"
+    },
+    "E_stage3_water_motif_only": {
+      "ids": [
+        56,
+        57,
+        58,
+        95,
+        96,
+        97,
+        98,
+        99,
+        112,
+        113,
+        114,
+        160,
+        161,
+        162,
+        210,
+        211,
+        212,
+        256,
+        257,
+        258,
+        302,
+        303,
+        304,
+        363,
+        364,
+        365
+      ],
+      "input": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v28_stage2_protocol\\E_stage3_water_motif_only.in",
+      "output": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v28_stage2_protocol\\v28_E_stage3_water_motif_only.data"
+    }
+  },
+  "protocol_results": {
+    "A_precise_small_dt": {
+      "code": 0,
+      "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v28_stage2_protocol\\A_precise_small_dt.log",
+      "parsed": {
+        "errors": [],
+        "exists": true,
+        "final": {
+          "e_angle": 15.081129,
+          "e_bond": 17.501437,
+          "e_coul": -2730.6124,
+          "e_long": -4951.8867,
+          "e_vdwl": 1630.2859,
+          "fmax": 7.3670797,
+          "fnorm": 22.986435,
+          "poteng": -6019.6306,
+          "press": 176741.42,
+          "step": 5000.0,
+          "temp": 6.7002454
+        },
+        "initial": {
+          "e_angle": 15.226542,
+          "e_bond": 17.869003,
+          "e_coul": -2731.2209,
+          "e_long": -4950.2624,
+          "e_vdwl": 1633.2595,
+          "fmax": 11.279487,
+          "fnorm": 36.408797,
+          "poteng": -6015.1282,
+          "press": 178419.92,
+          "step": 0.0,
+          "temp": 0.043902439
+        },
+        "lost": false,
+        "nrows": 201,
+        "stops": []
+      },
+      "stdout_tail": "8812      6.1137165      25.999647      11.652667      178571.88    \n      5000  -6019.6306      17.501437      15.081129      1630.2859     -2730.6124     -4951.8867      6.7002454      22.986435      7.3670797      176741.42    \nLoop time of 34.7147 on 1 procs for 5000 steps with 418 atoms\n\nPerformance: 0.311 ns/day, 77.144 hours/ns, 144.031 timesteps/s, 60.205 katom-step/s\n96.9% CPU use with 1 MPI tasks x 1 OpenMP threads\n\nMPI task timing breakdown:\nSection |  min time  |  avg time  |  max time  |%varavg| %total\n---------------------------------------------------------------\nPair    | 27.117     | 27.117     | 27.117     |   0.0 | 78.12\nBond    | 0.085213   | 0.085213   | 0.085213   |   0.0 |  0.25\nKspace  | 6.7898     | 6.7898     | 6.7898     |   0.0 | 19.56\nNeigh   | 0.026507   | 0.026507   | 0.026507   |   0.0 |  0.08\nComm    | 0.21704    | 0.21704    | 0.21704    |   0.0 |  0.63\nOutput  | 0.17354    | 0.17354    | 0.17354    |   0.0 |  0.50\nModify  | 0.24159    | 0.24159    | 0.24159    |   0.0 |  0.70\nOther   |            | 0.06356    |            |       |  0.18\n\nNlocal:            418 ave         418 max         418 min\nHistogram: 1 0 0 0 0 0 0 0 0 0\nNghost:           9890 ave        9890 max        9890 min\nHistogram: 1 0 0 0 0 0 0 0 0 0\nNeighs:              0 ave           0 max           0 min\nHistogram: 1 0 0 0 0 0 0 0 0 0\n\nTotal # of neighbors = 0\nAve neighs/atom = 0\nAve special neighs/atom = 0.81818182\nNeighbor list builds = 3\nDangerous builds = 0\nSystem init for write_data ...\nPPPM initialization ...\n  extracting TIP4P info from pair style\n  using 12-bit tables for long-range coulomb (src/kspace.cpp:342)\n  G vector (1/distance) = 0.32518249\n  grid = 15 24 40\n  stencil order = 5\n  estimated absolute RMS force accuracy = 0.00044460588\n  estimated relative force accuracy = 3.087617e-05\n  using double precision FFTW3\n  3d grid and FFT values/proc = 38808 14400\nGenerated 0 of 36 mixed pair_coeff terms from geometric mixing rule\nTotal wall time: 0:00:34\n",
+      "top_forces": [
+        {
+          "distance_to_Zn": 7.84310299849492,
+          "force": 10.353232505270999,
+          "fx": 7.36708,
+          "fy": -2.69233,
+          "fz": 6.75773,
+          "id": 112,
+          "label": "Ow",
+          "mol": 2,
+          "nearest_neighbors": [
+            {
+              "atom_id": 114,
+              "distance": 0.9571728074908966,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 113,
+              "distance": 0.9572004400855649,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 67,
+              "distance": 2.7056706324310804,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 68,
+              "distance": 2.7103124489991925,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 278,
+              "distance": 2.7941820561480957,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 81,
+              "distance": 2.897510587607919,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 270,
+              "distance": 2.925577465544198,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 63,
+              "distance": 3.0083153211889218,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 14.840180614065988,
+          "force": 8.525264622918693,
+          "fx": 7.13786,
+          "fy": -0.238633,
+          "fz": 4.65555,
+          "id": 160,
+          "label": "Ow",
+          "mol": 3,
+          "nearest_neighbors": [
+            {
+              "atom_id": 162,
+              "distance": 0.9571958818340159,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 161,
+              "distance": 0.9572176081226252,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 32,
+              "distance": 2.519796778298004,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 134,
+              "distance": 2.529617428189488,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 26,
+              "distance": 2.5326532464040548,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 256,
+              "distance": 2.8314262010689943,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 321,
+              "distance": 2.861708387274987,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 31,
+              "distance": 2.8784919322313556,
+              "label": "Oh",
+              "type": 6
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 8.365692922890489,
+          "force": 7.927755312085508,
+          "fx": -5.61011,
+          "fy": -3.25349,
+          "fz": -4.55969,
+          "id": 302,
+          "label": "Ow",
+          "mol": 6,
+          "nearest_neighbors": [
+            {
+              "atom_id": 304,
+              "distance": 0.9571863344720288,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 303,
+              "distance": 0.9571975963718247,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 377,
+              "distance": 2.4055962670614544,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 378,
+              "distance": 2.4194035215523684,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 399,
+              "distance": 2.5606777196086195,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 278,
+              "distance": 2.6242604892807426,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 382,
+              "distance": 3.1336358655880874,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 374,
+              "distance": 3.147412880525846,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 13.635268418337057,
+          "force": 6.68465562985858,
+          "fx": 4.20495,
+          "fy": 2.78712,
+          "fz": -4.38577,
+          "id": 363,
+          "label": "Ow",
+          "mol": 7,
+          "nearest_neighbors": [
+            {
+              "atom_id": 364,
+              "distance": 0.9571881959071589,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 365,
+              "distance": 0.9571963748364286,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 332,
+              "distance": 2.5864644594202355,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 362,
+              "distance": 2.6517369605720695,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 361,
+              "distance": 2.689006304950585,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 27,
+              "distance": 2.7896898541208834,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 58,
+              "distance": 2.8430439052009024,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 352,
+              "distance": 2.8537922659513932,
+              "label": "Hoh",
+              "type": 8
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 5.885801414811752,
+          "force": 6.440930834638732,
+          "fx": 2.10114,
+          "fy": -5.60801,
+          "fz": 2.37087,
+          "id": 210,
+          "label": "Ow",
+          "mol": 4,
+          "nearest_neighbors": [
+            {
+              "atom_id": 212,
+              "distance": 0.9571702912230405,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 211,
+              "distance": 0.9571870183511676,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 301,
+              "distance": 2.571426442191182,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 300,
+              "distance": 2.587441583417876,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 79,
+              "distance": 2.6481408806037856,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 78,
+              "distance": 2.6932148740419866,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 288,
+              "distance": 2.7131404560951133,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 287,
+              "distance": 2.728109443277524,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 13.98339421139946,
+          "force": 4.574991683369491,
+          "fx": -3.91679,
+          "fy": 2.12062,
+          "fz": -1.04512,
+          "id": 161,
+          "label": "Hw",
+          "mol": 3,
+          "nearest_neighbors": [
+            {
+              "atom_id": 160,
+              "distance": 0.9572176081226252,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 162,
+              "distance": 1.5139100241097552,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 32,
+              "distance": 1.7741462462719921,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 31,
+              "distance": 2.0176557940245905,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 321,
+              "distance": 2.498013916714638,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 138,
+              "distance": 2.5535672685263258,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 134,
+              "distance": 2.7027341894644388,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 137,
+              "distance": 2.749917416012525,
+              "label": "Oh",
+              "type": 6
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 12.276917202278426,
+          "force": 4.467633803173779,
+          "fx": 1.50711,
+          "fy": 4.20248,
+          "fz": 0.165931,
+          "id": 56,
+          "label": "Ow",
+          "mol": 1,
+          "nearest_neighbors": [
+            {
+              "atom_id": 58,
+              "distance": 0.9571851249366551,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 57,
+              "distance": 0.9572059305415929,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 352,
+              "distance": 2.2796979680264657,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 13,
+              "distance": 2.6076714221887696,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 34,
+              "distance": 2.6844888801781246,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 33,
+              "distance": 2.764391533014092,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 28,
+              "distance": 2.7717114894817247,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 24,
+              "distance": 2.7974344929953228,
+              "label": "Ca",
+              "type": 1
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 8.538468056788641,
+          "force": 4.445558373500454,
+          "fx": 1.09999,
+          "fy": 2.54589,
+          "fz": 3.4744,
+          "id": 303,
+          "label": "Hw",
+          "mol": 6,
+          "nearest_neighbors": [
+            {
+              "atom_id": 302,
+              "distance": 0.9571975963718247,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 304,
+              "distance": 1.5138850404175324,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 377,
+              "distance": 2.0332881899032422,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 378,
+              "distance": 2.0358612092183503,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 376,
+              "distance": 2.5773964468238106,
+              "label": "Si",
+              "type": 2
+            },
+            {
+              "atom_id": 399,
+              "distance": 2.591939710487108,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 382,
+              "distance": 2.7422227727155946,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 379,
+              "distance": 2.788215589661067,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 0.0,
+          "force": 4.029122987671635,
+          "fx": -1.45586,
+          "fy": 0.426178,
+          "fz": 3.73265,
+          "id": 95,
+          "label": "Zn",
+          "mol": 0,
+          "nearest_neighbors": [
+            {
+              "atom_id": 94,
+              "distance": 1.7045972135668879,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 93,
+              "distance": 1.7242452437225975,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 98,
+              "distance": 1.7501250426183836,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 111,
+              "distance": 1.768155379201726,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 110,
+              "distance": 1.7874320812271443,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 96,
+              "distance": 2.3389656427788768,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 97,
+              "distance": 2.568061346794505,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 99,
+              "distance": 2.6755685445340394,
+              "label": "Hoh",
+              "type": 8
+            }
+          ],
+          "type": 9
+        },
+        {
+          "distance_to_Zn": 15.820637647888908,
+          "force": 3.9665269326507793,
+          "fx": 0.454212,
+          "fy": -1.03617,
+          "fz": -3.80176,
+          "id": 256,
+          "label": "Ow",
+          "mol": 5,
+          "nearest_neighbors": [
+            {
+              "atom_id": 258,
+              "distance": 0.9571721187566008,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 257,
+              "distance": 0.957231209583139,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 162,
+              "distance": 1.9187769371920227,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 245,
+              "distance": 2.3040299089684146,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 244,
+              "distance": 2.33327555625584,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 234,
+              "distance": 2.6055718886647514,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 160,
+              "distance": 2.8314262010689943,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 255,
+              "distance": 2.9449991317146424,
+              "label": "Hoh",
+              "type": 8
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 1.7501250426183836,
+          "force": 3.929633923840744,
+          "fx": -2.88633,
+          "fy": -2.12589,
+          "fz": -1.60988,
+          "id": 98,
+          "label": "Oh",
+          "mol": 18,
+          "nearest_neighbors": [
+            {
+              "atom_id": 99,
+              "distance": 0.9351469296853838,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 95,
+              "distance": 1.7501250426183836,
+              "label": "Zn",
+              "type": 9
+            },
+            {
+              "atom_id": 102,
+              "distance": 2.9722612542641658,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 94,
+              "distance": 2.999471817520545,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 93,
+              "distance": 3.0066195609188737,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 111,
+              "distance": 3.045383815843251,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 110,
+              "distance": 3.052615695727191,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 299,
+              "distance": 3.1991623575086026,
+              "label": "O_shell",
+              "type": 4
+            }
+          ],
+          "type": 6
+        },
+        {
+          "distance_to_Zn": 12.999987630971036,
+          "force": 3.4848283436347334,
+          "fx": -1.7685,
+          "fy": 1.28361,
+          "fz": -2.71455,
+          "id": 58,
+          "label": "Hw",
+          "mol": 1,
+          "nearest_neighbors": [
+            {
+              "atom_id": 56,
+              "distance": 0.9571851249366551,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 57,
+              "distance": 1.5138888669066817,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 27,
+              "distance": 2.0495173205086608,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 352,
+              "distance": 2.102077724753298,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 365,
+              "distance": 2.181865610183174,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 28,
+              "distance": 2.203025475809347,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 351,
+              "distance": 2.669159186130344,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 363,
+              "distance": 2.8430439052009024,
+              "label": "Ow",
+              "type": 5
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 6.090759860066721,
+          "force": 3.410736103101499,
+          "fx": -2.15455,
+          "fy": 2.01961,
+          "fz": 1.70652,
+          "id": 212,
+          "label": "Hw",
+          "mol": 4,
+          "nearest_neighbors": [
+            {
+              "atom_id": 210,
+              "distance": 0.9571702912230405,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 211,
+              "distance": 1.513894292511865,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 288,
+              "distance": 1.8348175894349823,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 287,
+              "distance": 1.841962428091301,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 301,
+              "distance": 2.266275117014702,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 300,
+              "distance": 2.272321039378019,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 289,
+              "distance": 2.3405900891441886,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 284,
+              "distance": 2.9235553255582487,
+              "label": "O_shell",
+              "type": 4
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 2.6755685445340394,
+          "force": 3.2652552129044983,
+          "fx": 2.10558,
+          "fy": 2.26241,
+          "fz": -1.05353,
+          "id": 99,
+          "label": "Hoh",
+          "mol": 18,
+          "nearest_neighbors": [
+            {
+              "atom_id": 98,
+              "distance": 0.9351469296853838,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 299,
+              "distance": 2.333687272965253,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 298,
+              "distance": 2.3587446423892517,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 95,
+              "distance": 2.6755685445340394,
+              "label": "Zn",
+              "type": 9
+            },
+            {
+              "atom_id": 102,
+              "distance": 3.036508625856346,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 401,
+              "distance": 3.047035442368369,
+              "label": "Si",
+              "type": 2
+            },
+            {
+              "atom_id": 293,
+              "distance": 3.105258326274966,
+              "label": "Si",
+              "type": 2
+            },
+            {
+              "atom_id": 406,
+              "distance": 3.1451268418771283,
+              "label": "Oh",
+              "type": 6
+            }
+          ],
+          "type": 8
+        },
+        {
+          "distance_to_Zn": 14.09259235390579,
+          "force": 3.0433539616843786,
+          "fx": 1.68813,
+          "fy": -1.34794,
+          "fz": -2.14366,
+          "id": 364,
+          "label": "Hw",
+          "mol": 7,
+          "nearest_neighbors": [
+            {
+              "atom_id": 363,
+              "distance": 0.9571881959071589,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 365,
+              "distance": 1.513908913608741,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 362,
+              "distance": 1.7897116863897375,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 361,
+              "distance": 1.8268978954500983,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 352,
+              "distance": 2.2731376852491803,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 348,
+              "distance": 2.3441456943415444,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 351,
+              "distance": 2.544891930141632,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 332,
+              "distance": 2.654211732115583,
+              "label": "Ca",
+              "type": 1
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 6.763588040212089,
+          "force": 2.8012250376477006,
+          "fx": -0.0303794,
+          "fy": -1.89744,
+          "fz": -2.0605,
+          "id": 211,
+          "label": "Hw",
+          "mol": 4,
+          "nearest_neighbors": [
+            {
+              "atom_id": 210,
+              "distance": 0.9571870183511676,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 212,
+              "distance": 1.513894292511865,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 301,
+              "distance": 1.9915920153736328,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 300,
+              "distance": 2.0141496358761457,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 289,
+              "distance": 2.4984704619626794,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 398,
+              "distance": 2.8992963754159398,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 288,
+              "distance": 3.024852881017522,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 287,
+              "distance": 3.039559993124006,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 7.196673764490094,
+          "force": 2.706970797020352,
+          "fx": -2.42457,
+          "fy": 0.587789,
+          "fz": -1.05055,
+          "id": 113,
+          "label": "Hw",
+          "mol": 2,
+          "nearest_neighbors": [
+            {
+              "atom_id": 112,
+              "distance": 0.9572004400855649,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 114,
+              "distance": 1.5138786655805696,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 81,
+              "distance": 1.9906970768050054,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 67,
+              "distance": 2.066927107398808,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 68,
+              "distance": 2.0839356197589223,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 82,
+              "distance": 2.808678488471044,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 76,
+              "distance": 2.836189810820144,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 69,
+              "distance": 2.839494816160087,
+              "label": "Ca",
+              "type": 1
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 16.61685996554704,
+          "force": 2.58022492709531,
+          "fx": 1.6532,
+          "fy": -1.93196,
+          "fz": -0.438202,
+          "id": 257,
+          "label": "Hw",
+          "mol": 5,
+          "nearest_neighbors": [
+            {
+              "atom_id": 256,
+              "distance": 0.957231209583139,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 258,
+              "distance": 1.5138680679388807,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 245,
+              "distance": 1.7781486882994348,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 244,
+              "distance": 1.8027420108548533,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 255,
+              "distance": 2.093966284017009,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 254,
+              "distance": 2.2846257458498536,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 162,
+              "distance": 2.464567810002394,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 234,
+              "distance": 3.0845799898527515,
+              "label": "Ca",
+              "type": 1
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 15.900781049433546,
+          "force": 2.563641672762596,
+          "fx": -0.961305,
+          "fy": 2.13953,
+          "fz": 1.03468,
+          "id": 258,
+          "label": "Hw",
+          "mol": 5,
+          "nearest_neighbors": [
+            {
+              "atom_id": 256,
+              "distance": 0.9571721187566008,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 257,
+              "distance": 1.5138680679388807,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 245,
+              "distance": 2.1157442258118073,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 244,
+              "distance": 2.1346047945828293,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 162,
+              "distance": 2.721874666057385,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 234,
+              "distance": 2.9730077198058202,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 239,
+              "distance": 2.97502692173113,
+              "label": "Si",
+              "type": 2
+            },
+            {
+              "atom_id": 360,
+              "distance": 3.1180524707658464,
+              "label": "O_shell",
+              "type": 4
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 8.650164193979213,
+          "force": 2.2884960219795007,
+          "fx": 0.761796,
+          "fy": 1.42407,
+          "fz": -1.62139,
+          "id": 114,
+          "label": "Hw",
+          "mol": 2,
+          "nearest_neighbors": [
+            {
+              "atom_id": 112,
+              "distance": 0.9571728074908966,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 113,
+              "distance": 1.5138786655805696,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 63,
+              "distance": 2.079214686967172,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 64,
+              "distance": 2.1199442715552683,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 270,
+              "distance": 2.3628462705178253,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 68,
+              "distance": 2.450405504605309,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 67,
+              "distance": 2.462418960493929,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 272,
+              "distance": 2.513195298041917,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 7
+        }
+      ]
+    },
+    "B_water_only_1ps": {
+      "code": 0,
+      "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v28_stage2_protocol\\B_water_only_1ps.log",
+      "parsed": {
+        "errors": [],
+        "exists": true,
+        "final": {
+          "e_angle": 15.226542,
+          "e_bond": 17.869003,
+          "e_coul": -2732.3217,
+          "e_long": -4950.272,
+          "e_vdwl": 1633.7181,
+          "fmax": 6.8936429,
+          "fnorm": 14.685999,
+          "poteng": -6015.7801,
+          "press": 176039.82,
+          "step": 10000.0,
+          "temp": 3.5611362
+        },
+        "initial": {
+          "e_angle": 15.226542,
+          "e_bond": 17.869003,
+          "e_coul": -2731.2209,
+          "e_long": -4950.2624,
+          "e_vdwl": 1633.2595,
+          "fmax": 2.9693087,
+          "fnorm": 8.2282472,
+          "poteng": -6015.1282,
+          "press": 176891.61,
+          "step": 0.0,
+          "temp": 0.031707317
+        },
+        "lost": false,
+        "nrows": 401,
+        "stops": []
+      },
+      "stdout_tail": "834      4.1818578      12.08218       5.0261905      176688.1     \n     10000  -6015.7801      17.869003      15.226542      1633.7181     -2732.3217     -4950.272       3.5611362      14.685999      6.8936429      176039.82    \nLoop time of 72.2633 on 1 procs for 10000 steps with 418 atoms\n\nPerformance: 1.196 ns/day, 20.073 hours/ns, 138.383 timesteps/s, 57.844 katom-step/s\n96.9% CPU use with 1 MPI tasks x 1 OpenMP threads\n\nMPI task timing breakdown:\nSection |  min time  |  avg time  |  max time  |%varavg| %total\n---------------------------------------------------------------\nPair    | 56.885     | 56.885     | 56.885     |   0.0 | 78.72\nBond    | 0.17754    | 0.17754    | 0.17754    |   0.0 |  0.25\nKspace  | 13.795     | 13.795     | 13.795     |   0.0 | 19.09\nNeigh   | 0.02101    | 0.02101    | 0.02101    |   0.0 |  0.03\nComm    | 0.42909    | 0.42909    | 0.42909    |   0.0 |  0.59\nOutput  | 0.36965    | 0.36965    | 0.36965    |   0.0 |  0.51\nModify  | 0.46362    | 0.46362    | 0.46362    |   0.0 |  0.64\nOther   |            | 0.1226     |            |       |  0.17\n\nNlocal:            418 ave         418 max         418 min\nHistogram: 1 0 0 0 0 0 0 0 0 0\nNghost:           9896 ave        9896 max        9896 min\nHistogram: 1 0 0 0 0 0 0 0 0 0\nNeighs:              0 ave           0 max           0 min\nHistogram: 1 0 0 0 0 0 0 0 0 0\n\nTotal # of neighbors = 0\nAve neighs/atom = 0\nAve special neighs/atom = 0.81818182\nNeighbor list builds = 2\nDangerous builds = 0\nSystem init for write_data ...\nPPPM initialization ...\n  extracting TIP4P info from pair style\n  using 12-bit tables for long-range coulomb (src/kspace.cpp:342)\n  G vector (1/distance) = 0.32518249\n  grid = 15 24 40\n  stencil order = 5\n  estimated absolute RMS force accuracy = 0.00044460588\n  estimated relative force accuracy = 3.087617e-05\n  using double precision FFTW3\n  3d grid and FFT values/proc = 38808 14400\nGenerated 0 of 36 mixed pair_coeff terms from geometric mixing rule\nTotal wall time: 0:01:12\n",
+      "top_forces": [
+        {
+          "distance_to_Zn": 14.631656670746482,
+          "force": 7.613058641006255,
+          "fx": -2.27133,
+          "fy": 2.29727,
+          "fz": 6.89364,
+          "id": 160,
+          "label": "Ow",
+          "mol": 3,
+          "nearest_neighbors": [
+            {
+              "atom_id": 161,
+              "distance": 0.9572575569824453,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 162,
+              "distance": 0.9573046375631951,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 138,
+              "distance": 2.400818905742164,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 134,
+              "distance": 2.456901006980135,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 26,
+              "distance": 2.4618442203602156,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 32,
+              "distance": 2.5442441725040856,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 137,
+              "distance": 2.7399655870410125,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 321,
+              "distance": 2.8417656268770664,
+              "label": "Hoh",
+              "type": 8
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 15.638599240171738,
+          "force": 5.187215010792979,
+          "fx": -1.0298,
+          "fy": -0.457714,
+          "fz": 5.06332,
+          "id": 256,
+          "label": "Ow",
+          "mol": 5,
+          "nearest_neighbors": [
+            {
+              "atom_id": 258,
+              "distance": 0.9571272572129585,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 257,
+              "distance": 0.9572364386085604,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 245,
+              "distance": 2.4028591368120193,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 244,
+              "distance": 2.429961323017509,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 234,
+              "distance": 2.6781359800615054,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 26,
+              "distance": 3.029817121461458,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 32,
+              "distance": 3.118135458138564,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 255,
+              "distance": 3.1515016247338346,
+              "label": "Hoh",
+              "type": 8
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 8.056471013272498,
+          "force": 5.1013312092433285,
+          "fx": -1.86706,
+          "fy": 4.44792,
+          "fz": 1.65942,
+          "id": 302,
+          "label": "Ow",
+          "mol": 6,
+          "nearest_neighbors": [
+            {
+              "atom_id": 304,
+              "distance": 0.9571198287048497,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 303,
+              "distance": 0.9573077522406267,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 382,
+              "distance": 2.4537820729029702,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 377,
+              "distance": 2.494030891408526,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 378,
+              "distance": 2.4986076297210023,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 399,
+              "distance": 2.857647752348074,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 278,
+              "distance": 2.953041276853407,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 376,
+              "distance": 3.0130345148371602,
+              "label": "Si",
+              "type": 2
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 12.208378794160183,
+          "force": 4.81375369222398,
+          "fx": -2.85253,
+          "fy": 1.61863,
+          "fz": -3.52354,
+          "id": 56,
+          "label": "Ow",
+          "mol": 1,
+          "nearest_neighbors": [
+            {
+              "atom_id": 57,
+              "distance": 0.9571773186740256,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 58,
+              "distance": 0.9572716720450887,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 352,
+              "distance": 2.2511456067353794,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 13,
+              "distance": 2.6076049778292725,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 34,
+              "distance": 2.6616146464317487,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 33,
+              "distance": 2.7224754408625986,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 24,
+              "distance": 2.8248875419917163,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 28,
+              "distance": 2.8271995167771586,
+              "label": "Hoh",
+              "type": 8
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 13.387086677724172,
+          "force": 4.368033607437562,
+          "fx": -2.01019,
+          "fy": 0.215748,
+          "fz": -3.87199,
+          "id": 363,
+          "label": "Ow",
+          "mol": 7,
+          "nearest_neighbors": [
+            {
+              "atom_id": 364,
+              "distance": 0.95723083352136,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 365,
+              "distance": 0.9572634979460988,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 362,
+              "distance": 2.638640606779179,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 58,
+              "distance": 2.667264699443981,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 361,
+              "distance": 2.6769998602435514,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 332,
+              "distance": 2.7024073188037367,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 352,
+              "distance": 2.717352341910042,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 27,
+              "distance": 2.808040245300092,
+              "label": "Oh",
+              "type": 6
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 5.747617451648985,
+          "force": 3.066178233647509,
+          "fx": -0.0916876,
+          "fy": 1.32866,
+          "fz": 2.76183,
+          "id": 210,
+          "label": "Ow",
+          "mol": 4,
+          "nearest_neighbors": [
+            {
+              "atom_id": 212,
+              "distance": 0.9571148135934365,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 211,
+              "distance": 0.957162489914853,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 301,
+              "distance": 2.5382595261517293,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 300,
+              "distance": 2.5527360658908713,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 79,
+              "distance": 2.6870607088461917,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 288,
+              "distance": 2.700188809509438,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 78,
+              "distance": 2.7048899310435903,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 287,
+              "distance": 2.713586115641071,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 13.76783804986462,
+          "force": 2.941193699576966,
+          "fx": -0.0997318,
+          "fy": 2.76213,
+          "fz": -1.00564,
+          "id": 162,
+          "label": "Hw",
+          "mol": 3,
+          "nearest_neighbors": [
+            {
+              "atom_id": 160,
+              "distance": 0.9573046375631951,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 161,
+              "distance": 1.5140095023149618,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 32,
+              "distance": 1.7473091654315214,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 31,
+              "distance": 1.923213279800501,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 321,
+              "distance": 2.3077415182381245,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 134,
+              "distance": 2.6090577498782968,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 138,
+              "distance": 2.756996863075655,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 137,
+              "distance": 2.8921776748687136,
+              "label": "Oh",
+              "type": 6
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 8.386545349808824,
+          "force": 2.8387130291477156,
+          "fx": -0.855162,
+          "fy": -2.5943,
+          "fz": -0.772397,
+          "id": 303,
+          "label": "Hw",
+          "mol": 6,
+          "nearest_neighbors": [
+            {
+              "atom_id": 302,
+              "distance": 0.9573077522406267,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 304,
+              "distance": 1.5138988702023661,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 382,
+              "distance": 2.129160727141096,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 379,
+              "distance": 2.3407234066307376,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 380,
+              "distance": 2.371587246202213,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 378,
+              "distance": 2.5052484000593616,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 377,
+              "distance": 2.5149293322079624,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 376,
+              "distance": 2.6310556916378633,
+              "label": "Si",
+              "type": 2
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 8.79902833513451,
+          "force": 2.8020801892003377,
+          "fx": 1.88751,
+          "fy": -0.237647,
+          "fz": 2.0573,
+          "id": 114,
+          "label": "Hw",
+          "mol": 2,
+          "nearest_neighbors": [
+            {
+              "atom_id": 112,
+              "distance": 0.9571564416018935,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 113,
+              "distance": 1.5137913652151669,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 63,
+              "distance": 2.1673469235450047,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 64,
+              "distance": 2.2084434987112527,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 270,
+              "distance": 2.4967172081755677,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 68,
+              "distance": 2.5043070223317274,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 272,
+              "distance": 2.510604648286943,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 67,
+              "distance": 2.514313755699555,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 14.513301661613736,
+          "force": 2.2344428271396874,
+          "fx": -1.90965,
+          "fy": -0.265934,
+          "fz": -1.12927,
+          "id": 161,
+          "label": "Hw",
+          "mol": 3,
+          "nearest_neighbors": [
+            {
+              "atom_id": 160,
+              "distance": 0.9572575569824453,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 162,
+              "distance": 1.5140095023149618,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 138,
+              "distance": 1.521450780567351,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 137,
+              "distance": 1.8334809728189165,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 134,
+              "distance": 2.483524327825278,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 26,
+              "distance": 2.6843754849798858,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 32,
+              "distance": 2.9402550934844065,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 321,
+              "distance": 2.9934690180624894,
+              "label": "Hoh",
+              "type": 8
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 6.645126872483322,
+          "force": 2.0907776968642553,
+          "fx": -0.590043,
+          "fy": 1.98302,
+          "fz": 0.301384,
+          "id": 211,
+          "label": "Hw",
+          "mol": 4,
+          "nearest_neighbors": [
+            {
+              "atom_id": 210,
+              "distance": 0.957162489914853,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 212,
+              "distance": 1.5137973579379778,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 301,
+              "distance": 1.9176175523810803,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 300,
+              "distance": 1.9380885111882802,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 289,
+              "distance": 2.463729698039134,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 398,
+              "distance": 2.928261113801159,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 288,
+              "distance": 2.9827368376878307,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 287,
+              "distance": 2.9957434875002233,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 12.893904239220952,
+          "force": 1.8144362998234467,
+          "fx": 1.71859,
+          "fy": -0.250089,
+          "fz": 0.525436,
+          "id": 58,
+          "label": "Hw",
+          "mol": 1,
+          "nearest_neighbors": [
+            {
+              "atom_id": 56,
+              "distance": 0.9572716720450887,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 57,
+              "distance": 1.513993104780864,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 352,
+              "distance": 1.929818254205302,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 365,
+              "distance": 2.1610928932371225,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 27,
+              "distance": 2.164618649934672,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 28,
+              "distance": 2.326463818683841,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 351,
+              "distance": 2.5210748688335296,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 364,
+              "distance": 2.604037423622018,
+              "label": "Hw",
+              "type": 7
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 16.431548301523506,
+          "force": 1.7152801055247506,
+          "fx": 0.645465,
+          "fy": -0.902678,
+          "fz": -1.30795,
+          "id": 257,
+          "label": "Hw",
+          "mol": 5,
+          "nearest_neighbors": [
+            {
+              "atom_id": 256,
+              "distance": 0.9572364386085604,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 258,
+              "distance": 1.5139403647766325,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 245,
+              "distance": 1.7460644520810222,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 244,
+              "distance": 1.768305989024807,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 255,
+              "distance": 2.3550915739520613,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 254,
+              "distance": 2.486615435024081,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 239,
+              "distance": 3.0851766349108765,
+              "label": "Si",
+              "type": 2
+            },
+            {
+              "atom_id": 234,
+              "distance": 3.1042575530551586,
+              "label": "Ca",
+              "type": 1
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 7.311379385512696,
+          "force": 1.6388551493698276,
+          "fx": -0.14439,
+          "fy": 0.800754,
+          "fz": -1.4226,
+          "id": 113,
+          "label": "Hw",
+          "mol": 2,
+          "nearest_neighbors": [
+            {
+              "atom_id": 112,
+              "distance": 0.9572173064147967,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 114,
+              "distance": 1.5137913652151669,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 81,
+              "distance": 2.0133597940258965,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 67,
+              "distance": 2.1236737627281643,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 68,
+              "distance": 2.139827154351491,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 76,
+              "distance": 2.8270186193231903,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 82,
+              "distance": 2.8309040358514452,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 77,
+              "distance": 2.839379205741987,
+              "label": "O_shell",
+              "type": 4
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 8.470368256693448,
+          "force": 1.6277142116885877,
+          "fx": -0.589913,
+          "fy": -0.477192,
+          "fz": -1.44005,
+          "id": 304,
+          "label": "Hw",
+          "mol": 6,
+          "nearest_neighbors": [
+            {
+              "atom_id": 302,
+              "distance": 0.9571198287048497,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 303,
+              "distance": 1.5138988702023661,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 377,
+              "distance": 1.8398531039188986,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 378,
+              "distance": 1.8601154383532226,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 399,
+              "distance": 1.9039499775992008,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 398,
+              "distance": 2.6490046276290258,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 376,
+              "distance": 2.817886039445172,
+              "label": "Si",
+              "type": 2
+            },
+            {
+              "atom_id": 379,
+              "distance": 3.154253193278722,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 13.889289447606167,
+          "force": 1.588263000997001,
+          "fx": -1.37136,
+          "fy": 0.78202,
+          "fz": 0.174344,
+          "id": 364,
+          "label": "Hw",
+          "mol": 7,
+          "nearest_neighbors": [
+            {
+              "atom_id": 363,
+              "distance": 0.95723083352136,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 365,
+              "distance": 1.513967732715595,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 362,
+              "distance": 1.8697784787776328,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 361,
+              "distance": 1.9050164197980026,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 352,
+              "distance": 2.0586844420163084,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 351,
+              "distance": 2.3490554765266825,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 348,
+              "distance": 2.411890710500789,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 58,
+              "distance": 2.604037423622018,
+              "label": "Hw",
+              "type": 7
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 5.908045214730502,
+          "force": 1.309720604086612,
+          "fx": 0.597655,
+          "fy": 0.154812,
+          "fz": -1.15508,
+          "id": 212,
+          "label": "Hw",
+          "mol": 4,
+          "nearest_neighbors": [
+            {
+              "atom_id": 210,
+              "distance": 0.9571148135934365,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 211,
+              "distance": 1.5137973579379778,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 288,
+              "distance": 1.810849291299527,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 287,
+              "distance": 1.8172520892270287,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 301,
+              "distance": 2.283290070161915,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 300,
+              "distance": 2.2886269998625814,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 289,
+              "distance": 2.3514262017975396,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 284,
+              "distance": 2.8810323529769666,
+              "label": "O_shell",
+              "type": 4
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 7.9734135272291,
+          "force": 1.0689948919814165,
+          "fx": 0.0130994,
+          "fy": 0.465789,
+          "fz": -0.962091,
+          "id": 112,
+          "label": "Ow",
+          "mol": 2,
+          "nearest_neighbors": [
+            {
+              "atom_id": 114,
+              "distance": 0.9571564416018935,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 113,
+              "distance": 0.9572173064147967,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 278,
+              "distance": 2.727039700206069,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 67,
+              "distance": 2.7686570715059675,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 68,
+              "distance": 2.7732998358634067,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 270,
+              "distance": 2.9179849403483895,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 81,
+              "distance": 2.920630714640247,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 272,
+              "distance": 3.0177272488579887,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 15.593335164736247,
+          "force": 1.0586243671823166,
+          "fx": -0.969662,
+          "fy": 0.0532404,
+          "fz": -0.421434,
+          "id": 258,
+          "label": "Hw",
+          "mol": 5,
+          "nearest_neighbors": [
+            {
+              "atom_id": 256,
+              "distance": 0.9571272572129585,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 257,
+              "distance": 1.5139403647766325,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 245,
+              "distance": 2.3280502167309467,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 244,
+              "distance": 2.3466714323954703,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 234,
+              "distance": 2.9727721027014504,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 365,
+              "distance": 3.0049737086703434,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 239,
+              "distance": 3.0992651354958327,
+              "label": "Si",
+              "type": 2
+            },
+            {
+              "atom_id": 360,
+              "distance": 3.120532816546559,
+              "label": "O_shell",
+              "type": 4
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 12.714505859296462,
+          "force": 0.9697415864182581,
+          "fx": -0.748637,
+          "fy": 0.238216,
+          "fz": -0.568502,
+          "id": 57,
+          "label": "Hw",
+          "mol": 1,
+          "nearest_neighbors": [
+            {
+              "atom_id": 56,
+              "distance": 0.9571773186740256,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 58,
+              "distance": 1.513993104780864,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 33,
+              "distance": 1.9410947344331242,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 34,
+              "distance": 2.126139404659065,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 13,
+              "distance": 2.4006714037252164,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 352,
+              "distance": 2.5263613611872704,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 24,
+              "distance": 2.874221300186192,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 157,
+              "distance": 2.954596244853093,
+              "label": "O_shell",
+              "type": 4
+            }
+          ],
+          "type": 7
+        }
+      ]
+    },
+    "C_motif_only": {
+      "code": 0,
+      "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v28_stage2_protocol\\C_motif_only.log",
+      "parsed": {
+        "errors": [],
+        "exists": true,
+        "final": {
+          "e_angle": 15.077965,
+          "e_bond": 17.487773,
+          "e_coul": -2730.0622,
+          "e_long": -4952.0307,
+          "e_vdwl": 1630.0767,
+          "fmax": 5.1272204,
+          "fnorm": 10.198091,
+          "poteng": -6019.4504,
+          "press": 176924.88,
+          "step": 5000.0,
+          "temp": 7.8095755
+        },
+        "initial": {
+          "e_angle": 15.226542,
+          "e_bond": 17.869003,
+          "e_coul": -2731.2209,
+          "e_long": -4950.2624,
+          "e_vdwl": 1633.2595,
+          "fmax": 7.8537536,
+          "fnorm": 15.892814,
+          "poteng": -6015.1282,
+          "press": 176464.79,
+          "step": 0.0,
+          "temp": 2.4692508
+        },
+        "lost": false,
+        "nrows": 201,
+        "stops": []
+      },
+      "stdout_tail": "0259      7.8418231      10.990956      7.4140282      176913.87    \n      5000  -6019.4504      17.487773      15.077965      1630.0767     -2730.0622     -4952.0307      7.8095755      10.198091      5.1272204      176924.88    \nLoop time of 26.7598 on 1 procs for 5000 steps with 418 atoms\n\nPerformance: 0.404 ns/day, 59.466 hours/ns, 186.847 timesteps/s, 78.102 katom-step/s\n96.1% CPU use with 1 MPI tasks x 1 OpenMP threads\n\nMPI task timing breakdown:\nSection |  min time  |  avg time  |  max time  |%varavg| %total\n---------------------------------------------------------------\nPair    | 20.584     | 20.584     | 20.584     |   0.0 | 76.92\nBond    | 0.069489   | 0.069489   | 0.069489   |   0.0 |  0.26\nKspace  | 5.53       | 5.53       | 5.53       |   0.0 | 20.67\nNeigh   | 0.024649   | 0.024649   | 0.024649   |   0.0 |  0.09\nComm    | 0.16623    | 0.16623    | 0.16623    |   0.0 |  0.62\nOutput  | 0.16155    | 0.16155    | 0.16155    |   0.0 |  0.60\nModify  | 0.17955    | 0.17955    | 0.17955    |   0.0 |  0.67\nOther   |            | 0.04461    |            |       |  0.17\n\nNlocal:            418 ave         418 max         418 min\nHistogram: 1 0 0 0 0 0 0 0 0 0\nNghost:           9896 ave        9896 max        9896 min\nHistogram: 1 0 0 0 0 0 0 0 0 0\nNeighs:              0 ave           0 max           0 min\nHistogram: 1 0 0 0 0 0 0 0 0 0\n\nTotal # of neighbors = 0\nAve neighs/atom = 0\nAve special neighs/atom = 0.81818182\nNeighbor list builds = 3\nDangerous builds = 0\nSystem init for write_data ...\nPPPM initialization ...\n  extracting TIP4P info from pair style\n  using 12-bit tables for long-range coulomb (src/kspace.cpp:342)\n  G vector (1/distance) = 0.32518249\n  grid = 15 24 40\n  stencil order = 5\n  estimated absolute RMS force accuracy = 0.00044460588\n  estimated relative force accuracy = 3.087617e-05\n  using double precision FFTW3\n  3d grid and FFT values/proc = 38808 14400\nGenerated 0 of 36 mixed pair_coeff terms from geometric mixing rule\nTotal wall time: 0:00:26\n",
+      "top_forces": [
+        {
+          "distance_to_Zn": 1.7366849274983642,
+          "force": 6.399223110050157,
+          "fx": -3.95824,
+          "fy": 3.66261,
+          "fz": -3.44495,
+          "id": 98,
+          "label": "Oh",
+          "mol": 18,
+          "nearest_neighbors": [
+            {
+              "atom_id": 99,
+              "distance": 0.9471730881417613,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 95,
+              "distance": 1.7366849274983642,
+              "label": "Zn",
+              "type": 9
+            },
+            {
+              "atom_id": 102,
+              "distance": 2.990601023573689,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 94,
+              "distance": 2.997777916207269,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 93,
+              "distance": 3.005202561375855,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 111,
+              "distance": 3.0855228391959764,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 110,
+              "distance": 3.0929259918724212,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 299,
+              "distance": 3.192112748650963,
+              "label": "O_shell",
+              "type": 4
+            }
+          ],
+          "type": 6
+        },
+        {
+          "distance_to_Zn": 2.359828850573701,
+          "force": 5.51926497847313,
+          "fx": 2.18803,
+          "fy": 3.10611,
+          "fz": 4.00336,
+          "id": 96,
+          "label": "Oh",
+          "mol": 17,
+          "nearest_neighbors": [
+            {
+              "atom_id": 97,
+              "distance": 0.9572807453406753,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 79,
+              "distance": 2.3183557595039206,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 95,
+              "distance": 2.359828850573701,
+              "label": "Zn",
+              "type": 9
+            },
+            {
+              "atom_id": 84,
+              "distance": 2.3873028114885217,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 111,
+              "distance": 2.661387306537702,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 110,
+              "distance": 2.709978301647452,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 83,
+              "distance": 3.00416622605025,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 291,
+              "distance": 3.134762686420777,
+              "label": "Hoh",
+              "type": 8
+            }
+          ],
+          "type": 6
+        },
+        {
+          "distance_to_Zn": 0.0,
+          "force": 5.299175039828747,
+          "fx": -1.11423,
+          "fy": -0.742538,
+          "fz": -5.12722,
+          "id": 95,
+          "label": "Zn",
+          "mol": 0,
+          "nearest_neighbors": [
+            {
+              "atom_id": 94,
+              "distance": 1.7039365545993788,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 93,
+              "distance": 1.7231133979224937,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 98,
+              "distance": 1.7366849274983642,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 111,
+              "distance": 1.7882329630671734,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 110,
+              "distance": 1.8068389884547003,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 96,
+              "distance": 2.359828850573701,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 97,
+              "distance": 2.5483290105086494,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 99,
+              "distance": 2.667024158139555,
+              "label": "Hoh",
+              "type": 8
+            }
+          ],
+          "type": 9
+        },
+        {
+          "distance_to_Zn": 2.667024158139555,
+          "force": 1.603557383176854,
+          "fx": 1.44888,
+          "fy": 0.351785,
+          "fz": 0.590246,
+          "id": 99,
+          "label": "Hoh",
+          "mol": 18,
+          "nearest_neighbors": [
+            {
+              "atom_id": 98,
+              "distance": 0.9471730881417613,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 299,
+              "distance": 2.297097100820948,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 298,
+              "distance": 2.321485535298466,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 95,
+              "distance": 2.667024158139555,
+              "label": "Zn",
+              "type": 9
+            },
+            {
+              "atom_id": 102,
+              "distance": 2.9937548332654096,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 401,
+              "distance": 3.0131406178784634,
+              "label": "Si",
+              "type": 2
+            },
+            {
+              "atom_id": 293,
+              "distance": 3.063617538417615,
+              "label": "Si",
+              "type": 2
+            },
+            {
+              "atom_id": 406,
+              "distance": 3.137043276618288,
+              "label": "Oh",
+              "type": 6
+            }
+          ],
+          "type": 8
+        },
+        {
+          "distance_to_Zn": 2.5483290105086494,
+          "force": 1.3913993782102967,
+          "fx": -0.943088,
+          "fy": -0.966196,
+          "fz": 0.336218,
+          "id": 97,
+          "label": "Hoh",
+          "mol": 17,
+          "nearest_neighbors": [
+            {
+              "atom_id": 96,
+              "distance": 0.9572807453406753,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 95,
+              "distance": 2.5483290105086494,
+              "label": "Zn",
+              "type": 9
+            },
+            {
+              "atom_id": 84,
+              "distance": 2.9237414624827895,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 79,
+              "distance": 3.2678662219749746,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 83,
+              "distance": 3.2836358110242676,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 111,
+              "distance": 3.342415262471137,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 110,
+              "distance": 3.38929635570571,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 188,
+              "distance": 3.4444682634334147,
+              "label": "Hoh",
+              "type": 8
+            }
+          ],
+          "type": 8
+        },
+        {
+          "distance_to_Zn": 13.77544079096437,
+          "force": 0.0,
+          "fx": 0.0,
+          "fy": 0.0,
+          "fz": 0.0,
+          "id": 27,
+          "label": "Oh",
+          "mol": 9,
+          "nearest_neighbors": [
+            {
+              "atom_id": 28,
+              "distance": 1.0,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 43,
+              "distance": 1.8196420651559475,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 365,
+              "distance": 1.8336648504088735,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 58,
+              "distance": 2.0866883727583763,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 29,
+              "distance": 2.4031514867866735,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 42,
+              "distance": 2.5211721401578275,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 41,
+              "distance": 2.5577490026013106,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 30,
+              "distance": 2.7013694801794514,
+              "label": "Hoh",
+              "type": 8
+            }
+          ],
+          "type": 6
+        },
+        {
+          "distance_to_Zn": 12.8520990108762,
+          "force": 0.0,
+          "fx": 0.0,
+          "fy": 0.0,
+          "fz": 0.0,
+          "id": 28,
+          "label": "Hoh",
+          "mol": 9,
+          "nearest_neighbors": [
+            {
+              "atom_id": 27,
+              "distance": 1.0,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 365,
+              "distance": 2.118784270194821,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 32,
+              "distance": 2.214167422746076,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 58,
+              "distance": 2.2460294666377374,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 30,
+              "distance": 2.4031514867866735,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 29,
+              "distance": 2.5005753474840544,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 43,
+              "distance": 2.6020986232817926,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 56,
+              "distance": 2.7164618652403356,
+              "label": "Ow",
+              "type": 5
+            }
+          ],
+          "type": 8
+        },
+        {
+          "distance_to_Zn": 13.20658211306014,
+          "force": 0.0,
+          "fx": 0.0,
+          "fy": 0.0,
+          "fz": 0.0,
+          "id": 33,
+          "label": "Oh",
+          "mol": 12,
+          "nearest_neighbors": [
+            {
+              "atom_id": 34,
+              "distance": 1.0,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 13,
+              "distance": 1.953596380857622,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 57,
+              "distance": 2.019212262963953,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 24,
+              "distance": 2.5507465731428516,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 56,
+              "distance": 2.7342379375796826,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 157,
+              "distance": 2.9004472727674266,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 12,
+              "distance": 2.942464752431199,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 156,
+              "distance": 2.9470017614694437,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 6
+        },
+        {
+          "distance_to_Zn": 12.243811134977541,
+          "force": 0.0,
+          "fx": 0.0,
+          "fy": 0.0,
+          "fz": 0.0,
+          "id": 34,
+          "label": "Hoh",
+          "mol": 12,
+          "nearest_neighbors": [
+            {
+              "atom_id": 13,
+              "distance": 0.9874101575839695,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 33,
+              "distance": 1.0,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 12,
+              "distance": 1.953596380857622,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 24,
+              "distance": 2.062830114284741,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 57,
+              "distance": 2.160717048320767,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 56,
+              "distance": 2.64753415451057,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 237,
+              "distance": 3.0394484664326846,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 58,
+              "distance": 3.2822279063008413,
+              "label": "Hw",
+              "type": 7
+            }
+          ],
+          "type": 8
+        },
+        {
+          "distance_to_Zn": 14.257465440135038,
+          "force": 0.0,
+          "fx": 0.0,
+          "fy": 0.0,
+          "fz": 0.0,
+          "id": 35,
+          "label": "Ca",
+          "mol": 0,
+          "nearest_neighbors": [
+            {
+              "atom_id": 242,
+              "distance": 2.4560254558469037,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 243,
+              "distance": 2.4611783843858195,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 154,
+              "distance": 2.469469882684134,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 248,
+              "distance": 2.470703928256075,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 155,
+              "distance": 2.4743517335827563,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 249,
+              "distance": 2.4757134125540463,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 181,
+              "distance": 2.506687287853431,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 37,
+              "distance": 2.5264973893992053,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 1
+        },
+        {
+          "distance_to_Zn": 14.697287112734957,
+          "force": 0.0,
+          "fx": 0.0,
+          "fy": 0.0,
+          "fz": 0.0,
+          "id": 36,
+          "label": "Si",
+          "mol": 0,
+          "nearest_neighbors": [
+            {
+              "atom_id": 40,
+              "distance": 1.5628554500349676,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 38,
+              "distance": 1.5665310321027794,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 39,
+              "distance": 1.5898748874373736,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 37,
+              "distance": 1.5939270606087967,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 156,
+              "distance": 1.6111363401040875,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 157,
+              "distance": 1.6300154313392237,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 41,
+              "distance": 1.6881087411185929,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 42,
+              "distance": 1.7300821141902485,
+              "label": "O_shell",
+              "type": 4
+            }
+          ],
+          "type": 2
+        },
+        {
+          "distance_to_Zn": 12.998295794737864,
+          "force": 0.0,
+          "fx": 0.0,
+          "fy": 0.0,
+          "fz": 0.0,
+          "id": 58,
+          "label": "Hw",
+          "mol": 1,
+          "nearest_neighbors": [
+            {
+              "atom_id": 56,
+              "distance": 0.9571965496176837,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 57,
+              "distance": 1.5138981070349466,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 352,
+              "distance": 2.016780254257759,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 365,
+              "distance": 2.0736652653936227,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 27,
+              "distance": 2.0866883727583763,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 28,
+              "distance": 2.2460294666377374,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 351,
+              "distance": 2.5952846845700743,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 363,
+              "distance": 2.6697744197778213,
+              "label": "Ow",
+              "type": 5
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 12.259487216719142,
+          "force": 0.0,
+          "fx": 0.0,
+          "fy": 0.0,
+          "fz": 0.0,
+          "id": 56,
+          "label": "Ow",
+          "mol": 1,
+          "nearest_neighbors": [
+            {
+              "atom_id": 58,
+              "distance": 0.9571965496176837,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 57,
+              "distance": 0.9572023319883832,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 352,
+              "distance": 2.3376370681189993,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 13,
+              "distance": 2.5686029935745225,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 34,
+              "distance": 2.64753415451057,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 28,
+              "distance": 2.7164618652403356,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 24,
+              "distance": 2.7262871355196614,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 33,
+              "distance": 2.7342379375796826,
+              "label": "Oh",
+              "type": 6
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 13.85078776926226,
+          "force": 0.0,
+          "fx": 0.0,
+          "fy": 0.0,
+          "fz": 0.0,
+          "id": 238,
+          "label": "Ca",
+          "mol": 0,
+          "nearest_neighbors": [
+            {
+              "atom_id": 39,
+              "distance": 2.456070698596434,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 40,
+              "distance": 2.461223532413093,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 357,
+              "distance": 2.4694657578075447,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 48,
+              "distance": 2.4707053823958853,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 358,
+              "distance": 2.474347616844487,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 49,
+              "distance": 2.4757148637514783,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 388,
+              "distance": 2.506711590831699,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 240,
+              "distance": 2.5264879197298766,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 1
+        },
+        {
+          "distance_to_Zn": 16.58363851107968,
+          "force": 0.0,
+          "fx": 0.0,
+          "fy": 0.0,
+          "fz": 0.0,
+          "id": 239,
+          "label": "Si",
+          "mol": 0,
+          "nearest_neighbors": [
+            {
+              "atom_id": 243,
+              "distance": 1.5628538927321396,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 241,
+              "distance": 1.56651032864166,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 242,
+              "distance": 1.5898733566004561,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 240,
+              "distance": 1.593906712998286,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 359,
+              "distance": 1.6111363401040881,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 360,
+              "distance": 1.6300154313392246,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 244,
+              "distance": 1.6881087411185929,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 245,
+              "distance": 1.7300821141902485,
+              "label": "O_shell",
+              "type": 4
+            }
+          ],
+          "type": 2
+        },
+        {
+          "distance_to_Zn": 13.696832252364048,
+          "force": 0.0,
+          "fx": 0.0,
+          "fy": 0.0,
+          "fz": 0.0,
+          "id": 365,
+          "label": "Hw",
+          "mol": 7,
+          "nearest_neighbors": [
+            {
+              "atom_id": 363,
+              "distance": 0.9571607691500933,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 364,
+              "distance": 1.5138866995994114,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 27,
+              "distance": 1.8336648504088735,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 58,
+              "distance": 2.0736652653936227,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 28,
+              "distance": 2.118784270194821,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 352,
+              "distance": 2.7110783239486076,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 56,
+              "distance": 2.8921292271439034,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 351,
+              "distance": 3.095400729886842,
+              "label": "Oh",
+              "type": 6
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 13.552263969971957,
+          "force": 0.0,
+          "fx": 0.0,
+          "fy": 0.0,
+          "fz": 0.0,
+          "id": 363,
+          "label": "Ow",
+          "mol": 7,
+          "nearest_neighbors": [
+            {
+              "atom_id": 365,
+              "distance": 0.9571607691500933,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 364,
+              "distance": 0.9572009541282333,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 362,
+              "distance": 2.654859539938788,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 58,
+              "distance": 2.6697744197778213,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 361,
+              "distance": 2.6926401870290793,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 332,
+              "distance": 2.703371804947296,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 352,
+              "distance": 2.732765520629969,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 27,
+              "distance": 2.766498681023542,
+              "label": "Oh",
+              "type": 6
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 16.413152574771885,
+          "force": 0.0,
+          "fx": 0.0,
+          "fy": 0.0,
+          "fz": 0.0,
+          "id": 26,
+          "label": "Ca",
+          "mol": 0,
+          "nearest_neighbors": [
+            {
+              "atom_id": 53,
+              "distance": 2.1129673303496674,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 52,
+              "distance": 2.1590541769777345,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 160,
+              "distance": 2.5550429831924544,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 146,
+              "distance": 2.6451175052577534,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 55,
+              "distance": 2.728603195314592,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 162,
+              "distance": 2.7486842554867956,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 54,
+              "distance": 2.7497421041219487,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 145,
+              "distance": 2.8876749499590497,
+              "label": "Oh",
+              "type": 6
+            }
+          ],
+          "type": 1
+        },
+        {
+          "distance_to_Zn": 12.710435883663665,
+          "force": 0.0,
+          "fx": 0.0,
+          "fy": 0.0,
+          "fz": 0.0,
+          "id": 48,
+          "label": "O_core",
+          "mol": 0,
+          "nearest_neighbors": [
+            {
+              "atom_id": 49,
+              "distance": 0.050000000000000044,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 47,
+              "distance": 1.629485598962139,
+              "label": "Si",
+              "type": 2
+            },
+            {
+              "atom_id": 246,
+              "distance": 2.288492894657967,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 238,
+              "distance": 2.4707053823958853,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 59,
+              "distance": 2.614023048820531,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 52,
+              "distance": 2.7134220249043453,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 50,
+              "distance": 2.718452211112051,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 51,
+              "distance": 2.7187935604050564,
+              "label": "O_shell",
+              "type": 4
+            }
+          ],
+          "type": 3
+        },
+        {
+          "distance_to_Zn": 12.75380778641128,
+          "force": 0.0,
+          "fx": 0.0,
+          "fy": 0.0,
+          "fz": 0.0,
+          "id": 49,
+          "label": "O_shell",
+          "mol": 0,
+          "nearest_neighbors": [
+            {
+              "atom_id": 48,
+              "distance": 0.050000000000000044,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 47,
+              "distance": 1.6028722086382932,
+              "label": "Si",
+              "type": 2
+            },
+            {
+              "atom_id": 246,
+              "distance": 2.2939369496348414,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 238,
+              "distance": 2.4757148637514783,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 59,
+              "distance": 2.6561944958464534,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 52,
+              "distance": 2.6866754707697758,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 53,
+              "distance": 2.7134220249043457,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 51,
+              "distance": 2.718452211112051,
+              "label": "O_shell",
+              "type": 4
+            }
+          ],
+          "type": 4
+        }
+      ]
+    },
+    "E_stage3_water_motif_only": {
+      "code": 0,
+      "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\v28_stage2_protocol\\E_stage3_water_motif_only.log",
+      "parsed": {
+        "errors": [],
+        "exists": true,
+        "final": {
+          "e_angle": 15.092871,
+          "e_bond": 17.488815,
+          "e_coul": -2729.9787,
+          "e_long": -4951.8292,
+          "e_vdwl": 1629.2492,
+          "fmax": 8.7513378,
+          "fnorm": 21.79602,
+          "poteng": -6019.977,
+          "press": 174620.97,
+          "step": 5000.0,
+          "temp": 2.3034973
+        },
+        "initial": {
+          "e_angle": 15.081129,
+          "e_bond": 17.501437,
+          "e_coul": -2730.6124,
+          "e_long": -4951.8867,
+          "e_vdwl": 1630.2859,
+          "fmax": 87.63308,
+          "fnorm": 172.36433,
+          "poteng": -6019.6306,
+          "press": 187572.56,
+          "step": 0.0,
+          "temp": 0.43902439
+        },
+        "lost": false,
+        "nrows": 201,
+        "stops": []
+      },
+      "stdout_tail": "8354      2.2202345      21.495453      9.2196276      177050.14    \n      5000  -6019.977       17.488815      15.092871      1629.2492     -2729.9787     -4951.8292      2.3034973      21.79602       8.7513378      174620.97    \nLoop time of 28.5663 on 1 procs for 5000 steps with 418 atoms\n\nPerformance: 0.378 ns/day, 63.481 hours/ns, 175.032 timesteps/s, 73.163 katom-step/s\n96.5% CPU use with 1 MPI tasks x 1 OpenMP threads\n\nMPI task timing breakdown:\nSection |  min time  |  avg time  |  max time  |%varavg| %total\n---------------------------------------------------------------\nPair    | 21.64      | 21.64      | 21.64      |   0.0 | 75.75\nBond    | 0.071438   | 0.071438   | 0.071438   |   0.0 |  0.25\nKspace  | 5.6707     | 5.6707     | 5.6707     |   0.0 | 19.85\nNeigh   | 0          | 0          | 0          |   0.0 |  0.00\nComm    | 0.17113    | 0.17113    | 0.17113    |   0.0 |  0.60\nOutput  | 0.77174    | 0.77174    | 0.77174    |   0.0 |  2.70\nModify  | 0.19277    | 0.19277    | 0.19277    |   0.0 |  0.67\nOther   |            | 0.04849    |            |       |  0.17\n\nNlocal:            418 ave         418 max         418 min\nHistogram: 1 0 0 0 0 0 0 0 0 0\nNghost:           9896 ave        9896 max        9896 min\nHistogram: 1 0 0 0 0 0 0 0 0 0\nNeighs:              0 ave           0 max           0 min\nHistogram: 1 0 0 0 0 0 0 0 0 0\n\nTotal # of neighbors = 0\nAve neighs/atom = 0\nAve special neighs/atom = 0.81818182\nNeighbor list builds = 0\nDangerous builds = 0\nSystem init for write_data ...\nPPPM initialization ...\n  extracting TIP4P info from pair style\n  using 12-bit tables for long-range coulomb (src/kspace.cpp:342)\n  G vector (1/distance) = 0.32518249\n  grid = 15 24 40\n  stencil order = 5\n  estimated absolute RMS force accuracy = 0.00044460588\n  estimated relative force accuracy = 3.087617e-05\n  using double precision FFTW3\n  3d grid and FFT values/proc = 38808 14400\nGenerated 0 of 36 mixed pair_coeff terms from geometric mixing rule\nTotal wall time: 0:00:28\n",
+      "top_forces": [
+        {
+          "distance_to_Zn": 0.0,
+          "force": 10.726084741950766,
+          "fx": 6.17567,
+          "fy": 8.75134,
+          "fz": -0.569247,
+          "id": 95,
+          "label": "Zn",
+          "mol": 0,
+          "nearest_neighbors": [
+            {
+              "atom_id": 94,
+              "distance": 1.6952438884420142,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 93,
+              "distance": 1.7182030849989764,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 98,
+              "distance": 1.827528610035969,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 111,
+              "distance": 1.8337023560000145,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 110,
+              "distance": 1.8552639516791152,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 96,
+              "distance": 2.305786871438901,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 99,
+              "distance": 2.7784980821299836,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 97,
+              "distance": 2.9345462801257716,
+              "label": "Hoh",
+              "type": 8
+            }
+          ],
+          "type": 9
+        },
+        {
+          "distance_to_Zn": 15.00686282053981,
+          "force": 8.436929994129144,
+          "fx": 0.288394,
+          "fy": -6.18829,
+          "fz": -5.72745,
+          "id": 160,
+          "label": "Ow",
+          "mol": 3,
+          "nearest_neighbors": [
+            {
+              "atom_id": 162,
+              "distance": 0.9572056628018876,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 161,
+              "distance": 0.9572061068547356,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 134,
+              "distance": 2.5277000642876906,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 26,
+              "distance": 2.5383277511269107,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 32,
+              "distance": 2.5692322453879095,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 256,
+              "distance": 2.8312085378509297,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 321,
+              "distance": 2.8855090135710895,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 31,
+              "distance": 2.931241090517974,
+              "label": "Oh",
+              "type": 6
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 1.827528610035969,
+          "force": 7.058675759269581,
+          "fx": -5.70046,
+          "fy": -2.51598,
+          "fz": -3.31655,
+          "id": 98,
+          "label": "Oh",
+          "mol": 18,
+          "nearest_neighbors": [
+            {
+              "atom_id": 99,
+              "distance": 0.9542477511107895,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 95,
+              "distance": 1.827528610035969,
+              "label": "Zn",
+              "type": 9
+            },
+            {
+              "atom_id": 94,
+              "distance": 3.1064129276707564,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 93,
+              "distance": 3.1185832163339815,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 111,
+              "distance": 3.173061730269364,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 110,
+              "distance": 3.185161023260835,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 299,
+              "distance": 3.285089578839519,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 102,
+              "distance": 3.3017493495569896,
+              "label": "Ca",
+              "type": 1
+            }
+          ],
+          "type": 6
+        },
+        {
+          "distance_to_Zn": 13.72825555269496,
+          "force": 5.995338659708891,
+          "fx": 5.46667,
+          "fy": -1.91526,
+          "fz": -1.54641,
+          "id": 363,
+          "label": "Ow",
+          "mol": 7,
+          "nearest_neighbors": [
+            {
+              "atom_id": 365,
+              "distance": 0.9571679249745051,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 364,
+              "distance": 0.9571813622631812,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 362,
+              "distance": 2.5858824214847806,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 361,
+              "distance": 2.623717953161885,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 332,
+              "distance": 2.637009448205296,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 58,
+              "distance": 2.6958185423726126,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 352,
+              "distance": 2.7418534173956126,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 27,
+              "distance": 2.8228673325229083,
+              "label": "Oh",
+              "type": 6
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 2.305786871438901,
+          "force": 5.47512522606561,
+          "fx": 1.05335,
+          "fy": -3.09365,
+          "fz": 4.39281,
+          "id": 96,
+          "label": "Oh",
+          "mol": 17,
+          "nearest_neighbors": [
+            {
+              "atom_id": 97,
+              "distance": 0.9531091148971365,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 95,
+              "distance": 2.305786871438901,
+              "label": "Zn",
+              "type": 9
+            },
+            {
+              "atom_id": 84,
+              "distance": 2.317237471572778,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 79,
+              "distance": 2.3277980092836654,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 111,
+              "distance": 2.741431180259684,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 110,
+              "distance": 2.7897212972087386,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 83,
+              "distance": 2.928035091944938,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 291,
+              "distance": 3.0940220872185136,
+              "label": "Hoh",
+              "type": 8
+            }
+          ],
+          "type": 6
+        },
+        {
+          "distance_to_Zn": 15.964681267814276,
+          "force": 4.640300858795258,
+          "fx": -4.45995,
+          "fy": -0.716856,
+          "fz": 1.06177,
+          "id": 256,
+          "label": "Ow",
+          "mol": 5,
+          "nearest_neighbors": [
+            {
+              "atom_id": 257,
+              "distance": 0.9571768559675894,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 258,
+              "distance": 0.9572162643833421,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 162,
+              "distance": 1.8894286930445396,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 245,
+              "distance": 2.337099541829787,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 244,
+              "distance": 2.364160161330234,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 234,
+              "distance": 2.704019508823855,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 160,
+              "distance": 2.8312085378509297,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 255,
+              "distance": 3.0450638359975315,
+              "label": "Hoh",
+              "type": 8
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 12.418559592823156,
+          "force": 4.407732547544259,
+          "fx": -0.716141,
+          "fy": 4.09818,
+          "fz": 1.45608,
+          "id": 56,
+          "label": "Ow",
+          "mol": 1,
+          "nearest_neighbors": [
+            {
+              "atom_id": 57,
+              "distance": 0.9572040906013717,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 58,
+              "distance": 0.9572163447204611,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 352,
+              "distance": 2.2751516578030566,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 13,
+              "distance": 2.6142834999670557,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 34,
+              "distance": 2.6836880997798533,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 33,
+              "distance": 2.756287687615355,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 28,
+              "distance": 2.7579036091903215,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 24,
+              "distance": 2.7911406780203682,
+              "label": "Ca",
+              "type": 1
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 7.720966654771925,
+          "force": 4.231695333279678,
+          "fx": 0.114399,
+          "fy": -3.7536,
+          "fz": 1.95055,
+          "id": 112,
+          "label": "Ow",
+          "mol": 2,
+          "nearest_neighbors": [
+            {
+              "atom_id": 114,
+              "distance": 0.9571779447939657,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 113,
+              "distance": 0.9572021132446371,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 278,
+              "distance": 2.7294407773388305,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 67,
+              "distance": 2.764484235314067,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 68,
+              "distance": 2.768843276045071,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 270,
+              "distance": 2.8962921974483176,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 81,
+              "distance": 2.9213496221780764,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 272,
+              "distance": 3.011660826288381,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 12.918075003101817,
+          "force": 3.953612762158176,
+          "fx": -2.07823,
+          "fy": 1.56909,
+          "fz": 2.97489,
+          "id": 57,
+          "label": "Hw",
+          "mol": 1,
+          "nearest_neighbors": [
+            {
+              "atom_id": 56,
+              "distance": 0.9572040906013717,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 58,
+              "distance": 1.5139044482080086,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 33,
+              "distance": 2.035739844539082,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 34,
+              "distance": 2.2087817263469036,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 352,
+              "distance": 2.4407042308932057,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 13,
+              "distance": 2.4579265894375286,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 24,
+              "distance": 2.9291513508598355,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 351,
+              "distance": 2.9435449958680757,
+              "label": "Oh",
+              "type": 6
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 13.820629585199802,
+          "force": 3.41076143658059,
+          "fx": -2.41676,
+          "fy": -0.0738977,
+          "fz": 2.40564,
+          "id": 365,
+          "label": "Hw",
+          "mol": 7,
+          "nearest_neighbors": [
+            {
+              "atom_id": 363,
+              "distance": 0.9571679249745051,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 364,
+              "distance": 1.5138936168780162,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 27,
+              "distance": 1.8730588362902527,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 28,
+              "distance": 2.133543860389328,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 58,
+              "distance": 2.157659222120119,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 352,
+              "distance": 2.8142672674861577,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 56,
+              "distance": 2.9878309724949292,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 258,
+              "distance": 3.1797341739522818,
+              "label": "Hw",
+              "type": 7
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 13.114095098484684,
+          "force": 3.163092066285773,
+          "fx": 1.31042,
+          "fy": -1.64655,
+          "fz": 2.36153,
+          "id": 58,
+          "label": "Hw",
+          "mol": 1,
+          "nearest_neighbors": [
+            {
+              "atom_id": 56,
+              "distance": 0.9572163447204611,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 57,
+              "distance": 1.5139044482080086,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 352,
+              "distance": 2.0200919448490433,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 27,
+              "distance": 2.072534721476338,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 365,
+              "distance": 2.157659222120119,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 28,
+              "distance": 2.22356024692946,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 351,
+              "distance": 2.6058456335024895,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 364,
+              "distance": 2.694164655032055,
+              "label": "Hw",
+              "type": 7
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 8.305004335567801,
+          "force": 2.7582120029279835,
+          "fx": -1.77832,
+          "fy": 1.90735,
+          "fz": 0.898514,
+          "id": 302,
+          "label": "Ow",
+          "mol": 6,
+          "nearest_neighbors": [
+            {
+              "atom_id": 303,
+              "distance": 0.9572029233657813,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 304,
+              "distance": 0.9572045810588254,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 377,
+              "distance": 2.394876409754792,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 378,
+              "distance": 2.406034708394706,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 278,
+              "distance": 2.6210110954553385,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 399,
+              "distance": 2.631640418446259,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 382,
+              "distance": 2.9783125903773087,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 374,
+              "distance": 3.075908089166514,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 8.519443129389384,
+          "force": 2.753153352902813,
+          "fx": -1.63371,
+          "fy": 0.41509,
+          "fz": -2.17682,
+          "id": 114,
+          "label": "Hw",
+          "mol": 2,
+          "nearest_neighbors": [
+            {
+              "atom_id": 112,
+              "distance": 0.9571779447939657,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 113,
+              "distance": 1.5138867874448187,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 63,
+              "distance": 2.124146641077306,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 64,
+              "distance": 2.1654812289188756,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 270,
+              "distance": 2.44232054345862,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 68,
+              "distance": 2.444828472285939,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 67,
+              "distance": 2.455590816667142,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 272,
+              "distance": 2.54435257285621,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 16.144164139323067,
+          "force": 2.7394510352762285,
+          "fx": -1.28934,
+          "fy": 0.917024,
+          "fz": 2.23635,
+          "id": 258,
+          "label": "Hw",
+          "mol": 5,
+          "nearest_neighbors": [
+            {
+              "atom_id": 256,
+              "distance": 0.9572162643833421,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 257,
+              "distance": 1.5139075076106858,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 245,
+              "distance": 2.1897684036402123,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 244,
+              "distance": 2.205369960251795,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 162,
+              "distance": 2.707820088429067,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 239,
+              "distance": 2.961656628746824,
+              "label": "Si",
+              "type": 2
+            },
+            {
+              "atom_id": 241,
+              "distance": 3.0623416053538186,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 240,
+              "distance": 3.1107176194378363,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 6.773573647639774,
+          "force": 2.6991632431968613,
+          "fx": 1.97531,
+          "fy": -1.80339,
+          "fz": -0.362515,
+          "id": 211,
+          "label": "Hw",
+          "mol": 4,
+          "nearest_neighbors": [
+            {
+              "atom_id": 210,
+              "distance": 0.957240028623961,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 212,
+              "distance": 1.5139162732463112,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 301,
+              "distance": 2.0328850786997283,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 300,
+              "distance": 2.0563418352015312,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 289,
+              "distance": 2.5302582000657554,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 398,
+              "distance": 2.8681931874614035,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 288,
+              "distance": 3.068358535585435,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 287,
+              "distance": 3.083759734950179,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 8.399350074243838,
+          "force": 2.6494868501445707,
+          "fx": -0.277217,
+          "fy": -2.61568,
+          "fz": -0.31804,
+          "id": 303,
+          "label": "Hw",
+          "mol": 6,
+          "nearest_neighbors": [
+            {
+              "atom_id": 302,
+              "distance": 0.9572029233657813,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 304,
+              "distance": 1.5138921971197281,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 378,
+              "distance": 2.2009747175512944,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 377,
+              "distance": 2.2016720253707183,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 382,
+              "distance": 2.517697225899094,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 376,
+              "distance": 2.628889038434296,
+              "label": "Si",
+              "type": 2
+            },
+            {
+              "atom_id": 379,
+              "distance": 2.7139874248951514,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 380,
+              "distance": 2.7489448416599784,
+              "label": "O_shell",
+              "type": 4
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 16.712676425243803,
+          "force": 2.598935327052407,
+          "fx": 2.30241,
+          "fy": 1.03713,
+          "fz": 0.614601,
+          "id": 257,
+          "label": "Hw",
+          "mol": 5,
+          "nearest_neighbors": [
+            {
+              "atom_id": 256,
+              "distance": 0.9571768559675894,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 258,
+              "distance": 1.5139075076106858,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 245,
+              "distance": 1.769311319497222,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 244,
+              "distance": 1.793116712682418,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 255,
+              "distance": 2.1835809228192122,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 254,
+              "distance": 2.3532160220642733,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 162,
+              "distance": 2.4145491907393386,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 234,
+              "distance": 3.090376605998046,
+              "label": "Ca",
+              "type": 1
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 5.905330164148317,
+          "force": 2.5680317852530563,
+          "fx": -0.123217,
+          "fy": -0.698809,
+          "fz": 2.46805,
+          "id": 210,
+          "label": "Ow",
+          "mol": 4,
+          "nearest_neighbors": [
+            {
+              "atom_id": 212,
+              "distance": 0.957215733050811,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 211,
+              "distance": 0.957240028623961,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 301,
+              "distance": 2.586550594517727,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 300,
+              "distance": 2.603997691627243,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 79,
+              "distance": 2.636451458518626,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 78,
+              "distance": 2.6956518961024964,
+              "label": "Ca",
+              "type": 1
+            },
+            {
+              "atom_id": 288,
+              "distance": 2.730606891388799,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 287,
+              "distance": 2.746926281373419,
+              "label": "O_core",
+              "type": 3
+            }
+          ],
+          "type": 5
+        },
+        {
+          "distance_to_Zn": 8.831576217923956,
+          "force": 2.2152623033647734,
+          "fx": -1.54376,
+          "fy": -1.38575,
+          "fz": -0.777103,
+          "id": 304,
+          "label": "Hw",
+          "mol": 6,
+          "nearest_neighbors": [
+            {
+              "atom_id": 302,
+              "distance": 0.9572045810588254,
+              "label": "Ow",
+              "type": 5
+            },
+            {
+              "atom_id": 303,
+              "distance": 1.5138921971197281,
+              "label": "Hw",
+              "type": 7
+            },
+            {
+              "atom_id": 399,
+              "distance": 1.7672157693954633,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 377,
+              "distance": 1.8552166737068752,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 378,
+              "distance": 1.8826308470860653,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 398,
+              "distance": 2.4423864509123034,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 376,
+              "distance": 2.986454503202751,
+              "label": "Si",
+              "type": 2
+            },
+            {
+              "atom_id": 278,
+              "distance": 3.1534896360857125,
+              "label": "Ca",
+              "type": 1
+            }
+          ],
+          "type": 7
+        },
+        {
+          "distance_to_Zn": 2.7784980821299836,
+          "force": 2.1966981645415014,
+          "fx": -1.3659,
+          "fy": 1.0592,
+          "fz": 1.35569,
+          "id": 99,
+          "label": "Hoh",
+          "mol": 18,
+          "nearest_neighbors": [
+            {
+              "atom_id": 98,
+              "distance": 0.9542477511107895,
+              "label": "Oh",
+              "type": 6
+            },
+            {
+              "atom_id": 299,
+              "distance": 2.5008115607738226,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 298,
+              "distance": 2.5326485074917136,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 95,
+              "distance": 2.7784980821299836,
+              "label": "Zn",
+              "type": 9
+            },
+            {
+              "atom_id": 407,
+              "distance": 3.135433312337547,
+              "label": "Hoh",
+              "type": 8
+            },
+            {
+              "atom_id": 301,
+              "distance": 3.1576065060105267,
+              "label": "O_shell",
+              "type": 4
+            },
+            {
+              "atom_id": 300,
+              "distance": 3.170113380748393,
+              "label": "O_core",
+              "type": 3
+            },
+            {
+              "atom_id": 398,
+              "distance": 3.2034985581079956,
+              "label": "Oh",
+              "type": 6
+            }
+          ],
+          "type": 8
+        }
+      ]
+    }
+  },
+  "target_angle_query": {
+    "angles_involving_atoms": [
+      {
+        "a1": 342,
+        "a2": 341,
+        "a3": 346,
+        "id": 191,
+        "label": "O-Si-O / Oh-Si-O / Oh-Si-Oh",
+        "type": 2
+      },
+      {
+        "a1": 344,
+        "a2": 341,
+        "a3": 346,
+        "id": 193,
+        "label": "O-Si-O / Oh-Si-O / Oh-Si-Oh",
+        "type": 2
+      },
+      {
+        "a1": 346,
+        "a2": 341,
+        "a3": 252,
+        "id": 195,
+        "label": "O-Si-O / Oh-Si-O / Oh-Si-Oh",
+        "type": 2
+      }
+    ],
+    "atoms": {
+      "339": {
+        "atom": {
+          "id": 339,
+          "label": "Hoh",
+          "mol": 36,
+          "q": 0.4,
+          "type": 8,
+          "x": 5.426095,
+          "y": 7.837091,
+          "z": 7.700749
+        },
+        "old_stage2_membership": "mobile",
+        "precise_stage2_membership": "frozen",
+        "roles": [
+          "hydroxyl"
+        ]
+      },
+      "340": {
+        "atom": {
+          "id": 340,
+          "label": "Ca",
+          "mol": 0,
+          "q": 2.0,
+          "type": 1,
+          "x": 8.852352,
+          "y": 5.717781,
+          "z": 1.121174
+        },
+        "old_stage2_membership": "frozen",
+        "precise_stage2_membership": "frozen",
+        "roles": [
+          "framework",
+          "Ca framework"
+        ]
+      },
+      "346": {
+        "atom": {
+          "id": 346,
+          "label": "O_core",
+          "mol": 0,
+          "q": 0.848,
+          "type": 3,
+          "x": 5.149764,
+          "y": 6.240002,
+          "z": 3.636131
+        },
+        "old_stage2_membership": "frozen",
+        "precise_stage2_membership": "frozen",
+        "roles": [
+          "framework",
+          "O core"
+        ]
+      }
+    },
+    "bonds_involving_atoms": [
+      {
+        "a1": 338,
+        "a2": 339,
+        "id": 133,
+        "type": 3
+      },
+      {
+        "a1": 346,
+        "a2": 347,
+        "id": 136,
+        "type": 1
+      }
+    ],
+    "exact_angle_records": [],
+    "interpretation": "No exact angle 340-339-346 exists in the current v27 best data; this failure signature is stale for the current best candidate.",
+    "pair_distances_initial": {
+      "339-346": 4.375862381451912,
+      "340-339": 7.715019059391493,
+      "340-346": 4.506315721566122
+    },
+    "pair_distances_stage1": {
+      "339-346": 4.375862381451913,
+      "340-339": 7.715019059391495,
+      "340-346": 4.506315721566121
+    },
+    "requested_atoms": [
+      340,
+      339,
+      346
+    ]
+  }
+}

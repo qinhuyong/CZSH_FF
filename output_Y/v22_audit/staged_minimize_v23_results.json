@@ -1,0 +1,116 @@
+{
+  "example_q1_zn": {
+    "returncode": 0,
+    "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\example_q1_zn_staged_minimize_v23.log",
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [],
+      "nrows": 101,
+      "initial": {
+        "step": 0.0,
+        "pe": -5270.0121,
+        "ebond": 18.948201,
+        "eangle": 18.624997,
+        "evdwl": 2587.9422,
+        "ecoul": -2782.3252,
+        "elong": -5113.2023,
+        "fnorm": 11798.318,
+        "fmax": 7123.904,
+        "press": 1520587.0
+      },
+      "final": {
+        "step": 97.0,
+        "pe": 15818.407,
+        "ebond": 76.077125,
+        "eangle": 10.154307,
+        "evdwl": 1817.4735,
+        "ecoul": -3488.3949,
+        "elong": -5175.4734,
+        "fnorm": 3998.0745,
+        "fmax": 1841.0898,
+        "press": -2839173.1
+      },
+      "stopping_criteria": [
+        "energy tolerance",
+        "energy tolerance",
+        "linesearch alpha is zero"
+      ]
+    }
+  },
+  "example_q2b_zn": {
+    "returncode": 0,
+    "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\example_q2b_zn_staged_minimize_v23.log",
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [],
+      "nrows": 266,
+      "initial": {
+        "step": 0.0,
+        "pe": -5261.8104,
+        "ebond": 18.948203,
+        "eangle": 18.675318,
+        "evdwl": 2594.274,
+        "ecoul": -2782.2998,
+        "elong": -5111.4081,
+        "fnorm": 11798.057,
+        "fmax": 7123.8599,
+        "press": 1528598.7
+      },
+      "final": {
+        "step": 262.0,
+        "pe": 15950.609,
+        "ebond": 74.910827,
+        "eangle": 9.7247764,
+        "evdwl": 1821.6684,
+        "ecoul": -3495.8441,
+        "elong": -5177.4806,
+        "fnorm": 4011.1121,
+        "fmax": 1844.5113,
+        "press": -2852942.4
+      },
+      "stopping_criteria": [
+        "energy tolerance",
+        "energy tolerance",
+        "linesearch alpha is zero"
+      ]
+    }
+  },
+  "example_mixed_zn": {
+    "returncode": 0,
+    "log": "C:\\Users\\Administor\\Documents\\CementFF\\pyCSH\\output_Y\\example_mixed_zn_staged_minimize_v23.log",
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [],
+      "nrows": 114,
+      "initial": {
+        "step": 0.0,
+        "pe": -5276.2152,
+        "ebond": 18.948207,
+        "eangle": 18.347883,
+        "evdwl": 2591.2264,
+        "ecoul": -2789.7783,
+        "elong": -5114.9593,
+        "fnorm": 11798.323,
+        "fmax": 7124.0539,
+        "press": 1522363.6
+      },
+      "final": {
+        "step": 110.0,
+        "pe": 15818.769,
+        "ebond": 75.159344,
+        "eangle": 9.8078638,
+        "evdwl": 1813.2792,
+        "ecoul": -3484.0165,
+        "elong": -5175.9559,
+        "fnorm": 3998.4097,
+        "fmax": 1842.7237,
+        "press": -2839362.5
+      },
+      "stopping_criteria": [
+        "energy tolerance",
+        "energy tolerance",
+        "linesearch alpha is zero"
+      ]
+    }
+  }
+}

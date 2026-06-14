@@ -1,0 +1,103 @@
+{
+  "angle_type_map": {
+    "1": "Hw-Ow-Hw",
+    "2": "O-Si-O / Oh-Si-O / Oh-Si-Oh",
+    "3": "Si-Oh-H"
+  },
+  "atom_type_map": {
+    "1": {
+      "label": "Ca",
+      "mass": 40.08
+    },
+    "2": {
+      "label": "Si",
+      "mass": 28.1
+    },
+    "3": {
+      "label": "O",
+      "mass": 15.999
+    },
+    "4": {
+      "label": "O(S)",
+      "mass": 0.4
+    },
+    "5": {
+      "label": "Ow",
+      "mass": 15.999
+    },
+    "6": {
+      "label": "Oh",
+      "mass": 15.999
+    },
+    "7": {
+      "label": "Hw",
+      "mass": 1.008
+    },
+    "8": {
+      "label": "Hoh",
+      "mass": 1.008
+    }
+  },
+  "internal_to_lammps_type_map": {
+    "1": {
+      "label": "Ca",
+      "lammps_type": 1,
+      "source": "Ca1"
+    },
+    "2": {
+      "label": "Si",
+      "lammps_type": 2,
+      "source": "Si1"
+    },
+    "3": {
+      "label": "O",
+      "lammps_type": 3,
+      "source": "O core"
+    },
+    "4": {
+      "label": "O(S)",
+      "lammps_type": 4,
+      "source": "O shell"
+    },
+    "5": {
+      "label": "Ow",
+      "lammps_type": 5,
+      "source": "water oxygen"
+    },
+    "6": {
+      "label": "Oh",
+      "lammps_type": 6,
+      "source": "hydroxide oxygen"
+    },
+    "7": {
+      "label": "Hw",
+      "lammps_type": 7,
+      "source": "water hydrogen"
+    },
+    "8": {
+      "label": "Hoh",
+      "lammps_type": 8,
+      "source": "hydroxide hydrogen"
+    },
+    "9": {
+      "label": "Ca",
+      "lammps_type": 1,
+      "source": "Ca2"
+    },
+    "10": {
+      "label": "Si",
+      "lammps_type": 2,
+      "source": "Si2"
+    },
+    "11": {
+      "label": "O",
+      "lammps_type": 3,
+      "source": "OCa core"
+    },
+    "14": {
+      "label": "Zn",
+      "lammps_type": 9,
+      "source": "Zn substituted Si site"
+    }
+  }
+}

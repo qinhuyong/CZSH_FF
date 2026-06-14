@@ -1,0 +1,1132 @@
+{
+  "Ca_Si_final": 1.6756756756756757,
+  "Ca_Si_original": 1.631578947368421,
+  "Ca_Si_ratio": 1.631578947368421,
+  "Ca_over_Si_plus_Zn_ratio": 1.631578947368421,
+  "N_Ca": 62,
+  "N_H_added_for_Zn_OH": 2,
+  "N_Os_converted_to_Oh": 2,
+  "N_Q1_Zn": 1,
+  "N_Q1_candidates": 32,
+  "N_Q2b_Zn": 0,
+  "N_Q2b_candidates": 6,
+  "N_Si": 37,
+  "N_Si_final": 37,
+  "N_Si_original": 38,
+  "N_Zn": 1,
+  "Zn_Si_final": 0.02702702702702703,
+  "Zn_Si_original": 0.02631578947368421,
+  "Zn_charge_balance_mode": "hydroxylate_two_oxygens",
+  "Zn_seed": 23137,
+  "Zn_site_type": "mixed_Q1_Q2b_Zn",
+  "actual_Zn_Si_original_ratio": 0.02631578947368421,
+  "actual_Zn_Si_ratio": 0.02702702702702703,
+  "allow_hydroxylate_bridging_oxygen": false,
+  "allow_unbalanced_for_debug": false,
+  "cementff4_angle_mapping": {
+    "1": "Hw-Ow-Hw",
+    "2": "O-Si-O / Oh-Si-O / Oh-Si-Oh",
+    "3": "Si-Oh-H",
+    "4": "O-Zn-O / Oh-Zn-O / Oh-Zn-Oh",
+    "5": "Zn-Oh-H"
+  },
+  "cementff4_data_file": "example_mixed_zn_cementff1_zn.data",
+  "cementff4_forcefield_file": "example_mixed_zn_in.CementFF4_Zn_1",
+  "cementff4_minimize_input": "example_mixed_zn_minimize_CementFF4_Zn_1.in",
+  "cementff4_minimized_data_file": "example_mixed_zn_cementff1_zn_minimized.data",
+  "cementff4_minimized_dump_file": "example_mixed_zn_cementff1_zn_minimized.lammpstrj",
+  "cementff4_molecule_id_policy": {
+    "framework_molecule_id": 0,
+    "hydroxyl_pairs": [
+      {
+        "atoms": [
+          16,
+          17
+        ],
+        "bond_id": 7,
+        "molecule_id": 9
+      },
+      {
+        "atoms": [
+          29,
+          30
+        ],
+        "bond_id": 11,
+        "molecule_id": 10
+      },
+      {
+        "atoms": [
+          31,
+          32
+        ],
+        "bond_id": 12,
+        "molecule_id": 11
+      },
+      {
+        "atoms": [
+          33,
+          34
+        ],
+        "bond_id": 13,
+        "molecule_id": 12
+      },
+      {
+        "atoms": [
+          44,
+          45
+        ],
+        "bond_id": 17,
+        "molecule_id": 13
+      },
+      {
+        "atoms": [
+          46,
+          47
+        ],
+        "bond_id": 18,
+        "molecule_id": 14
+      },
+      {
+        "atoms": [
+          56,
+          57
+        ],
+        "bond_id": 22,
+        "molecule_id": 15
+      },
+      {
+        "atoms": [
+          72,
+          73
+        ],
+        "bond_id": 29,
+        "molecule_id": 16
+      },
+      {
+        "atoms": [
+          83,
+          84
+        ],
+        "bond_id": 33,
+        "molecule_id": 17
+      },
+      {
+        "atoms": [
+          91,
+          92
+        ],
+        "bond_id": 36,
+        "molecule_id": 18
+      },
+      {
+        "atoms": [
+          94,
+          95
+        ],
+        "bond_id": 37,
+        "molecule_id": 19
+      },
+      {
+        "atoms": [
+          131,
+          132
+        ],
+        "bond_id": 51,
+        "molecule_id": 20
+      },
+      {
+        "atoms": [
+          133,
+          134
+        ],
+        "bond_id": 52,
+        "molecule_id": 21
+      },
+      {
+        "atoms": [
+          135,
+          136
+        ],
+        "bond_id": 53,
+        "molecule_id": 22
+      },
+      {
+        "atoms": [
+          150,
+          151
+        ],
+        "bond_id": 59,
+        "molecule_id": 23
+      },
+      {
+        "atoms": [
+          186,
+          187
+        ],
+        "bond_id": 73,
+        "molecule_id": 24
+      },
+      {
+        "atoms": [
+          188,
+          189
+        ],
+        "bond_id": 74,
+        "molecule_id": 25
+      },
+      {
+        "atoms": [
+          222,
+          223
+        ],
+        "bond_id": 88,
+        "molecule_id": 26
+      },
+      {
+        "atoms": [
+          226,
+          227
+        ],
+        "bond_id": 90,
+        "molecule_id": 27
+      },
+      {
+        "atoms": [
+          239,
+          240
+        ],
+        "bond_id": 94,
+        "molecule_id": 28
+      },
+      {
+        "atoms": [
+          241,
+          242
+        ],
+        "bond_id": 95,
+        "molecule_id": 29
+      },
+      {
+        "atoms": [
+          243,
+          244
+        ],
+        "bond_id": 96,
+        "molecule_id": 30
+      },
+      {
+        "atoms": [
+          245,
+          246
+        ],
+        "bond_id": 97,
+        "molecule_id": 31
+      },
+      {
+        "atoms": [
+          256,
+          257
+        ],
+        "bond_id": 101,
+        "molecule_id": 32
+      },
+      {
+        "atoms": [
+          282,
+          283
+        ],
+        "bond_id": 112,
+        "molecule_id": 33
+      },
+      {
+        "atoms": [
+          286,
+          287
+        ],
+        "bond_id": 113,
+        "molecule_id": 34
+      },
+      {
+        "atoms": [
+          288,
+          289
+        ],
+        "bond_id": 114,
+        "molecule_id": 35
+      },
+      {
+        "atoms": [
+          290,
+          291
+        ],
+        "bond_id": 115,
+        "molecule_id": 36
+      },
+      {
+        "atoms": [
+          295,
+          296
+        ],
+        "bond_id": 116,
+        "molecule_id": 37
+      },
+      {
+        "atoms": [
+          297,
+          298
+        ],
+        "bond_id": 117,
+        "molecule_id": 38
+      },
+      {
+        "atoms": [
+          312,
+          313
+        ],
+        "bond_id": 123,
+        "molecule_id": 39
+      },
+      {
+        "atoms": [
+          342,
+          343
+        ],
+        "bond_id": 136,
+        "molecule_id": 40
+      },
+      {
+        "atoms": [
+          355,
+          356
+        ],
+        "bond_id": 140,
+        "molecule_id": 41
+      },
+      {
+        "atoms": [
+          357,
+          358
+        ],
+        "bond_id": 141,
+        "molecule_id": 42
+      },
+      {
+        "atoms": [
+          359,
+          360
+        ],
+        "bond_id": 142,
+        "molecule_id": 43
+      },
+      {
+        "atoms": [
+          394,
+          395
+        ],
+        "bond_id": 156,
+        "molecule_id": 44
+      },
+      {
+        "atoms": [
+          398,
+          399
+        ],
+        "bond_id": 158,
+        "molecule_id": 45
+      },
+      {
+        "atoms": [
+          411,
+          412
+        ],
+        "bond_id": 162,
+        "molecule_id": 46
+      },
+      {
+        "atoms": [
+          413,
+          414
+        ],
+        "bond_id": 163,
+        "molecule_id": 47
+      },
+      {
+        "atoms": [
+          424,
+          425
+        ],
+        "bond_id": 167,
+        "molecule_id": 48
+      }
+    ],
+    "water_molecules": [
+      {
+        "Hw": [
+          59,
+          60
+        ],
+        "Ow": 58,
+        "angle_ids": [
+          32
+        ],
+        "bond_ids": [
+          23,
+          24
+        ],
+        "molecule_id": 1
+      },
+      {
+        "Hw": [
+          107,
+          108
+        ],
+        "Ow": 106,
+        "angle_ids": [
+          58
+        ],
+        "bond_ids": [
+          42,
+          43
+        ],
+        "molecule_id": 2
+      },
+      {
+        "Hw": [
+          163,
+          164
+        ],
+        "Ow": 162,
+        "angle_ids": [
+          89
+        ],
+        "bond_ids": [
+          64,
+          65
+        ],
+        "molecule_id": 3
+      },
+      {
+        "Hw": [
+          209,
+          210
+        ],
+        "Ow": 208,
+        "angle_ids": [
+          114
+        ],
+        "bond_ids": [
+          82,
+          83
+        ],
+        "molecule_id": 4
+      },
+      {
+        "Hw": [
+          269,
+          270
+        ],
+        "Ow": 268,
+        "angle_ids": [
+          146
+        ],
+        "bond_ids": [
+          106,
+          107
+        ],
+        "molecule_id": 5
+      },
+      {
+        "Hw": [
+          325,
+          326
+        ],
+        "Ow": 324,
+        "angle_ids": [
+          178
+        ],
+        "bond_ids": [
+          128,
+          129
+        ],
+        "molecule_id": 6
+      },
+      {
+        "Hw": [
+          381,
+          382
+        ],
+        "Ow": 380,
+        "angle_ids": [
+          209
+        ],
+        "bond_ids": [
+          150,
+          151
+        ],
+        "molecule_id": 7
+      },
+      {
+        "Hw": [
+          437,
+          438
+        ],
+        "Ow": 436,
+        "angle_ids": [
+          241
+        ],
+        "bond_ids": [
+          172,
+          173
+        ],
+        "molecule_id": 8
+      }
+    ]
+  },
+  "cementff4_smoke_input": "example_mixed_zn_smoke_CementFF4_Zn_1.in",
+  "cementff4_type_mapping": {
+    "1": {
+      "label": "Ca",
+      "lammps_type": 1,
+      "source": "Ca1"
+    },
+    "2": {
+      "label": "Si",
+      "lammps_type": 2,
+      "source": "Si1"
+    },
+    "3": {
+      "label": "O",
+      "lammps_type": 3,
+      "source": "O core"
+    },
+    "4": {
+      "label": "O(S)",
+      "lammps_type": 4,
+      "source": "O shell"
+    },
+    "5": {
+      "label": "Ow",
+      "lammps_type": 5,
+      "source": "water oxygen"
+    },
+    "6": {
+      "label": "Oh",
+      "lammps_type": 6,
+      "source": "hydroxide oxygen"
+    },
+    "7": {
+      "label": "Hw",
+      "lammps_type": 7,
+      "source": "water hydrogen"
+    },
+    "8": {
+      "label": "Hoh",
+      "lammps_type": 8,
+      "source": "hydroxide hydrogen"
+    },
+    "9": {
+      "label": "Ca",
+      "lammps_type": 1,
+      "source": "Ca2"
+    },
+    "10": {
+      "label": "Si",
+      "lammps_type": 2,
+      "source": "Si2"
+    },
+    "11": {
+      "label": "O",
+      "lammps_type": 3,
+      "source": "OCa core"
+    },
+    "14": {
+      "label": "Zn",
+      "lammps_type": 9,
+      "source": "Zn substituted Si site"
+    }
+  },
+  "charge_residual_final": 4.440892098500626e-15,
+  "classification_reasons": [
+    "pre-minimization Zn-O distances outside v2 sanity window 1.7-2.3 A",
+    "one or more water molecules still violate CementFF4 water contact cutoffs after sanitizer"
+  ],
+  "enable_zinc": true,
+  "hydroxylation_records": [
+    {
+      "hydroxylated_oxygens": [
+        {
+          "H_contact_metrics": {
+            "H_Ca": {
+              "atom_id": 284,
+              "distance": 1.928257704572079,
+              "specie": 1
+            },
+            "H_H": {
+              "atom_id": 73,
+              "distance": 4.615707924457588,
+              "specie": 8
+            },
+            "H_O_nonbonded": {
+              "atom_id": 66,
+              "distance": 1.9889836715844367,
+              "specie": 4
+            },
+            "H_Si": {
+              "atom_id": 362,
+              "distance": 2.9984036336455717,
+              "specie": 2
+            },
+            "H_Zn": {
+              "atom_id": 285,
+              "distance": 2.950000000000002,
+              "specie": 14
+            }
+          },
+          "H_coord": [
+            8.131059132883845,
+            -8.035359478981658,
+            27.628416110078348
+          ],
+          "H_placement": "deterministic_overlap_checked_search",
+          "H_placement_vector": [
+            -0.6578042430902215,
+            -0.5216867521971722,
+            0.5432646779926588
+          ],
+          "O_H_distance": 1.0000000000000018,
+          "Zn_O_distance_before_hydroxylation": 1.6294893370777233,
+          "Zn_O_preconditioning": {
+            "moved": true,
+            "new_coord": [
+              8.788863375974067,
+              -7.513672726784485,
+              27.085151432085688
+            ],
+            "new_distance": 1.95,
+            "old_coord": [
+              8.99969665,
+              -7.34646656,
+              26.911029310000004
+            ],
+            "old_distance": 1.6294893370777233
+          },
+          "added_angle_id": 242,
+          "converted_O_contact_metrics": {
+            "O_Ca": {
+              "atom_id": 284,
+              "distance": 2.132586191619969,
+              "specie": 1
+            },
+            "O_O_nonbonded": {
+              "atom_id": 66,
+              "distance": 2.714753271875892,
+              "specie": 4
+            },
+            "O_Si": {
+              "atom_id": 362,
+              "distance": 3.618472422172291,
+              "specie": 2
+            },
+            "O_Zn": {
+              "atom_id": 285,
+              "distance": 1.95,
+              "specie": 14
+            }
+          },
+          "min_H_overlap_distance": 1.928257704572079,
+          "modified_bond_id": 113,
+          "nearby_si_count_before_hydroxylation": 0,
+          "nearby_si_neighbors_before_hydroxylation": [],
+          "original_oxygen_specie": 11,
+          "original_shell_atom_id": 287,
+          "oxygen_atom_id": 286,
+          "oxygen_class": "terminal/non-bridging O",
+          "reused_shell_as_H_atom_id": 287
+        },
+        {
+          "H_contact_metrics": {
+            "H_Ca": {
+              "atom_id": 74,
+              "distance": 1.6782761601557257,
+              "specie": 1
+            },
+            "H_H": {
+              "atom_id": 399,
+              "distance": 3.9896997522883244,
+              "specie": 8
+            },
+            "H_O_nonbonded": {
+              "atom_id": 168,
+              "distance": 1.7956345086898606,
+              "specie": 4
+            },
+            "H_Si": {
+              "atom_id": 166,
+              "distance": 3.2951772578235827,
+              "specie": 2
+            },
+            "H_Zn": {
+              "atom_id": 285,
+              "distance": 2.8600697674636026,
+              "specie": 14
+            }
+          },
+          "H_coord": [
+            12.466639972224693,
+            -5.434781374874265,
+            27.173258842783138
+          ],
+          "H_placement": "deterministic_overlap_checked_search",
+          "H_placement_vector": [
+            0.8411504844345845,
+            0.5324015209850012,
+            0.09494463117165337
+          ],
+          "O_H_distance": 0.9999999999999996,
+          "Zn_O_distance_before_hydroxylation": 1.6520001943298914,
+          "Zn_O_preconditioning": {
+            "moved": true,
+            "new_coord": [
+              11.625489487790109,
+              -5.967182895859266,
+              27.078314211611485
+            ],
+            "new_distance": 1.95,
+            "old_coord": [
+              11.38802065,
+              -6.04805556,
+              26.917466310000002
+            ],
+            "old_distance": 1.6520001943298914
+          },
+          "added_angle_id": 243,
+          "converted_O_contact_metrics": {
+            "O_Ca": {
+              "atom_id": 74,
+              "distance": 2.0629365869761775,
+              "specie": 1
+            },
+            "O_O_nonbonded": {
+              "atom_id": 168,
+              "distance": 2.779189784140841,
+              "specie": 4
+            },
+            "O_Si": {
+              "atom_id": 138,
+              "distance": 3.9387416984216177,
+              "specie": 2
+            },
+            "O_Zn": {
+              "atom_id": 285,
+              "distance": 1.9499999999999997,
+              "specie": 14
+            }
+          },
+          "min_H_overlap_distance": 1.6782761601557257,
+          "modified_bond_id": 114,
+          "nearby_si_count_before_hydroxylation": 0,
+          "nearby_si_neighbors_before_hydroxylation": [],
+          "original_oxygen_specie": 11,
+          "original_shell_atom_id": 289,
+          "oxygen_atom_id": 288,
+          "oxygen_class": "terminal/non-bridging O",
+          "reused_shell_as_H_atom_id": 289
+        }
+      ],
+      "zn_atom_id": 285
+    }
+  ],
+  "minimum_Zn_O_distance": 1.614765929945579,
+  "minimum_Zn_Zn_distance": null,
+  "notes": [
+    "v2 creates a charge-balanced ZnO2(OH)2 substitutional candidate.",
+    "v2 does not use guest_ions/substitute and does not randomly replace Ca-layer atoms.",
+    "Zn parameters are taken from CementFF4 supplementary information."
+  ],
+  "output_classification": "failed_water_sanitization",
+  "pre_minimization_geometry": {
+    "O_Zn_O_angle_deg": {
+      "max": 118.58890769764793,
+      "mean": 109.33158266302496,
+      "min": 100.15114966502932
+    },
+    "Zn_O_coordination_numbers_cutoff_2p3A": [
+      4
+    ],
+    "Zn_O_cutoff_A": 2.3,
+    "Zn_O_distance_A": {
+      "max": 1.95,
+      "mean": 1.8123608738409294,
+      "min": 1.614765929945579
+    },
+    "added_H_overlap": {
+      "has_severe_H_overlap": false,
+      "has_v21_H_contact_violation": false,
+      "minimum_added_H_overlap_distance": 1.6782761601557257,
+      "v21_H_contact_violations": []
+    },
+    "minimum_Ca_O_distance": 1.2592492988729338,
+    "minimum_Si_O_distance": 1.5645800320811332,
+    "minimum_Zn_Zn_distance": null
+  },
+  "precondition_zinc_geometry": true,
+  "selected_sites": [
+    {
+      "atom_id": 285,
+      "cell": [
+        1,
+        0,
+        1
+      ],
+      "coord": [
+        10.071581649999999,
+        -6.496383559999999,
+        26.025785310000003
+      ],
+      "motif": "Q1_Zn",
+      "original_specie": 2,
+      "piece": "<Ro"
+    }
+  ],
+  "status_note": "v2 uses a charge-balanced ZnO2(OH)2 substitutional motif, but minimization is required before MD.",
+  "target_Zn_O_distance": 1.95,
+  "target_Zn_Si_ratio": 0.03,
+  "topology_validation": {
+    "hydroxylation_topology_audit": {
+      "bad_records": [],
+      "records": [
+        {
+          "angles_involving_pair": [
+            [
+              153,
+              4,
+              286,
+              285,
+              288
+            ],
+            [
+              154,
+              4,
+              286,
+              285,
+              290
+            ],
+            [
+              155,
+              4,
+              286,
+              285,
+              389
+            ],
+            [
+              242,
+              5,
+              285,
+              286,
+              287
+            ]
+          ],
+          "bonds_involving_pair": [
+            [
+              113,
+              1,
+              286,
+              287
+            ]
+          ],
+          "expected_cementff_oh_hoh_bond_type": 3,
+          "has_correct_oh_hoh_bond_internal": true,
+          "hoh_atom_id": 287,
+          "hoh_type": 8,
+          "oxygen_atom_id": 286,
+          "oxygen_type": 6,
+          "remaining_core_shell_bonds": []
+        },
+        {
+          "angles_involving_pair": [
+            [
+              153,
+              4,
+              286,
+              285,
+              288
+            ],
+            [
+              156,
+              4,
+              288,
+              285,
+              290
+            ],
+            [
+              157,
+              4,
+              288,
+              285,
+              389
+            ],
+            [
+              243,
+              5,
+              285,
+              288,
+              289
+            ]
+          ],
+          "bonds_involving_pair": [
+            [
+              114,
+              1,
+              288,
+              289
+            ]
+          ],
+          "expected_cementff_oh_hoh_bond_type": 3,
+          "has_correct_oh_hoh_bond_internal": true,
+          "hoh_atom_id": 289,
+          "hoh_type": 8,
+          "oxygen_atom_id": 288,
+          "oxygen_type": 6,
+          "remaining_core_shell_bonds": []
+        }
+      ]
+    },
+    "remapped_O_Zn_O_angles": 6,
+    "remapped_Zn_Oh_H_angles": 1,
+    "stale_zn_angles": [],
+    "zinc_bonds": []
+  },
+  "total_charge_after_hydroxylation": 4.440892098500626e-15,
+  "total_charge_after_zinc_before_hydroxylation": -1.999999999999998,
+  "total_charge_before_zinc": 4.440892098500626e-15,
+  "total_charge_residual": 4.440892098500626e-15,
+  "water_sanitizer": {
+    "bad_before": [
+      {
+        "Hw": [
+          59,
+          60
+        ],
+        "Ow": 58,
+        "violations": [
+          {
+            "atom_id": 135,
+            "contact": "Ow_O",
+            "cutoff": 2.2,
+            "distance": 1.8562510859141896,
+            "label": "Oh",
+            "type": 6
+          },
+          {
+            "H": 60,
+            "atom_id": 238,
+            "contact": "H_Ca",
+            "cutoff": 1.6,
+            "distance": 1.477220444242673,
+            "label": "Ca",
+            "type": 1
+          }
+        ]
+      },
+      {
+        "Hw": [
+          107,
+          108
+        ],
+        "Ow": 106,
+        "violations": [
+          {
+            "atom_id": 185,
+            "contact": "Ow_Ca",
+            "cutoff": 2.2,
+            "distance": 2.029663680429054,
+            "label": "Ca",
+            "type": 1
+          },
+          {
+            "H": 108,
+            "atom_id": 185,
+            "contact": "H_Ca",
+            "cutoff": 1.6,
+            "distance": 1.4841816546120783,
+            "label": "Ca",
+            "type": 1
+          }
+        ]
+      },
+      {
+        "Hw": [
+          163,
+          164
+        ],
+        "Ow": 162,
+        "violations": [
+          {
+            "atom_id": 27,
+            "contact": "Ow_Ca",
+            "cutoff": 2.2,
+            "distance": 2.029663680429056,
+            "label": "Ca",
+            "type": 1
+          }
+        ]
+      },
+      {
+        "Hw": [
+          381,
+          382
+        ],
+        "Ow": 380,
+        "violations": [
+          {
+            "atom_id": 237,
+            "contact": "Ow_Ca",
+            "cutoff": 2.2,
+            "distance": 2.029663680429056,
+            "label": "Ca",
+            "type": 1
+          },
+          {
+            "H": 381,
+            "atom_id": 237,
+            "contact": "H_Ca",
+            "cutoff": 1.6,
+            "distance": 1.3229981885886166,
+            "label": "Ca",
+            "type": 1
+          }
+        ]
+      }
+    ],
+    "cutoffs": {
+      "water_min_H_Ca": 1.6,
+      "water_min_H_H_nonbonded": 1.2,
+      "water_min_H_O_nonbonded": 1.2,
+      "water_min_H_Si": 1.6,
+      "water_min_H_Zn": 1.4,
+      "water_min_Ow_Ca": 2.2,
+      "water_min_Ow_O": 2.2
+    },
+    "enabled": true,
+    "final_min_contacts": {
+      "H_Ca": {
+        "atom_id": 183,
+        "distance": 1.638421034587198,
+        "label": "Ca",
+        "type": 1
+      },
+      "H_H_nonbonded": {
+        "atom_id": 412,
+        "distance": 1.6498994032747591,
+        "label": "Hoh",
+        "type": 8
+      },
+      "H_O_nonbonded": {
+        "atom_id": 9,
+        "distance": 1.8039806401046763,
+        "label": "O",
+        "type": 3
+      },
+      "H_Si": {
+        "atom_id": 11,
+        "distance": 2.2497961271148816,
+        "label": "Si",
+        "type": 2
+      },
+      "H_Zn": {
+        "atom_id": 285,
+        "distance": 5.026344275535276,
+        "label": "Zn",
+        "type": 9
+      },
+      "Ow_Ca": {
+        "atom_id": 185,
+        "distance": 2.029663680429054,
+        "label": "Ca",
+        "type": 1
+      },
+      "Ow_O": {
+        "atom_id": 135,
+        "distance": 1.8562510859141896,
+        "label": "Oh",
+        "type": 6
+      },
+      "Ow_Si": {
+        "atom_id": 11,
+        "distance": 2.355842112083656,
+        "label": "Si",
+        "type": 2
+      },
+      "Ow_Zn": {
+        "atom_id": 285,
+        "distance": 5.362160140015752,
+        "label": "Zn",
+        "type": 9
+      }
+    },
+    "n_water": 8,
+    "rejected": [
+      {
+        "Hw": [
+          59,
+          60
+        ],
+        "Ow": 58,
+        "violations": [
+          {
+            "atom_id": 135,
+            "contact": "Ow_O",
+            "cutoff": 2.2,
+            "distance": 1.8562510859141896,
+            "label": "Oh",
+            "type": 6
+          }
+        ]
+      },
+      {
+        "Hw": [
+          107,
+          108
+        ],
+        "Ow": 106,
+        "violations": [
+          {
+            "atom_id": 185,
+            "contact": "Ow_Ca",
+            "cutoff": 2.2,
+            "distance": 2.029663680429054,
+            "label": "Ca",
+            "type": 1
+          }
+        ]
+      }
+    ],
+    "repaired_by_rotation": [],
+    "repaired_by_translation": [
+      {
+        "Hw": [
+          163,
+          164
+        ],
+        "Ow": 162,
+        "translation": [
+          0.04988618499432829,
+          0.03248444568078458,
+          0.29403423157095804
+        ]
+      },
+      {
+        "Hw": [
+          381,
+          382
+        ],
+        "Ow": 380,
+        "translation": [
+          0.15879185664743542,
+          0.10797153362198045,
+          0.05592221552994723
+        ]
+      }
+    ]
+  }
+}

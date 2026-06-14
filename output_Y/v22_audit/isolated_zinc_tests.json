@@ -1,0 +1,203 @@
+{
+  "Zn_OS_pair_1.7A": {
+    "returncode": 1,
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [
+        "ERROR: Angle type 1 is out of bounds (1-0) (src/KSPACE/pair_lj_cut_tip4p_long.cpp:461)"
+      ]
+    }
+  },
+  "Zn_OS_pair_1.95A": {
+    "returncode": 1,
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [
+        "ERROR: Angle type 1 is out of bounds (1-0) (src/KSPACE/pair_lj_cut_tip4p_long.cpp:461)"
+      ]
+    }
+  },
+  "Zn_OS_pair_2.3A": {
+    "returncode": 1,
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [
+        "ERROR: Angle type 1 is out of bounds (1-0) (src/KSPACE/pair_lj_cut_tip4p_long.cpp:461)"
+      ]
+    }
+  },
+  "Zn_OS_pair_3.0A": {
+    "returncode": 1,
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [
+        "ERROR: Angle type 1 is out of bounds (1-0) (src/KSPACE/pair_lj_cut_tip4p_long.cpp:461)"
+      ]
+    }
+  },
+  "Zn_Oh2_fragment_1.7A": {
+    "returncode": 0,
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [],
+      "nrows": 52,
+      "initial": {
+        "step": 0.0,
+        "pe": 48.174792,
+        "ebond": 75.0,
+        "eangle": 0.47846258,
+        "evdwl": 6.5402845,
+        "ecoul": -18.123975,
+        "elong": -15.71998,
+        "fnorm": 146.0892,
+        "fmax": 73.760087,
+        "press": -1271.5584
+      },
+      "final": {
+        "step": 50.0,
+        "pe": -22.836656,
+        "ebond": 0.099740213,
+        "eangle": 0.16312827,
+        "evdwl": 4.3856247,
+        "ecoul": -11.863093,
+        "elong": -15.622056,
+        "fnorm": 4.070566,
+        "fmax": 1.6805997,
+        "press": -41.324321
+      },
+      "dominant_final": "elong"
+    }
+  },
+  "Zn_Oh2_fragment_1.95A": {
+    "returncode": 0,
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [],
+      "nrows": 52,
+      "initial": {
+        "step": 0.0,
+        "pe": 49.504962,
+        "ebond": 75.0,
+        "eangle": 0.47846258,
+        "evdwl": 3.2424888,
+        "ecoul": -13.525551,
+        "elong": -15.690438,
+        "fnorm": 144.44636,
+        "fmax": 73.948165,
+        "press": -1347.3524
+      },
+      "final": {
+        "step": 50.0,
+        "pe": -21.782549,
+        "ebond": 0.15419921,
+        "eangle": 0.17859395,
+        "evdwl": 2.270711,
+        "ecoul": -8.8287908,
+        "elong": -15.557263,
+        "fnorm": 5.7252909,
+        "fmax": 3.3123966,
+        "press": -95.25718
+      },
+      "dominant_final": "elong"
+    }
+  },
+  "Zn_Oh2_fragment_2.3A": {
+    "returncode": 0,
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [],
+      "nrows": 52,
+      "initial": {
+        "step": 0.0,
+        "pe": 52.211582,
+        "ebond": 75.0,
+        "eangle": 0.47846258,
+        "evdwl": 1.2211536,
+        "ecoul": -8.87188,
+        "elong": -15.616154,
+        "fnorm": 144.36873,
+        "fmax": 74.147849,
+        "press": -1389.5895
+      },
+      "final": {
+        "step": 50.0,
+        "pe": -19.704137,
+        "ebond": 0.086489538,
+        "eangle": 0.18818023,
+        "evdwl": 0.85259855,
+        "ecoul": -5.4112353,
+        "elong": -15.42017,
+        "fnorm": 5.4849779,
+        "fmax": 3.2541342,
+        "press": -125.88759
+      },
+      "dominant_final": "elong"
+    }
+  },
+  "Zn_Oh2_fragment_3.0A": {
+    "returncode": 0,
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [],
+      "nrows": 52,
+      "initial": {
+        "step": 0.0,
+        "pe": 57.203916,
+        "ebond": 75.0,
+        "eangle": 0.47846258,
+        "evdwl": 0.17317664,
+        "ecoul": -3.128618,
+        "elong": -15.319105,
+        "fnorm": 145.82675,
+        "fmax": 74.408009,
+        "press": -1392.115
+      },
+      "final": {
+        "step": 50.0,
+        "pe": -15.027361,
+        "ebond": 0.024860169,
+        "eangle": 0.18749785,
+        "evdwl": 0.075348287,
+        "ecoul": -0.44118797,
+        "elong": -14.87388,
+        "fnorm": 21.220825,
+        "fmax": 13.049678,
+        "press": -121.36004
+      },
+      "dominant_final": "elong"
+    }
+  },
+  "Zn_Ow_neutral_fragment": {
+    "returncode": 0,
+    "parsed": {
+      "lost_atoms": false,
+      "errors": [],
+      "nrows": 52,
+      "initial": {
+        "step": 0.0,
+        "pe": 54.466595,
+        "ebond": 75.0,
+        "eangle": 0.31396917,
+        "evdwl": 7.0349535,
+        "ecoul": -10.601479,
+        "elong": -17.280849,
+        "fnorm": 151.00552,
+        "fmax": 74.249144,
+        "press": -891.38635
+      },
+      "final": {
+        "step": 50.0,
+        "pe": -23.067882,
+        "ebond": 0.087171558,
+        "eangle": 0.069054545,
+        "evdwl": 4.3914784,
+        "ecoul": -10.152431,
+        "elong": -17.464479,
+        "fnorm": 4.1595415,
+        "fmax": 2.5160985,
+        "press": -29.97219
+      },
+      "dominant_final": "elong"
+    }
+  }
+}

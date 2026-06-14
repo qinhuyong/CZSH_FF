@@ -9,9 +9,19 @@ from mod_construct_brick_Y import *
 from mod_sample import *
 from mod_construct_supercell_Y import *
 from mod_write_Y import *
+from mod_zinc import apply_zinc_modification, finalize_zinc_summary
 from mod_check import *
 from parameters import *
-from mod_make_graphs import *
+try:
+    from mod_make_graphs import *
+except ImportError:
+    def _skip_plot(*args, **kwargs):
+        return None
+    plot_XOH_X = _skip_plot
+    plot_MCL = _skip_plot
+    plot_distributions = _skip_plot
+    plot_water = _skip_plot
+    plot_experimental = _skip_plot
 import time
 import sys
 
@@ -46,6 +56,9 @@ except NameError: write_lammps = True
 try: write_lammps_erica
 except NameError: write_lammps_erica = True
 
+try: write_lammps_cementff
+except NameError: write_lammps_cementff = False
+
 try: write_vasp
 except NameError: write_vasp = False
 
@@ -66,6 +79,36 @@ except NameError: substitute=[0]
 
 try: grid
 except NameError: grid=[0]
+
+try: enable_zinc
+except NameError: enable_zinc = False
+
+try: Zn_Si_ratio
+except NameError: Zn_Si_ratio = 0.0
+
+try: Zn_site_type
+except NameError: Zn_site_type = "mixed_Q1_Q2b_Zn"
+
+try: Zn_seed
+except NameError: Zn_seed = seed
+
+try: write_zinc_summary
+except NameError: write_zinc_summary = True
+
+try: Zn_charge_balance_mode
+except NameError: Zn_charge_balance_mode = "hydroxylate_two_oxygens"
+
+try: allow_unbalanced_for_debug
+except NameError: allow_unbalanced_for_debug = False
+
+try: allow_hydroxylate_bridging_oxygen
+except NameError: allow_hydroxylate_bridging_oxygen = False
+
+try: precondition_zinc_geometry
+except NameError: precondition_zinc_geometry = True
+
+try: target_Zn_O_distance
+except NameError: target_Zn_O_distance = 1.95
 
 
 widths = [width_Ca_Si, width_SiOH, width_CaOH]
@@ -151,8 +194,22 @@ if create:
 
             crystal_rs, water_in_crystal_rs =  resize_crystal(crystal, water_in_crystal, size)
             entries_crystal, entries_bonds, crystal_dict, water_dict = get_full_coordinates( crystal_rs, water_in_crystal_rs, size, pieces, guest_ions, substitute )
-
             entries_angle = get_angles(crystal_dict, water_dict, size)
+
+            zinc_summary = None
+            if enable_zinc:
+                entries_crystal, crystal_dict, zinc_summary = apply_zinc_modification(
+                    entries_crystal, crystal_dict, supercell, Zn_Si_ratio, Zn_site_type,
+                    Zn_seed + jsample, N_Ca/N_Si, Zn_charge_balance_mode, entries_bonds, entries_angle,
+                    allow_hydroxylate_bridging_oxygen, precondition_zinc_geometry, target_Zn_O_distance
+                )
+
+            if zinc_summary is not None:
+                zinc_summary = finalize_zinc_summary(
+                    entries_crystal, entries_bonds, entries_angle, supercell, zinc_summary,
+                    Zn_charge_balance_mode, allow_unbalanced_for_debug
+                )
+                print("Zn output classification: {:}".format(zinc_summary["output_classification"]))
 
             # Water molecule overlap
             entries_crystal, N_not_ok, itry = check_move_water_hydrogens(entries_crystal)
@@ -165,7 +222,8 @@ if create:
 
             write_output( jsample, entries_crystal, entries_bonds, entries_angle, size, crystal_rs, water_in_crystal_rs,
                            supercell, N_Ca, N_Si, r_SiOH, r_CaOH, MCL, write_lammps, write_lammps_erica, write_vasp, write_siesta,
-                           prefix, unitcell, orthogonal, shift, diferentiate, dpore, saturation, grid, guest_ions)
+                           prefix, unitcell, orthogonal, shift, diferentiate, dpore, saturation, grid, guest_ions,
+                           write_lammps_cementff, zinc_summary, write_zinc_summary)
 
             jsample += 1
 

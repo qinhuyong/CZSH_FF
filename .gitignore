@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+output_Y/
+created_samples.log
+log.lammps
+*.lammpstrj

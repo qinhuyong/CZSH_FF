@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.log
+*.lammps
 *.lammpstrj
 *.dump
 output_Y/**/*.data

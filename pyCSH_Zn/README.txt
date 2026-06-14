@@ -44,6 +44,10 @@ For the v1.1-static-relaxation workflow, run after the first four commands:
 
     python examples/06_run_static_relaxation.py
 
+For the v1.2-quasistatic-mechanics workflow, run after v1.1:
+
+    python examples/07_run_quasistatic_mechanics.py
+
 Expected validation result:
 
     pure_csh_cementff.data  -> valid_static_candidate
@@ -171,3 +175,16 @@ The runner writes:
     output_Y/workflow_v1/static_relaxation_report.json
 
 Finite-temperature MD is not run.
+
+v1.2-quasistatic-mechanics
+--------------------------
+
+examples/07_run_quasistatic_mechanics.py starts from the v1.1 post-minimized
+pure C-S-H and Q2b_Zn structures. It generates x-direction +/-0.001, +/-0.002,
+and +/-0.003 strain cases, runs LAMMPS run0/deform/minimize/run0, reattaches
+CS-Info, validates each deformed minimized data file, and writes CSV/JSON
+summaries plus simple SVG plots.
+
+This is quasi-static mechanics pipeline validation only. It is not a final
+elastic-constant calculation and not a production mechanical-property result.
+Finite-temperature MD is not generated or run.

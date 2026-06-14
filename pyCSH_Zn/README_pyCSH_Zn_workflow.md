@@ -43,6 +43,7 @@ python examples/03_validate_outputs.py
 python examples/04_build_lammps_inputs.py
 python examples/05_postprocess_q2b_zn.py
 python examples/06_run_static_relaxation.py
+python examples/07_run_quasistatic_mechanics.py
 ```
 
 Outputs are written under:
@@ -115,6 +116,12 @@ The v1.1 static-relaxation workflow builds and tests:
 It runs pure C-S-H first, then Q2b_Zn. LAMMPS `write_data` does not preserve the custom `CS-Info` section, so the runner reattaches original `CS-Info` entries by atom ID before post-minimization validation. No finite-temperature MD is run.
 
 The x-strain templates use scale factors `1.0+strain` and `1.0-strain`. They are quasi-static elastic input-validation smoke tests only, not final elastic constants.
+
+## v1.2 Quasi-Static Mechanics
+
+`examples/07_run_quasistatic_mechanics.py` starts from the v1.1 post-minimized structures and runs x-direction strain cases at +/-0.001, +/-0.002, and +/-0.003 for pure C-S-H and Q2b_Zn. It writes mechanics CSV/JSON summaries and simple SVG plots.
+
+This is a controlled quasi-static mechanics pipeline validation only. It is not a final elastic constants workflow, not a production mechanical-property calculation, and not finite-temperature MD.
 
 ## CS-Info Policy
 

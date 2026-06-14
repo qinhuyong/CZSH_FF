@@ -40,6 +40,10 @@ Run from this directory:
     python examples/04_build_lammps_inputs.py
     python examples/05_postprocess_q2b_zn.py
 
+For the v1.1-static-relaxation workflow, run after the first four commands:
+
+    python examples/06_run_static_relaxation.py
+
 Expected validation result:
 
     pure_csh_cementff.data  -> valid_static_candidate
@@ -104,9 +108,9 @@ Main files
   executable to catch runtime pair_coeff syntax errors.
 
 - lammps_templates/build_inputs.py
-  Generates read-check, static minimization, static shell relaxation,
-  quasi-static elastic templates, and one clearly experimental short-MD
-  template.
+  Generates read-check, run0, static minimization, static shell relaxation,
+  and quasi-static elastic templates. It does not generate finite-temperature
+  MD inputs.
 
 - postprocess/analyze_structure.py
   Produces normalized RDF CSV files using PBC, shell volume, number density,
@@ -141,3 +145,24 @@ examples/05_postprocess_q2b_zn.py writes:
 - rdf_Ca_O.csv
 
 These RDF files are normalized g(r), not raw distance histograms.
+
+v1.1-static-relaxation
+----------------------
+
+examples/06_run_static_relaxation.py runs LAMMPS for pure C-S-H first and then
+Q2b_Zn. For each target it tests:
+
+- in.read_check
+- in.run0
+- in.minimize_static
+- in.elastic_quasistatic
+
+LAMMPS write_data output does not preserve the custom CS-Info section, so the
+runner reattaches the original CS-Info by atom ID before post-minimization
+validation. The validator semantics are unchanged.
+
+The runner writes:
+
+    output_Y/workflow_v1/static_relaxation_report.json
+
+Finite-temperature MD is not run.

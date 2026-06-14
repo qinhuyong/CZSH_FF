@@ -32,19 +32,26 @@ def header(data_file, ff_file, run_dir):
     ]
 
 
-def build(data_file, ff_file, out_dir):
+def build(data_file, ff_file, out_dir, prefix="static"):
     if not os.path.isdir(out_dir):
         os.makedirs(out_dir)
     outputs = {}
     outputs["read_check"] = os.path.join(out_dir, "in.read_check")
-    write(outputs["read_check"], header(data_file, ff_file, out_dir) + ["run 0"])
+    write(outputs["read_check"], header(data_file, ff_file, out_dir) + [
+        "print \"LAMMPS read_check completed for {}\"".format(prefix),
+    ])
+
+    outputs["run0"] = os.path.join(out_dir, "in.run0")
+    write(outputs["run0"], header(data_file, ff_file, out_dir) + [
+        "run 0",
+    ])
 
     outputs["minimize_static"] = os.path.join(out_dir, "in.minimize_static")
     write(outputs["minimize_static"], header(data_file, ff_file, out_dir) + [
         "min_style cg",
         "min_modify dmax 0.01 line quadratic",
         "minimize 1e-6 1e-8 1000 10000",
-        "write_data minimized_static.data nocoeff",
+        "write_data {}_minimized_static.raw.data nocoeff".format(prefix),
     ])
 
     outputs["static_relax_shell"] = os.path.join(out_dir, "in.static_relax_shell")
@@ -56,34 +63,21 @@ def build(data_file, ff_file, out_dir):
         "min_modify dmax 0.001",
         "minimize 1e-8 1e-10 500 5000",
         "unfix freeze",
-        "write_data shell_relaxed_static.data nocoeff",
+        "write_data {}_shell_relaxed_static.raw.data nocoeff".format(prefix),
     ])
 
     outputs["elastic_quasistatic"] = os.path.join(out_dir, "in.elastic_quasistatic")
     write(outputs["elastic_quasistatic"], header(data_file, ff_file, out_dir) + [
-        "# Quasi-static deformation template; edit variable strain before use.",
+        "# Quasi-static static-deformation template; edit variable strain before use.",
         "variable strain equal 0.001",
-        "change_box all x scale ${strain} remap",
+        "variable xscale equal 1.0+v_strain",
+        "change_box all x scale ${xscale} remap",
         "min_style cg",
         "min_modify dmax 0.002",
         "minimize 1e-6 1e-8 1000 10000",
-        "write_data elastic_step.data nocoeff",
+        "write_data {}_elastic_x_plus.raw.data nocoeff".format(prefix),
     ])
 
-    outputs["short_md_experimental"] = os.path.join(out_dir, "in.short_md_experimental")
-    write(outputs["short_md_experimental"], header(data_file, ff_file, out_dir) + [
-        "# EXPERIMENTAL: finite-temperature core-shell MD protocol is not validated.",
-        "# Use only after separately validating the core-shell dynamics protocol.",
-        "compute CStemp all temp/cs cores shells",
-        "thermo_modify temp CStemp",
-        "timestep 0.000028",
-        "velocity all create 10 134 dist gaussian mom yes rot no bias yes temp CStemp",
-        "velocity all scale 10 temp CStemp",
-        "fix thermostat all temp/berendsen 10 10 0.028",
-        "fix_modify thermostat temp CStemp",
-        "fix nve_all all nve",
-        "run 1000",
-    ])
     manifest = os.path.join(out_dir, "lammps_input_manifest.json")
     with open(manifest, "w") as f:
         json.dump(outputs, f, indent=2, sort_keys=True)
@@ -97,8 +91,9 @@ def main():
     parser.add_argument("--data", required=True)
     parser.add_argument("--ff", required=True)
     parser.add_argument("--out", required=True)
+    parser.add_argument("--prefix", default="static")
     args = parser.parse_args()
-    print(json.dumps(build(args.data, args.ff, args.out), indent=2))
+    print(json.dumps(build(args.data, args.ff, args.out, args.prefix), indent=2))
 
 
 if __name__ == "__main__":

@@ -13,11 +13,23 @@ from lammps_templates.build_inputs import build as build_inputs
 
 
 if __name__ == "__main__":
+    pure_dir = os.path.join("output_Y", "workflow_v1", "pure_csh")
     q2b_dir = os.path.join("output_Y", "workflow_v1", "q2b_zn")
+    pure_ff_result = build_forcefield(pure_dir)
     ff_result = build_forcefield(q2b_dir)
-    inputs = build_inputs(
+    pure_inputs = build_inputs(
+        os.path.join(pure_dir, "pure_csh_cementff.data"),
+        pure_ff_result["forcefield"],
+        os.path.join(pure_dir, "lammps_inputs"),
+        "pure_csh",
+    )
+    q2b_inputs = build_inputs(
         os.path.join(q2b_dir, "q2b_zn_cementff_zn.data"),
         ff_result["forcefield"],
         os.path.join(q2b_dir, "lammps_inputs"),
+        "q2b_zn",
     )
-    print(json.dumps({"forcefield": ff_result, "inputs": inputs}, indent=2, sort_keys=True))
+    print(json.dumps({
+        "pure_csh": {"forcefield": pure_ff_result, "inputs": pure_inputs},
+        "q2b_zn": {"forcefield": ff_result, "inputs": q2b_inputs},
+    }, indent=2, sort_keys=True))

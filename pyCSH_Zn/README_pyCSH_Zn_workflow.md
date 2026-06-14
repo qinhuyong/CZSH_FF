@@ -11,8 +11,8 @@ This branch adds a conservative pyCSH-Zn workflow for generating CementFF4/Cemen
 - Fixed CementFF4 atom, bond, and angle type maps.
 - LAMMPS data output with molecule IDs and `CS-Info`.
 - JSON summaries for mapping, water, Zn, validation, and post-processing.
-- LAMMPS input templates for read checks, static minimization, shell static relaxation, and quasi-static elastic deformation.
-- Experimental short-MD template, clearly marked as not validated.
+- LAMMPS input templates for read checks, run0 checks, static minimization, shell static relaxation, and quasi-static elastic deformation.
+- LAMMPS static-relaxation runner for pure C-S-H first and Q2b_Zn second.
 
 ## Not Supported Yet
 
@@ -42,6 +42,7 @@ python examples/02_generate_q2b_zn.py
 python examples/03_validate_outputs.py
 python examples/04_build_lammps_inputs.py
 python examples/05_postprocess_q2b_zn.py
+python examples/06_run_static_relaxation.py
 ```
 
 Outputs are written under:
@@ -49,6 +50,8 @@ Outputs are written under:
 ```text
 output_Y/workflow_v1/
 ```
+
+`examples/06_run_static_relaxation.py` requires a LAMMPS executable available as `lmp` or via `LAMMPS_EXE`.
 
 ## Fixed Type Maps
 
@@ -98,6 +101,17 @@ The validator uses static candidate classifications:
 `valid_q2b_zn_candidate` means a static CementFF4-Zn candidate only. It is not an MD-ready label.
 
 `md_ready_candidate` is intentionally not used. Finite-temperature core-shell MD must be validated separately before that label is introduced.
+
+## v1.1 Static Relaxation
+
+The v1.1 static-relaxation workflow builds and tests:
+
+- `in.read_check`
+- `in.run0`
+- `in.minimize_static`
+- `in.elastic_quasistatic`
+
+It runs pure C-S-H first, then Q2b_Zn. LAMMPS `write_data` does not preserve the custom `CS-Info` section, so the runner reattaches original `CS-Info` entries by atom ID before post-minimization validation. No finite-temperature MD is run.
 
 ## CS-Info Policy
 

@@ -517,8 +517,8 @@ def get_lammps_input_cementff(name, entries_crystal, entries_bonds, entries_angl
     )
     csinfo, cs_pairs = cementff4_csinfo(entries_crystal, entries_bonds)
     has_zinc = any(int(entry[1]) == 14 for entry in entries_crystal)
-    max_atom_type = 9 if has_zinc else 8
-    max_angle_type = 5 if has_zinc else 3
+    max_atom_type = 9
+    max_angle_type = 5
 
     with open(name, "w") as f:
         f.write("Generated with pyCSH CementFF4 output\n")

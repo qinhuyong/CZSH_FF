@@ -109,9 +109,12 @@ The v1.1 static-relaxation workflow builds and tests:
 - `in.read_check`
 - `in.run0`
 - `in.minimize_static`
-- `in.elastic_quasistatic`
+- `in.elastic_x_plus`
+- `in.elastic_x_minus`
 
 It runs pure C-S-H first, then Q2b_Zn. LAMMPS `write_data` does not preserve the custom `CS-Info` section, so the runner reattaches original `CS-Info` entries by atom ID before post-minimization validation. No finite-temperature MD is run.
+
+The x-strain templates use scale factors `1.0+strain` and `1.0-strain`. They are quasi-static elastic input-validation smoke tests only, not final elastic constants.
 
 ## CS-Info Policy
 

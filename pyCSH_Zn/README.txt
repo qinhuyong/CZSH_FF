@@ -155,11 +155,16 @@ Q2b_Zn. For each target it tests:
 - in.read_check
 - in.run0
 - in.minimize_static
-- in.elastic_quasistatic
+- in.elastic_x_plus
+- in.elastic_x_minus
 
 LAMMPS write_data output does not preserve the custom CS-Info section, so the
 runner reattaches the original CS-Info by atom ID before post-minimization
 validation. The validator semantics are unchanged.
+
+The x-direction strain templates are small-strain smoke tests for quasi-static
+input validation only. They do not claim final elastic constants or final
+mechanical-property results.
 
 The runner writes:
 

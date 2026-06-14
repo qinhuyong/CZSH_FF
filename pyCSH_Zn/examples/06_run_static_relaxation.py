@@ -20,8 +20,10 @@ TARGETS = [
         "input_dir": os.path.join("output_Y", "workflow_v1", "pure_csh", "lammps_inputs"),
         "min_raw": "pure_csh_minimized_static.raw.data",
         "min_with_cs": "pure_csh_minimized_static.data",
-        "elastic_raw": "pure_csh_elastic_x_plus.raw.data",
-        "elastic_with_cs": "pure_csh_elastic_x_plus.data",
+        "elastic_plus_raw": "pure_csh_elastic_x_plus.raw.data",
+        "elastic_plus_with_cs": "pure_csh_elastic_x_plus.data",
+        "elastic_minus_raw": "pure_csh_elastic_x_minus.raw.data",
+        "elastic_minus_with_cs": "pure_csh_elastic_x_minus.data",
     },
     {
         "name": "q2b_zn",
@@ -29,8 +31,10 @@ TARGETS = [
         "input_dir": os.path.join("output_Y", "workflow_v1", "q2b_zn", "lammps_inputs"),
         "min_raw": "q2b_zn_minimized_static.raw.data",
         "min_with_cs": "q2b_zn_minimized_static.data",
-        "elastic_raw": "q2b_zn_elastic_x_plus.raw.data",
-        "elastic_with_cs": "q2b_zn_elastic_x_plus.data",
+        "elastic_plus_raw": "q2b_zn_elastic_x_plus.raw.data",
+        "elastic_plus_with_cs": "q2b_zn_elastic_x_plus.data",
+        "elastic_minus_raw": "q2b_zn_elastic_x_minus.raw.data",
+        "elastic_minus_with_cs": "q2b_zn_elastic_x_minus.data",
     },
 ]
 
@@ -112,7 +116,7 @@ def validate_with_cs(reference_data, input_dir, raw_name, final_name):
 def run_target(lmp, target):
     input_dir = target["input_dir"]
     record = {"name": target["name"], "input_dir": input_dir, "steps": {}}
-    for input_name in ("in.read_check", "in.run0", "in.minimize_static", "in.elastic_quasistatic"):
+    for input_name in ("in.read_check", "in.run0", "in.minimize_static", "in.elastic_x_plus", "in.elastic_x_minus"):
         record["steps"][input_name] = run_lammps(lmp, input_dir, input_name)
         if not record["steps"][input_name]["ok"]:
             record["ok"] = False
@@ -120,13 +124,17 @@ def run_target(lmp, target):
     record["post_minimization_validation"] = validate_with_cs(
         target["data"], input_dir, target["min_raw"], target["min_with_cs"]
     )
-    record["elastic_step_validation"] = validate_with_cs(
-        target["data"], input_dir, target["elastic_raw"], target["elastic_with_cs"]
+    record["elastic_x_plus_validation"] = validate_with_cs(
+        target["data"], input_dir, target["elastic_plus_raw"], target["elastic_plus_with_cs"]
+    )
+    record["elastic_x_minus_validation"] = validate_with_cs(
+        target["data"], input_dir, target["elastic_minus_raw"], target["elastic_minus_with_cs"]
     )
     record["ok"] = (
         all(step["ok"] for step in record["steps"].values())
         and record["post_minimization_validation"]["ok"]
-        and record["elastic_step_validation"]["ok"]
+        and record["elastic_x_plus_validation"]["ok"]
+        and record["elastic_x_minus_validation"]["ok"]
     )
     return record
 

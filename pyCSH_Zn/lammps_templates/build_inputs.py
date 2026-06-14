@@ -66,16 +66,30 @@ def build(data_file, ff_file, out_dir, prefix="static"):
         "write_data {}_shell_relaxed_static.raw.data nocoeff".format(prefix),
     ])
 
-    outputs["elastic_quasistatic"] = os.path.join(out_dir, "in.elastic_quasistatic")
-    write(outputs["elastic_quasistatic"], header(data_file, ff_file, out_dir) + [
-        "# Quasi-static static-deformation template; edit variable strain before use.",
+    outputs["elastic_x_plus"] = os.path.join(out_dir, "in.elastic_x_plus")
+    write(outputs["elastic_x_plus"], header(data_file, ff_file, out_dir) + [
+        "# Quasi-static x-direction positive small-strain smoke test.",
+        "# This validates the input path only; it is not a full elastic constants calculation.",
         "variable strain equal 0.001",
-        "variable xscale equal 1.0+v_strain",
-        "change_box all x scale ${xscale} remap",
+        "variable sx equal 1.0+${strain}",
+        "change_box all x scale ${sx} remap",
         "min_style cg",
         "min_modify dmax 0.002",
         "minimize 1e-6 1e-8 1000 10000",
         "write_data {}_elastic_x_plus.raw.data nocoeff".format(prefix),
+    ])
+
+    outputs["elastic_x_minus"] = os.path.join(out_dir, "in.elastic_x_minus")
+    write(outputs["elastic_x_minus"], header(data_file, ff_file, out_dir) + [
+        "# Quasi-static x-direction negative small-strain smoke test.",
+        "# This validates the input path only; it is not a full elastic constants calculation.",
+        "variable strain equal 0.001",
+        "variable sx equal 1.0-${strain}",
+        "change_box all x scale ${sx} remap",
+        "min_style cg",
+        "min_modify dmax 0.002",
+        "minimize 1e-6 1e-8 1000 10000",
+        "write_data {}_elastic_x_minus.raw.data nocoeff".format(prefix),
     ])
 
     manifest = os.path.join(out_dir, "lammps_input_manifest.json")

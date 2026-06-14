@@ -857,7 +857,10 @@ def hydroxylation_topology_audit(entries_crystal, entries_bonds, entries_angle, 
             o_id = int(oxy["oxygen_atom_id"])
             h_id = int(oxy["reused_shell_as_H_atom_id"])
             bonds = [list(bond) for bond in entries_bonds if int(bond[2]) in (o_id, h_id) or int(bond[3]) in (o_id, h_id)]
-            shell_bonds = [bond for bond in bonds if int(bond[1]) == 3]
+            shell_bonds = [
+                bond for bond in bonds
+                if int(bond[1]) == 3 and {atom_types.get(int(bond[2])), atom_types.get(int(bond[3]))} == {3, 4}
+            ]
             oh_bonds = [bond for bond in bonds if int(bond[1]) == 1 and {int(bond[2]), int(bond[3])} == {o_id, h_id}]
             angles = [list(angle) for angle in entries_angle if o_id in [int(angle[2]), int(angle[3]), int(angle[4])] or h_id in [int(angle[2]), int(angle[3]), int(angle[4])]]
             item = {

@@ -32,6 +32,19 @@ CEMENTFF4_LAMMPS_TYPES = {
 }
 
 
+def cementff4_bond_type(entry, entries_crystal=None):
+    internal_bond_type = int(entry[1])
+    if entries_crystal is not None:
+        atom_types = {int(atom[0]): int(atom[1]) for atom in entries_crystal}
+        atom_i = atom_types.get(int(entry[2]))
+        atom_j = atom_types.get(int(entry[3]))
+        if {atom_i, atom_j} == {3, 4}:
+            return 1
+    if internal_bond_type == 3:
+        return 1
+    return internal_bond_type
+
+
 def cementff4_atom_type(entry):
     internal_type = int(entry[1])
     if internal_type not in CEMENTFF4_TYPE_MAP:
@@ -86,7 +99,11 @@ def get_lammps_input_cementff(name, entries_crystal, entries_bonds, entries_angl
         if entries_bonds:
             f.write("\nBonds\n\n")
             for entry in entries_bonds:
-                f.write("{: 8d} {: 8d} {: 8d} {: 8d}\n".format(*entry))
+                f.write(
+                    "{: 8d} {: 8d} {: 8d} {: 8d}\n".format(
+                        int(entry[0]), cementff4_bond_type(entry, entries_crystal), int(entry[2]), int(entry[3])
+                    )
+                )
 
         if entries_angle:
             f.write("\nAngles\n\n")

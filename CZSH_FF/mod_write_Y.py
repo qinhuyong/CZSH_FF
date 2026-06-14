@@ -36,12 +36,15 @@ def cementff4_bond_type(entry, entries_crystal=None):
     internal_bond_type = int(entry[1])
     if entries_crystal is not None:
         atom_types = {int(atom[0]): int(atom[1]) for atom in entries_crystal}
-        atom_i = atom_types.get(int(entry[2]))
-        atom_j = atom_types.get(int(entry[3]))
-        if {atom_i, atom_j} == {3, 4}:
+        atom_i = CEMENTFF4_TYPE_MAP.get(atom_types.get(int(entry[2])), {}).get("lammps_type")
+        atom_j = CEMENTFF4_TYPE_MAP.get(atom_types.get(int(entry[3])), {}).get("lammps_type")
+        pair = {atom_i, atom_j}
+        if pair == {3, 4}:
             return 1
-    if internal_bond_type == 3:
-        return 1
+        if pair == {5, 7}:
+            return 2
+        if pair == {6, 8}:
+            return 3
     return internal_bond_type
 
 

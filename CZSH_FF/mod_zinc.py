@@ -859,21 +859,30 @@ def hydroxylation_topology_audit(entries_crystal, entries_bonds, entries_angle, 
             bonds = [list(bond) for bond in entries_bonds if int(bond[2]) in (o_id, h_id) or int(bond[3]) in (o_id, h_id)]
             shell_bonds = [
                 bond for bond in bonds
-                if int(bond[1]) == 3 and {atom_types.get(int(bond[2])), atom_types.get(int(bond[3]))} == {3, 4}
+                if int(bond[1]) == 3
+                and (
+                    {atom_types.get(int(bond[2])), atom_types.get(int(bond[3]))} == {3, 4}
+                    or {atom_types.get(int(bond[2])), atom_types.get(int(bond[3]))} == {11, 4}
+                )
             ]
-            oh_bonds = [bond for bond in bonds if int(bond[1]) == 1 and {int(bond[2]), int(bond[3])} == {o_id, h_id}]
+            oh_bonds = [
+                bond for bond in bonds
+                if {int(bond[2]), int(bond[3])} == {o_id, h_id}
+                and {atom_types.get(int(bond[2])), atom_types.get(int(bond[3]))} == {6, 8}
+            ]
             angles = [list(angle) for angle in entries_angle if o_id in [int(angle[2]), int(angle[3]), int(angle[4])] or h_id in [int(angle[2]), int(angle[3]), int(angle[4])]]
             item = {
                 "oxygen_atom_id": o_id,
                 "hoh_atom_id": h_id,
                 "oxygen_type": atom_types.get(o_id),
                 "hoh_type": atom_types.get(h_id),
-                "has_correct_oh_hoh_bond": bool(oh_bonds),
+                "has_correct_oh_hoh_bond_internal": bool(oh_bonds),
+                "expected_cementff_oh_hoh_bond_type": 3,
                 "remaining_core_shell_bonds": shell_bonds,
                 "bonds_involving_pair": bonds,
                 "angles_involving_pair": angles,
             }
-            if item["oxygen_type"] != 6 or item["hoh_type"] != 8 or not item["has_correct_oh_hoh_bond"] or shell_bonds:
+            if item["oxygen_type"] != 6 or item["hoh_type"] != 8 or not item["has_correct_oh_hoh_bond_internal"] or shell_bonds:
                 bad_records.append(item)
             audit.append(item)
     return {"records": audit, "bad_records": bad_records}

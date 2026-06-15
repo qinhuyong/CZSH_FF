@@ -146,6 +146,33 @@ This default path does not run post-min screening and does not hard-code a site 
 
 Outputs are written under `output_Y/workflow_v1/mechanics_q1_zn/`. This is not a final elastic-constants workflow and not a production mechanical-property calculation. `examples/07_run_quasistatic_mechanics.py` still defaults to pure C-S-H and Q2b_Zn only.
 
+## v1.4 Zn-C-S-H Ensemble Generator
+
+`examples/12_generate_zn_csh_ensemble.py` generates constrained random Zn-C-S-H static candidate ensembles from independent seeds.
+
+Example:
+
+```text
+python pyCSH_Zn/examples/12_generate_zn_csh_ensemble.py --n-models 20 --seed-start 1000 --mode q1_q2b_mixture --q1-fraction 0.5 --target-zn-si 0.05 --run-static-relaxation
+```
+
+Outputs are written under `output_Y/workflow_v1/zn_csh_ensemble/`:
+
+- `ensemble_manifest.json`
+- `ensemble_summary.csv`
+- `ensemble_summary.json`
+- `accepted_models.csv`
+- `rejected_models.csv`
+- `models/model_000001/`
+
+Accepted models are post-minimized structures classified as `valid_q1_zn_candidate` or `valid_q2b_zn_candidate`. Rejected models include generation failures, failed initial validation, and failed post-min validation. The ensemble run continues after individual model failures.
+
+Supported modes are `q2b_only`, `q1_only`, and `q1_q2b_mixture`. The `q1_q2b_mixture` mode is an ensemble-level mixture: each independent model is assigned either Q1_Zn or Q2b_Zn according to `--q1-fraction`. It is not the old `mixed_Q1_Q2b_Zn` site type and does not create a single local mixed motif.
+
+v1.4 supports one Zn motif per generated structure. Multiple Zn motifs within the same structure are not yet supported because shared O/H topology, Zn-Zn separation, and coupled charge-balance constraints require additional screening.
+
+This is static candidate ensemble generation, not finite-temperature MD, not final elastic constants, and not production mechanical-property calculation.
+
 ## CS-Info Policy
 
 `CS-Info` contains entries for all atoms. Bonded `O_core`/`O_shell` pairs share the same CSID. Non-core-shell atoms have singleton CSIDs. The validator checks both complete CS-Info coverage and bonded core-shell pair consistency.

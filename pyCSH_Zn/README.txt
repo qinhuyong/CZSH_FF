@@ -76,6 +76,34 @@ post-min validation:
 This writes output_Y/workflow_v1/mechanics_q1_zn/ and does not change the
 default pure/Q2b mechanics workflow.
 
+Zn-C-S-H ensemble generation:
+
+    python examples/12_generate_zn_csh_ensemble.py --n-models 20 --seed-start 1000 --mode q1_q2b_mixture --q1-fraction 0.5 --target-zn-si 0.05 --run-static-relaxation
+
+Outputs are written under:
+
+    output_Y/workflow_v1/zn_csh_ensemble/
+
+Key files:
+
+    ensemble_manifest.json
+    ensemble_summary.csv
+    ensemble_summary.json
+    accepted_models.csv
+    rejected_models.csv
+    models/model_000001/
+
+Accepted models are post-minimized structures that validate as
+valid_q1_zn_candidate or valid_q2b_zn_candidate. Rejected models include
+generation failures, initial-validation failures, and post-min validation
+failures; one failure does not stop the ensemble.
+
+The q1_q2b_mixture mode is an ensemble-level mixture: each independently
+generated model uses either Q1_Zn or Q2b_Zn. It does not enable the old
+mixed_Q1_Q2b_Zn site type and does not create a single-structure mixed motif.
+v1.4 supports one Zn motif per structure; multiple Zn motifs in the same
+structure are not yet supported.
+
 Outputs are written under:
 
     output_Y/workflow_v1/

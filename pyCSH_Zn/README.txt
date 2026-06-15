@@ -48,10 +48,21 @@ For the v1.2-quasistatic-mechanics workflow, run after v1.1:
 
     python examples/07_run_quasistatic_mechanics.py
 
+For v1.3.2 Q1_Zn motif screening:
+
+    python examples/10_screen_q1_motifs.py
+
 Expected validation result:
 
     pure_csh_cementff.data  -> valid_static_candidate
     q2b_zn_cementff_zn.data -> valid_q2b_zn_candidate
+
+Q1_Zn motif screening writes candidate rankings under:
+
+    output_Y/workflow_v1/q1_motif_screening/
+
+Q1_Zn is not added to default mechanics unless a screened post-minimized
+candidate validates as valid_q1_zn_candidate.
 
 Outputs are written under:
 

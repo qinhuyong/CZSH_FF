@@ -45,6 +45,7 @@ python examples/04_build_lammps_inputs.py
 python examples/05_postprocess_q2b_zn.py
 python examples/06_run_static_relaxation.py
 python examples/07_run_quasistatic_mechanics.py
+python examples/10_screen_q1_motifs.py
 ```
 
 Outputs are written under:
@@ -126,6 +127,12 @@ The x-strain templates use scale factors `1.0+strain` and `1.0-strain`. They are
 Q1_Zn mechanics remains opt-in and should only be run after the Q1 static-relaxation path validates.
 
 This is a controlled quasi-static mechanics pipeline validation only. It is not a final elastic constants workflow, not a production mechanical-property calculation, and not finite-temperature MD.
+
+## v1.3.2 Q1 Motif Screening
+
+`examples/10_screen_q1_motifs.py` screens multiple topology-valid Q1_Zn motifs from the same generated base structure. Each candidate is independently minimized and validated; failures are kept in the summary rather than hidden.
+
+The screening writes CSV/JSON rankings under `output_Y/workflow_v1/q1_motif_screening/`. Q1_Zn remains outside the default mechanics workflow unless a screened post-minimized candidate validates as `valid_q1_zn_candidate`.
 
 ## CS-Info Policy
 

@@ -14,6 +14,7 @@ from validate_cementff_data import validate
 TARGETS = [
     os.path.join("output_Y", "workflow_v1", "pure_csh", "pure_csh_cementff.data"),
     os.path.join("output_Y", "workflow_v1", "q2b_zn", "q2b_zn_cementff_zn.data"),
+    os.path.join("output_Y", "workflow_v1", "q1_zn", "q1_zn_cementff_zn.data"),
 ]
 
 

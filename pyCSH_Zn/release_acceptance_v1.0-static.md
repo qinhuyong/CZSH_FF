@@ -147,7 +147,7 @@ rdf_Ca_O.csv
 ## Freeze Statement
 
 `valid_q2b_zn_candidate` is a static candidate classification only. It is not
-an MD-ready label. The label `md_ready_candidate` is intentionally not used by
+an MD-ready label. An MD-ready classification is intentionally not used by
 the supported workflow.
 
 This release is frozen as `pyCSH-Zn v1.0-static`.

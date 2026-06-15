@@ -41,6 +41,14 @@ TARGETS = [
         "ff": os.path.join("output_Y", "workflow_v1", "q2b_zn", "in.CementFF4_Zn"),
         "expected_classes": ("valid_q2b_zn_candidate", "needs_static_relaxation"),
     },
+    {
+        "name": "q1_zn",
+        "label": "Q1_Zn",
+        "base_dir": os.path.join("output_Y", "workflow_v1", "q1_zn"),
+        "base_data": os.path.join("output_Y", "workflow_v1", "q1_zn", "lammps_inputs", "q1_zn_minimized_static.data"),
+        "ff": os.path.join("output_Y", "workflow_v1", "q1_zn", "in.CementFF4_Zn"),
+        "expected_classes": ("valid_q1_zn_candidate",),
+    },
 ]
 
 CSV_FIELDS = [
@@ -235,6 +243,20 @@ def structure_metrics(data):
     }
 
 
+def q1_mechanics_enabled():
+    return os.environ.get("PYCSH_ZN_INCLUDE_Q1_MECHANICS") == "1"
+
+
+def q1_reference_is_valid(path):
+    if not os.path.exists(path):
+        return False
+    return validate(
+        path,
+        expected_zinc_site_type="Q1_Zn",
+        zinc_summary_path=os.path.join("output_Y", "workflow_v1", "q1_zn", "zinc_summary.json"),
+    )["classification"] == "valid_q1_zn_candidate"
+
+
 def severe_failures(validation, metrics, target_name):
     if validation["charge_assignment"]["n_bad"]:
         return "charge assignment failure"
@@ -243,6 +265,9 @@ def severe_failures(validation, metrics, target_name):
     if validation["water"]["n_bad_water"]:
         return "water topology failure"
     if target_name == "q2b_zn":
+        if metrics["zn_coordination_2p5"] is None or metrics["zn_coordination_2p5"] < 4:
+            return "severe Zn coordination collapse"
+    if target_name == "q1_zn":
         if metrics["zn_coordination_2p5"] is None or metrics["zn_coordination_2p5"] < 4:
             return "severe Zn coordination collapse"
     return None
@@ -265,7 +290,11 @@ def run_case(lmp, target, case_name, strain, mechanics_dir):
     fail_reason = None
     if run["ok"] and os.path.exists(raw_path):
         append_csinfo(target["base_data"], raw_path, final_data)
-        validation = validate(final_data)
+        validation = validate(
+            final_data,
+            expected_zinc_site_type=target["expected_zinc_site_type"] if "expected_zinc_site_type" in target else None,
+            zinc_summary_path=target.get("zinc_summary"),
+        )
         validation_path = os.path.splitext(final_data)[0] + "_validation.json"
         with open(validation_path, "w") as f:
             json.dump(validation, f, indent=2, sort_keys=True)
@@ -456,14 +485,22 @@ def generate_plots(out_dir, pure_rows, q2b_rows, combined_rows):
     ensure_dir(plots_dir)
     plots = {}
     x_key = "actual_strain"
+    q1_rows = [row for row in combined_rows if row["target"] == "q1_zn"]
     plots["energy_pure_csh"] = os.path.join(plots_dir, "energy_vs_strain_pure_csh.svg")
     plot_svg(plots["energy_pure_csh"], "Pure C-S-H energy vs actual strain", [("pure C-S-H", pure_rows)], x_key, "energy_final", "Potential energy")
     plots["energy_q2b_zn"] = os.path.join(plots_dir, "energy_vs_strain_q2b_zn.svg")
     plot_svg(plots["energy_q2b_zn"], "Q2b_Zn energy vs actual strain", [("Q2b_Zn", q2b_rows)], x_key, "energy_final", "Potential energy")
     plots["stress_xx_combined"] = os.path.join(plots_dir, "stress_xx_vs_strain.svg")
-    plot_svg(plots["stress_xx_combined"], "stress_xx vs actual strain", [("pure C-S-H", pure_rows), ("Q2b_Zn", q2b_rows)], x_key, "stress_xx_GPa", "Pxx (GPa)")
+    plot_svg(plots["stress_xx_combined"], "stress_xx vs actual strain", [("pure C-S-H", pure_rows), ("Q2b_Zn", q2b_rows), ("Q1_Zn", q1_rows)], x_key, "stress_xx_GPa", "Pxx (GPa)")
     plots["zn_coordination_q2b_zn"] = os.path.join(plots_dir, "zn_o_coordination_vs_strain_q2b_zn.svg")
     plot_svg(plots["zn_coordination_q2b_zn"], "Q2b_Zn Zn-O coordination vs actual strain", [("coordination 2.5 A", q2b_rows)], x_key, "zn_coordination_2p5", "Zn-O coordination")
+    if q1_rows:
+        plots["energy_q1_zn"] = os.path.join(plots_dir, "energy_vs_strain_q1_zn.svg")
+        plot_svg(plots["energy_q1_zn"], "Q1_Zn energy vs actual strain", [("Q1_Zn", q1_rows)], x_key, "energy_final", "Potential energy")
+        plots["stress_xx_q1_zn"] = os.path.join(plots_dir, "stress_xx_vs_strain_q1_zn.svg")
+        plot_svg(plots["stress_xx_q1_zn"], "Q1_Zn stress_xx vs actual strain", [("Q1_Zn", q1_rows)], x_key, "stress_xx_GPa", "Pxx (GPa)")
+        plots["zn_coordination_q1_zn"] = os.path.join(plots_dir, "zn_coordination_vs_strain_q1_zn.svg")
+        plot_svg(plots["zn_coordination_q1_zn"], "Q1_Zn Zn-O coordination vs actual strain", [("coordination 2.5 A", q1_rows)], x_key, "zn_coordination_2p5", "Zn-O coordination")
     return plots
 
 
@@ -485,7 +522,16 @@ def main():
     else:
         combined_rows = []
         rows_by_target = {}
+        active_targets = []
         for target in TARGETS:
+            if target["name"] == "q1_zn":
+                if not q1_mechanics_enabled() or not q1_reference_is_valid(target["base_data"]):
+                    continue
+                target = dict(target)
+                target["expected_zinc_site_type"] = "Q1_Zn"
+                target["zinc_summary"] = os.path.join("output_Y", "workflow_v1", "q1_zn", "zinc_summary.json")
+            active_targets.append(target)
+        for target in active_targets:
             target_record = {"name": target["name"], "cases": []}
             rows_by_target[target["name"]] = []
             for case_name, strain in STRAIN_CASES:
@@ -497,15 +543,20 @@ def main():
             report["targets"].append(target_record)
         pure_csv = os.path.join(mechanics_dir, "mechanics_summary_pure_csh.csv")
         q2b_csv = os.path.join(mechanics_dir, "mechanics_summary_q2b_zn.csv")
+        q1_csv = os.path.join(mechanics_dir, "mechanics_summary_q1_zn.csv")
         combined_csv = os.path.join(mechanics_dir, "mechanics_summary_combined.csv")
         write_csv(pure_csv, rows_by_target["pure_csh"])
         write_csv(q2b_csv, rows_by_target["q2b_zn"])
+        if "q1_zn" in rows_by_target:
+            write_csv(q1_csv, rows_by_target["q1_zn"])
         write_csv(combined_csv, combined_rows)
         report["summary_files"] = {
             "pure_csh": pure_csv,
             "q2b_zn": q2b_csv,
             "combined": combined_csv,
         }
+        if "q1_zn" in rows_by_target:
+            report["summary_files"]["q1_zn"] = q1_csv
         report["plots"] = generate_plots(mechanics_dir, rows_by_target["pure_csh"], rows_by_target["q2b_zn"], combined_rows)
         report["ok"] = all(target["ok"] for target in report["targets"])
     out = os.path.join(mechanics_dir, "mechanics_summary.json")

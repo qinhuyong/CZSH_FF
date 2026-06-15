@@ -62,8 +62,12 @@ CEMENTFF4_ANGLE_MAP = {
 
 Q1_PIECES = {"<L", "<R", ">L", ">R", "<Lo", "<Ro", ">Lo", ">Ro"}
 Q2B_PIECES = {"SU", "SD", "SUo", "SDo"}
-SUPPORTED_SITE_TYPES = {"Q1_Zn", "Q2b_Zn", "mixed_Q1_Q2b_Zn"}
-UNSUPPORTED_SITE_TYPES = {"interlayer_Zn", "Ca_substitution_control"}
+SUPPORTED_SITE_TYPES = {"Q1_Zn", "Q2b_Zn"}
+UNSUPPORTED_SITE_TYPES = {"mixed_Q1_Q2b_Zn", "interlayer_Zn", "Ca_substitution_control"}
+OXYGEN_LIKE_TYPES = {3, 4, 5, 6, 11, 12}
+ZN_COORDINATION_O_TYPES = {3, 5, 6, 11}
+Q1_ZN_O_TARGET = 1.95
+Q1_ZN_O_CUTOFF = 3.2
 
 
 def validate_zinc_site_type(site_type):
@@ -124,6 +128,305 @@ def inspect_zinc_candidates(crystal_dict):
         raise ValueError("No Q1-like or Q2b-like silicate sites were identified for Zn placement")
 
     return {"Q1_Zn": q1_sites, "Q2b_Zn": q2b_sites}
+
+
+def inspect_q1_zinc_candidates(crystal_dict):
+    return inspect_zinc_candidates(crystal_dict)["Q1_Zn"]
+
+
+def oxygen_role_label(specie):
+    if int(specie) in (3, 11):
+        return "O_core"
+    if int(specie) in (4, 12):
+        return "O_shell"
+    if int(specie) == 5:
+        return "Ow"
+    if int(specie) == 6:
+        return "Oh"
+    if int(specie) == 7:
+        return "Hw"
+    if int(specie) == 8:
+        return "Hoh"
+    return "other O"
+
+
+def is_oxygen_like(specie):
+    return int(specie) in OXYGEN_LIKE_TYPES
+
+
+def q1_precondition_score(site_report):
+    score = 0.0
+    n_safe = int(site_report.get("n_safe_terminal_oxygen", 0))
+    score += 30.0 * n_safe
+    distances = [
+        float(item["distance"])
+        for item in site_report.get("neighboring_O_atoms", [])
+        if item.get("safe_for_default_hydroxylation")
+    ]
+    if distances:
+        score -= 8.0 * abs(min(distances) - Q1_ZN_O_TARGET)
+        score -= 2.0 * abs(sum(distances) / float(len(distances)) - Q1_ZN_O_TARGET)
+    if not site_report.get("passed_preconditions", False):
+        score -= 100.0
+    return float(score)
+
+
+def q1_nearest_oxygen_records(entries_crystal, supercell, zn_atom_id, intended_oxygen_ids=None, hydroxylated_oxygen_ids=None, limit=4):
+    coords = coords_by_atom_id(entries_crystal)
+    atom_types = type_by_atom_id(entries_crystal)
+    zn_coord = coords[int(zn_atom_id)]
+    intended_oxygen_ids = {int(x) for x in (intended_oxygen_ids or [])}
+    hydroxylated_oxygen_ids = {int(x) for x in (hydroxylated_oxygen_ids or [])}
+    records = []
+    for atom_id, specie in atom_types.items():
+        if int(specie) not in ZN_COORDINATION_O_TYPES:
+            continue
+        distance = periodic_distance(zn_coord, coords[atom_id], supercell)
+        records.append(
+            {
+                "atom_id": int(atom_id),
+                "atom_type": int(specie),
+                "atom_label": oxygen_role_label(specie),
+                "distance": float(distance),
+                "belongs_to_intended_motif": bool(int(atom_id) in intended_oxygen_ids),
+                "oxygen_role": oxygen_role_label(specie),
+                "is_hydroxylated_oxygen": bool(int(atom_id) in hydroxylated_oxygen_ids),
+            }
+        )
+    records.sort(key=lambda item: (item["distance"], item["atom_id"]))
+    return records[:limit], records
+
+
+def q1_motif_geometry(entries_crystal, entries_angle, supercell, zn_atom_id, intended_oxygen_ids, hydroxylated_oxygen_ids):
+    coords = coords_by_atom_id(entries_crystal)
+    intended_ids = [int(x) for x in intended_oxygen_ids]
+    zn_coord = coords[int(zn_atom_id)]
+    oxygen_coords = []
+    all_pairs = []
+    if len(intended_ids) >= 2:
+        for oid in intended_ids:
+            oxygen_coords.append((oid, coords[oid]))
+    for i, oid_i in enumerate(intended_ids):
+        for oid_j in intended_ids[i + 1:]:
+            v1 = vector_pbc(zn_coord, coords[oid_i], supercell)
+            v2 = vector_pbc(zn_coord, coords[oid_j], supercell)
+            all_pairs.append(
+                {
+                    "atom_id_1": int(oid_i),
+                    "atom_id_2": int(oid_j),
+                    "angle_deg": angle_degrees(v1, v2),
+                    "deviation_from_tetrahedral_deg": None,
+                }
+            )
+            if all_pairs[-1]["angle_deg"] is not None:
+                all_pairs[-1]["deviation_from_tetrahedral_deg"] = abs(all_pairs[-1]["angle_deg"] - 109.47)
+    zn_o_distances = [
+        {
+            "atom_id": int(oid),
+            "distance": float(periodic_distance(zn_coord, coords[oid], supercell)),
+            "oxygen_role": oxygen_role_label(type_by_atom_id(entries_crystal)[oid]),
+            "is_hydroxylated_oxygen": bool(int(oid) in set(int(x) for x in hydroxylated_oxygen_ids or [])),
+        }
+        for oid in intended_ids
+        if oid in coords
+    ]
+    oo_separations = []
+    for i, oid_i in enumerate(intended_ids):
+        for oid_j in intended_ids[i + 1:]:
+            oo_separations.append(
+                {
+                    "atom_id_1": int(oid_i),
+                    "atom_id_2": int(oid_j),
+                    "distance": float(periodic_distance(coords[oid_i], coords[oid_j], supercell)),
+                }
+            )
+    distances = [item["distance"] for item in zn_o_distances]
+    angle_deviations = [item["deviation_from_tetrahedral_deg"] for item in all_pairs if item["deviation_from_tetrahedral_deg"] is not None]
+    min_oo = min([item["distance"] for item in oo_separations]) if oo_separations else None
+    max_dist = max(distances) if distances else None
+    mean_dist = sum(distances) / len(distances) if distances else None
+    mean_angle_dev = sum(angle_deviations) / len(angle_deviations) if angle_deviations else None
+    max_angle_dev = max(angle_deviations) if angle_deviations else None
+    hydroxylated_ids = {int(x) for x in (hydroxylated_oxygen_ids or [])}
+    hydroxylated_in_intended = [oid for oid in intended_ids if oid in hydroxylated_ids]
+    reasonable = bool(
+        len(intended_ids) >= 4
+        and len(hydroxylated_in_intended) >= 2
+        and max_dist is not None
+        and max_dist <= 2.8
+        and mean_angle_dev is not None
+        and mean_angle_dev <= 45.0
+        and min_oo is not None
+        and min_oo >= 1.4
+    )
+    return {
+        "zn_atom_id": int(zn_atom_id),
+        "intended_oxygen_ids": [int(x) for x in intended_ids],
+        "hydroxylated_oxygen_ids": sorted(hydroxylated_ids),
+        "nearest_four_zn_o_atoms": zn_o_distances,
+        "all_nearest_zn_o_atoms": [
+            {
+                "atom_id": int(item["atom_id"]),
+                "atom_type": int(item["atom_type"]),
+                "atom_label": item["atom_label"],
+                "distance": float(item["distance"]),
+                "belongs_to_intended_motif": bool(item["belongs_to_intended_motif"]),
+                "oxygen_role": item["oxygen_role"],
+                "is_hydroxylated_oxygen": bool(item["is_hydroxylated_oxygen"]),
+            }
+            for item in q1_nearest_oxygen_records(entries_crystal, supercell, zn_atom_id, intended_oxygen_ids, hydroxylated_oxygen_ids, limit=9999)[1]
+        ],
+        "Zn_O_distances_A": {
+            "count": len(distances),
+            "mean": None if mean_dist is None else float(mean_dist),
+            "max": None if max_dist is None else float(max_dist),
+        },
+        "O_Zn_O_angles_deg": all_pairs,
+        "tetrahedral_angle_deviation_deg": {
+            "count": len(angle_deviations),
+            "mean": None if mean_angle_dev is None else float(mean_angle_dev),
+            "max": None if max_angle_dev is None else float(max_angle_dev),
+        },
+        "minimum_O_O_separation_A": None if min_oo is None else float(min_oo),
+        "hydroxylated_in_intended_motif": [int(x) for x in hydroxylated_in_intended],
+        "reasonable_zn_o2oh2_like_geometry": reasonable,
+    }
+
+
+def q1_selection_score(geometry, precondition_score=0.0):
+    if not geometry:
+        return float(precondition_score - 1000.0)
+    score = float(precondition_score)
+    dist_stats = geometry.get("Zn_O_distances_A", {})
+    angle_stats = geometry.get("tetrahedral_angle_deviation_deg", {})
+    min_oo = geometry.get("minimum_O_O_separation_A")
+    if dist_stats.get("max") is not None:
+        score -= 25.0 * max(0.0, float(dist_stats["max"]) - Q1_ZN_O_TARGET)
+    if dist_stats.get("mean") is not None:
+        score -= 5.0 * abs(float(dist_stats["mean"]) - Q1_ZN_O_TARGET)
+    if angle_stats.get("mean") is not None:
+        score -= 1.5 * float(angle_stats["mean"])
+    if angle_stats.get("max") is not None:
+        score -= 0.5 * float(angle_stats["max"])
+    if min_oo is not None:
+        score += 4.0 * float(min_oo)
+    if geometry.get("reasonable_zn_o2oh2_like_geometry"):
+        score += 50.0
+    if len(geometry.get("hydroxylated_in_intended_motif", [])) >= 2:
+        score += 10.0
+    return float(score)
+
+
+def q1_candidate_trial_report(site, entries_crystal, entries_bonds, entries_angle, supercell, allow_hydroxylate_bridging_oxygen=False, precondition_zinc_geometry=True, target_Zn_O_distance=1.95):
+    pre_nearest_four, pre_all = q1_nearest_oxygen_records(
+        entries_crystal,
+        supercell,
+        site["atom_id"],
+        limit=4,
+    )
+    base_report = assess_zinc_site_preconditions(
+        site,
+        entries_crystal,
+        entries_bonds,
+        entries_angle,
+        supercell,
+        allow_hydroxylate_bridging_oxygen,
+        precondition_zinc_geometry,
+        target_Zn_O_distance,
+    )
+    base_report["selection_score"] = float(q1_precondition_score(base_report))
+    base_report["selection_score_components"] = {
+        "precondition_score": float(base_report["selection_score"]),
+    }
+    if not base_report.get("passed_preconditions", False):
+        base_report["q1_geometry_diagnostics"] = None
+        base_report["selected_hydroxylated_oxygen_ids"] = []
+        base_report["selected_hydroxylated_oxygen_records"] = []
+        base_report["pre_minimization_nearest_four_zn_o_atoms"] = pre_nearest_four
+        base_report["pre_minimization_all_zn_o_atoms"] = pre_all
+        base_report["nearest_four_zn_o_atoms"] = []
+        return base_report
+
+    trial_entries = copy.deepcopy(entries_crystal)
+    trial_bonds = copy.deepcopy(entries_bonds)
+    trial_angles = copy.deepcopy(entries_angle)
+    for entry in trial_entries:
+        if int(entry[0]) == int(site["atom_id"]):
+            entry[1] = ZN_SPECIE
+            entry[2] = ZN_CHARGE
+            break
+    hydroxylation_records = hydroxylate_two_oxygens(
+        trial_entries,
+        trial_bonds,
+        trial_angles,
+        [site],
+        supercell,
+        allow_hydroxylate_bridging_oxygen,
+        precondition_zinc_geometry,
+        target_Zn_O_distance,
+    )
+    hydroxylated_ids = []
+    for record in hydroxylation_records:
+        for oxy in record.get("hydroxylated_oxygens", []):
+            hydroxylated_ids.append(int(oxy["oxygen_atom_id"]))
+    post_nearest_four, post_all = q1_nearest_oxygen_records(
+        trial_entries,
+        supercell,
+        site["atom_id"],
+        intended_oxygen_ids=[item["atom_id"] for item in pre_nearest_four],
+        hydroxylated_oxygen_ids=hydroxylated_ids,
+        limit=4,
+    )
+    geometry = q1_motif_geometry(
+        trial_entries,
+        trial_angles,
+        supercell,
+        site["atom_id"],
+        [item["atom_id"] for item in pre_nearest_four],
+        hydroxylated_ids,
+    )
+    selection_score = q1_selection_score(geometry, base_report["selection_score"])
+    base_report["selection_score"] = float(selection_score)
+    base_report["selection_score_components"] = {
+        "precondition_score": float(base_report["selection_score_components"]["precondition_score"]),
+        "geometry_score": float(selection_score - base_report["selection_score_components"]["precondition_score"]),
+    }
+    base_report["q1_geometry_diagnostics"] = geometry
+    base_report["pre_minimization_nearest_four_zn_o_atoms"] = pre_nearest_four
+    base_report["pre_minimization_all_zn_o_atoms"] = pre_all
+    base_report["post_trial_nearest_four_zn_o_atoms"] = post_nearest_four
+    base_report["post_trial_all_zn_o_atoms"] = post_all
+    base_report["selected_hydroxylated_oxygen_ids"] = sorted(set(hydroxylated_ids))
+    base_report["selected_hydroxylated_oxygen_records"] = [
+        {
+            "atom_id": int(item["oxygen_atom_id"]),
+            "original_oxygen_specie": int(item["original_oxygen_specie"]),
+            "oxygen_class": item["oxygen_class"],
+            "Zn_O_distance_before_hydroxylation": float(item["Zn_O_distance_before_hydroxylation"]),
+        }
+        for record in hydroxylation_records
+        for item in record.get("hydroxylated_oxygens", [])
+    ]
+    base_report["nearest_four_zn_o_atoms"] = post_nearest_four
+    base_report["all_nearest_zn_o_atoms"] = [
+        {
+            "atom_id": int(item["atom_id"]),
+            "atom_type": int(item["atom_type"]),
+            "atom_label": item["atom_label"],
+            "distance": float(item["distance"]),
+            "belongs_to_intended_motif": bool(item["belongs_to_intended_motif"]),
+            "oxygen_role": item["oxygen_role"],
+            "is_hydroxylated_oxygen": bool(item["is_hydroxylated_oxygen"]),
+        }
+        for item in post_all
+    ]
+    base_report["q1_hydroxylation_records"] = hydroxylation_records
+    base_report["q1_assumption"] = (
+        "Conservative static candidate: replace one Q1/terminal silicate Si center with Zn(+2), "
+        "convert two safe terminal/non-bridging O(S) core-shell pairs to Oh-Hoh, and score the resulting "
+        "ZnO2(OH)2-like local geometry conservatively."
+    )
+    return base_report
 
 
 def count_species(entries):
@@ -309,6 +612,141 @@ def oxygen_candidates_for_site(site, entries_crystal, entries_bonds, supercell, 
                 }
             )
     candidates.sort(key=lambda item: (not item["safe_for_default_hydroxylation"], item["distance"], item["atom_id"]))
+    return candidates
+
+
+def assess_zinc_site_preconditions(
+    site,
+    entries_crystal,
+    entries_bonds,
+    entries_angle,
+    supercell,
+    allow_hydroxylate_bridging_oxygen=False,
+    precondition_zinc_geometry=True,
+    target_Zn_O_distance=1.95,
+):
+    neighboring_oxygen = oxygen_candidates_for_site(
+        site,
+        entries_crystal,
+        entries_bonds,
+        supercell,
+        allow_hydroxylate_bridging_oxygen,
+    )
+    safe_oxygen = [item for item in neighboring_oxygen if item["safe_for_default_hydroxylation"]]
+    reasons = []
+    passed = True
+    if len(safe_oxygen) < 2:
+        passed = False
+        reasons.append("fewer than two safe terminal/non-bridging O candidates")
+
+    if passed:
+        try:
+            trial_entries = copy.deepcopy(entries_crystal)
+            trial_bonds = copy.deepcopy(entries_bonds)
+            trial_angles = copy.deepcopy(entries_angle)
+            for entry in trial_entries:
+                if int(entry[0]) == int(site["atom_id"]):
+                    entry[1] = ZN_SPECIE
+                    entry[2] = ZN_CHARGE
+                    break
+            hydroxylate_two_oxygens(
+                trial_entries,
+                trial_bonds,
+                trial_angles,
+                [site],
+                supercell,
+                allow_hydroxylate_bridging_oxygen,
+                precondition_zinc_geometry,
+                target_Zn_O_distance,
+            )
+        except ValueError as exc:
+            passed = False
+            reasons.append(str(exc))
+
+    return {
+        "candidate_atom_id": int(site["atom_id"]),
+        "original_atom_type": int(site["original_specie"]),
+        "original_species": int(site["original_specie"]),
+        "local_silicate_label": site["piece"],
+        "motif": site["motif"],
+        "cell": site["cell"],
+        "coord": site["coord"],
+        "neighboring_O_atoms": [
+            {
+                "atom_id": int(item["atom_id"]),
+                "shell_id": int(item["shell_id"]),
+                "distance": float(item["distance"]),
+                "oxygen_class": item["oxygen_class"],
+                "safe_for_default_hydroxylation": bool(item["safe_for_default_hydroxylation"]),
+                "nearby_si_count": item.get("nearby_si_count"),
+                "nearby_si_neighbors": item.get("nearby_si_neighbors", []),
+            }
+            for item in neighboring_oxygen
+        ],
+        "n_safe_terminal_oxygen": int(len(safe_oxygen)),
+        "passed_Q1_Zn_preconditions": bool(passed) if site["motif"] == "Q1_Zn" else None,
+        "passed_preconditions": bool(passed),
+        "rejection_reason": None if passed else "; ".join(reasons),
+    }
+
+
+def build_zinc_candidate_site_report(
+    candidates,
+    entries_crystal,
+    entries_bonds,
+    entries_angle,
+    supercell,
+    allow_hydroxylate_bridging_oxygen=False,
+    precondition_zinc_geometry=True,
+    target_Zn_O_distance=1.95,
+):
+    report = {}
+    for motif, sites in candidates.items():
+        if motif == "Q1_Zn":
+            report[motif] = [
+                q1_candidate_trial_report(
+                    site,
+                    entries_crystal,
+                    entries_bonds,
+                    entries_angle,
+                    supercell,
+                    allow_hydroxylate_bridging_oxygen,
+                    precondition_zinc_geometry,
+                    target_Zn_O_distance,
+                )
+                for site in sites
+            ]
+        else:
+            report[motif] = [
+                assess_zinc_site_preconditions(
+                    site,
+                    entries_crystal,
+                    entries_bonds,
+                    entries_angle,
+                    supercell,
+                    allow_hydroxylate_bridging_oxygen,
+                    precondition_zinc_geometry,
+                    target_Zn_O_distance,
+                )
+                for site in sites
+            ]
+    return report
+
+
+def attach_q1_scores_to_candidates(candidates, candidate_site_report):
+    if not candidate_site_report or "Q1_Zn" not in candidate_site_report:
+        return candidates
+    by_atom = {
+        int(item["candidate_atom_id"]): item
+        for item in candidate_site_report.get("Q1_Zn", [])
+    }
+    for site in candidates.get("Q1_Zn", []):
+        record = by_atom.get(int(site["atom_id"]))
+        if record is None:
+            continue
+        site["q1_selection_score"] = float(record.get("selection_score", -1.0e9))
+        site["q1_selection_report"] = record
+        site["q1_passed_preconditions"] = bool(record.get("passed_preconditions", False))
     return candidates
 
 
@@ -656,7 +1094,20 @@ def select_zinc_sites(candidates, n_zinc, site_type, seed, supercell, min_zn_zn_
         )
 
     rng = np.random.default_rng(seed)
-    order = rng.permutation(len(pool))
+    if site_type == "Q1_Zn" and any("q1_selection_score" in site for site in pool):
+        tie_breakers = {int(site["atom_id"]): float(rng.random()) for site in pool}
+        pool = sorted(
+            pool,
+            key=lambda item: (
+                not bool(item.get("q1_passed_preconditions", False)),
+                -float(item.get("q1_selection_score", -1.0e9)),
+                tie_breakers[int(item["atom_id"])],
+                int(item["atom_id"]),
+            ),
+        )
+        order = range(len(pool))
+    else:
+        order = rng.permutation(len(pool))
     selected = []
     selected_coords = []
     skipped_for_distance = 0
@@ -889,7 +1340,9 @@ def hydroxylation_topology_audit(entries_crystal, entries_bonds, entries_angle, 
 
 
 def classify_zinc_output(summary, allow_unbalanced_for_debug=False):
-    classification = "valid_q2b_zn_candidate"
+    site_type = summary.get("Zn_site_type")
+    valid_label = "valid_q1_zn_candidate" if site_type == "Q1_Zn" else "valid_q2b_zn_candidate"
+    classification = valid_label
     reasons = []
 
     charge_residual = float(summary.get("charge_residual_final", summary.get("total_charge_residual", 0.0)))
@@ -927,7 +1380,7 @@ def classify_zinc_output(summary, allow_unbalanced_for_debug=False):
         classification = "failed_topology"
         reasons.append("converted O(S)->Oh-Hoh pair still has shell/topology remnants")
 
-    if classification == "valid_q2b_zn_candidate":
+    if classification == valid_label:
         reasons.append("charge/topology mapped for static CementFF4-Zn candidate; relaxation still required before property calculations")
 
     summary["output_classification"] = classification
@@ -956,6 +1409,48 @@ def finalize_zinc_summary(
     )
     summary["topology_validation"] = topology
     summary["pre_minimization_geometry"] = geometry_metrics(entries_crystal, entries_angle, supercell)
+    if summary.get("Zn_site_type") == "Q1_Zn":
+        q1_diagnostics = []
+        for site in summary.get("selected_sites", []):
+            zn_id = int(site["atom_id"])
+            q1_report = site.get("q1_selection_report", {})
+            intended_ids = [
+                int(item["atom_id"])
+                for item in q1_report.get("pre_minimization_nearest_four_zn_o_atoms", [])
+            ]
+            if not intended_ids:
+                intended_ids = [
+                    int(item["atom_id"])
+                    for item in q1_report.get("nearest_four_zn_o_atoms", [])
+                ]
+            hydroxylated_ids = [
+                int(oxy["oxygen_atom_id"])
+                for record in summary.get("hydroxylation_records", [])
+                if int(record.get("zn_atom_id", -1)) == zn_id
+                for oxy in record.get("hydroxylated_oxygens", [])
+            ]
+            nearest_four, all_neighbors = q1_nearest_oxygen_records(
+                entries_crystal,
+                supercell,
+                zn_id,
+                intended_oxygen_ids=intended_ids,
+                hydroxylated_oxygen_ids=hydroxylated_ids,
+                limit=4,
+            )
+            diagnostic = q1_motif_geometry(
+                entries_crystal,
+                entries_angle,
+                supercell,
+                zn_id,
+                intended_ids,
+                hydroxylated_ids,
+            )
+            diagnostic["nearest_four_zn_o_atoms"] = nearest_four
+            diagnostic["all_nearest_zn_o_atoms"] = all_neighbors
+            diagnostic["selection_score"] = site.get("q1_selection_score")
+            diagnostic["selection_source"] = "topology-valid Q1 candidate scored before Zn placement"
+            q1_diagnostics.append(diagnostic)
+        summary["pre_minimization_geometry"]["q1_motif_diagnostics"] = q1_diagnostics
     summary["pre_minimization_geometry"]["added_H_overlap"] = h_overlap_metrics(
         summary.get("hydroxylation_records", [])
     )
@@ -981,7 +1476,7 @@ def finalize_zinc_summary(
     summary["cementff4_type_mapping"] = CEMENTFF4_TYPE_MAP
     summary["cementff4_angle_mapping"] = CEMENTFF4_ANGLE_MAP
     summary["status_note"] = (
-        "v2 uses a charge-balanced ZnO2(OH)2 substitutional motif, but minimization is required before MD."
+        "v2 uses a charge-balanced ZnO2(OH)2-style substitutional static candidate motif; minimization is required before property calculations."
     )
     summary = classify_zinc_output(summary, allow_unbalanced_for_debug)
     return summary
@@ -1043,6 +1538,8 @@ def build_zinc_summary(
                 "piece": site["piece"],
                 "coord": site["coord"],
                 "original_specie": site["original_specie"],
+                "q1_selection_score": site.get("q1_selection_score"),
+                "q1_selection_report": site.get("q1_selection_report"),
             }
             for site in selected_sites
         ],
@@ -1088,6 +1585,20 @@ def apply_zinc_modification(
     if charge_balance_mode == "hydroxylate_two_oxygens" and (entries_bonds is None or entries_angle is None):
         raise ValueError("hydroxylate_two_oxygens requires entries_bonds and entries_angle")
     candidates = inspect_zinc_candidates(crystal_dict)
+    candidate_site_report = None
+    if entries_bonds is not None and entries_angle is not None:
+        candidate_site_report = build_zinc_candidate_site_report(
+            candidates,
+            entries_crystal,
+            entries_bonds,
+            entries_angle,
+            supercell,
+            allow_hydroxylate_bridging_oxygen,
+            precondition_zinc_geometry,
+            target_Zn_O_distance,
+        )
+        if Zn_site_type == "Q1_Zn":
+            candidates = attach_q1_scores_to_candidates(candidates, candidate_site_report)
     counts = count_species(entries_crystal)
     n_si_initial = counts.get(2, 0) + counts.get(10, 0)
     if n_si_initial <= 0:
@@ -1159,6 +1670,14 @@ def apply_zinc_modification(
     summary["allow_hydroxylate_bridging_oxygen"] = bool(allow_hydroxylate_bridging_oxygen)
     summary["precondition_zinc_geometry"] = bool(precondition_zinc_geometry)
     summary["target_Zn_O_distance"] = float(target_Zn_O_distance)
+    summary["candidate_site_report"] = candidate_site_report
+    summary["Q1_Zn_motif_assumption"] = (
+        "Conservative static candidate: replace one Q1/terminal silicate Si center with Zn(+2), "
+        "retain nearby framework O coordination, and convert two safe terminal/non-bridging O core-shell pairs "
+        "to Oh-Hoh for explicit charge balance. This is not claimed to be the unique experimental Q(1,Zn) structure."
+        if Zn_site_type == "Q1_Zn"
+        else None
+    )
     return entries_crystal, crystal_dict, summary
 
 

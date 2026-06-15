@@ -134,7 +134,7 @@ Validation classes
 - failed_csinfo
 - experimental_md_only
 
-The label md_ready_candidate is intentionally not used.
+An MD-ready classification is intentionally not used.
 
 Post-processing outputs
 -----------------------

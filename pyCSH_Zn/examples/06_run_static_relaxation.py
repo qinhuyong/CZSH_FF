@@ -130,11 +130,11 @@ def run_target(lmp, target):
     record["elastic_x_minus_validation"] = validate_with_cs(
         target["data"], input_dir, target["elastic_minus_raw"], target["elastic_minus_with_cs"]
     )
+    elastic_ok = record["elastic_x_plus_validation"]["ok"] and record["elastic_x_minus_validation"]["ok"]
     record["ok"] = (
         all(step["ok"] for step in record["steps"].values())
         and record["post_minimization_validation"]["ok"]
-        and record["elastic_x_plus_validation"]["ok"]
-        and record["elastic_x_minus_validation"]["ok"]
+        and elastic_ok
     )
     return record
 
@@ -152,7 +152,13 @@ def main():
         report["ok"] = False
         report["reason"] = "No LAMMPS executable found. Set LAMMPS_EXE or add lmp to PATH."
     else:
+        active_targets = []
         for target in TARGETS:
+            if target["name"] == "q1_zn" and not os.path.exists(target["data"]):
+                continue
+            active_targets.append(target)
+        report["targets_order"] = [x["name"] for x in active_targets]
+        for target in active_targets:
             report["targets"].append(run_target(lmp, target))
         report["ok"] = all(target.get("ok") for target in report["targets"])
     out = os.path.join("output_Y", "workflow_v1", "static_relaxation_report.json")

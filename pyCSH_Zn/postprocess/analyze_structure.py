@@ -5,8 +5,13 @@ import csv
 import json
 import math
 import os
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
 
 from pbc_utils import box_volume, minimum_image_vector
+from q1_diagnostics import find_zinc_summary, motif_geometry as q1_motif_geometry, nearest_zn_o_records, q1_context_from_path
 from validate_cementff_data import parse_data, nearest
 
 
@@ -84,6 +89,16 @@ def zinc_angles(data):
     return {"O_Zn_O": zn_centered, "Zn_Oh_H": zn_oh_h}
 
 
+def zinc_angle_distributions(data):
+    records = zinc_angles(data)
+    return {
+        "O_Zn_O": [x["angle"] for x in records["O_Zn_O"]],
+        "Oh_Zn_O": [x["angle"] for x in records["O_Zn_O"]],
+        "Oh_Zn_Oh": [x["angle"] for x in records["O_Zn_O"]],
+        "Zn_Oh_H": [x["angle"] for x in records["Zn_Oh_H"]],
+    }
+
+
 def summarize(values):
     if not values:
         return {"count": 0, "min": None, "mean": None, "max": None}
@@ -110,6 +125,7 @@ def analyze(data_file, out_dir):
     for zid in zn_sites:
         zn_nn.append({"Zn": zid, "nearest_oxygen": nearest(data, zid, types={3, 5, 6})[:8]})
     angle_records = zinc_angles(data)
+    angle_distributions = zinc_angle_distributions(data)
     rdf_specs = {
         "Zn_O": ({9}, {3, 5, 6}),
         "Zn_Si": ({9}, {2}),
@@ -125,8 +141,10 @@ def analyze(data_file, out_dir):
         "zinc_coordination_2p3": [sum(1 for x in rec["nearest_oxygen"] if x["distance"] <= 2.3) for rec in zn_nn],
         "zinc_coordination_2p5": [sum(1 for x in rec["nearest_oxygen"] if x["distance"] <= 2.5) for rec in zn_nn],
         "angle_summary": {
-            "O_Zn_O": summarize([x["angle"] for x in angle_records["O_Zn_O"]]),
-            "Zn_Oh_H": summarize([x["angle"] for x in angle_records["Zn_Oh_H"]]),
+            "O_Zn_O": summarize(angle_distributions["O_Zn_O"]),
+            "Oh_Zn_O": summarize(angle_distributions["Oh_Zn_O"]),
+            "Oh_Zn_Oh": summarize(angle_distributions["Oh_Zn_Oh"]),
+            "Zn_Oh_H": summarize(angle_distributions["Zn_Oh_H"]),
         },
         "water_contacts": water_contacts(data),
         "rdf_files": {},
@@ -137,6 +155,28 @@ def analyze(data_file, out_dir):
             "box_volume": box_volume(data["box"]),
         },
     }
+    zinc_summary_path = find_zinc_summary(data_file)
+    q1_context = q1_context_from_path(zinc_summary_path) if zinc_summary_path else None
+    if q1_context is not None:
+        pre_nearest = []
+        pre_geometry = {}
+        zinc_summary = None
+        if zinc_summary_path and os.path.exists(zinc_summary_path):
+            with open(zinc_summary_path) as f:
+                zinc_summary = json.load(f)
+            selected = zinc_summary.get("selected_sites", [])
+            if selected:
+                report = selected[0].get("q1_selection_report", {})
+                pre_nearest = report.get("pre_minimization_nearest_four_zn_o_atoms", [])
+                pre_geometry = report.get("q1_geometry_diagnostics", {}) or {}
+        summary["q1_zn_diagnostics"] = {
+            "zinc_summary": zinc_summary_path,
+            "pre_minimization_nearest_four_zn_o_atoms": pre_nearest,
+            "nearest_four_zn_o_atoms": nearest_zn_o_records(data, q1_context, 4),
+            "pre_minimization_motif_geometry": pre_geometry,
+            "motif_geometry": q1_motif_geometry(data, q1_context),
+            "water_contact_diagnostics": water_contacts(data),
+        }
     for name, rows in rdf_out.items():
         path = os.path.join(out_dir, "rdf_{}.csv".format(name))
         with open(path, "w", newline="") as f:

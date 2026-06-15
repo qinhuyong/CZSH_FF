@@ -6,7 +6,7 @@ This branch adds a conservative pyCSH-Zn workflow for generating CementFF4/Cemen
 
 - Pure C-S-H generation with `enable_zinc = False`.
 - Q2b_Zn candidate generation as the main Zn path.
-- Q1_Zn and mixed_Q1_Q2b_Zn remain prototype/debug modes.
+- Q1_Zn candidate generation as a conservative static path.
 - Charge-balanced ZnO2(OH)2-style substitutional candidate motif for Q2b_Zn.
 - Fixed CementFF4 atom, bond, and angle type maps.
 - LAMMPS data output with molecule IDs and `CS-Info`.
@@ -19,14 +19,15 @@ This branch adds a conservative pyCSH-Zn workflow for generating CementFF4/Cemen
 - Production finite-temperature CementFF4 core-shell MD.
 - Claims that generated Zn structures are experimentally unique or chemically proven.
 - Interlayer Zn or Ca-substitution-control Zn modes.
-- Automatic rescue of Q1_Zn or mixed_Zn candidates.
+- mixed_Q1_Q2b_Zn.
+- Automatic rescue of mixed_Q1_Q2b_Zn candidates.
 - Silent lowering of W/Si when water placement is difficult.
 
 ## Main Files
 
 - `forcefields/CementFF4_Zn_parameters.json`: authoritative CementFF4-Zn parameter database.
 - `forcefields/build_cementff4_zn.py`: generates `in.CementFF4_Zn` and `cementff4_type_map.json`.
-- `mod_zinc.py`: Q2b_Zn candidate motif construction and Zn summary.
+- `mod_zinc.py`: Q1_Zn and Q2b_Zn candidate motif construction and Zn summary.
 - `mod_water.py`: water topology/contact helpers.
 - `mod_write_Y.py`: CementFF4 fixed-map LAMMPS data writer.
 - `validate_cementff_data.py`: static data validator.
@@ -89,6 +90,7 @@ Angle types:
 The validator uses static candidate classifications:
 
 - `valid_static_candidate`
+- `valid_q1_zn_candidate`
 - `valid_q2b_zn_candidate`
 - `needs_static_relaxation`
 - `failed_charge`
@@ -99,9 +101,9 @@ The validator uses static candidate classifications:
 - `failed_csinfo`
 - `experimental_md_only`
 
-`valid_q2b_zn_candidate` means a static CementFF4-Zn candidate only. It is not an MD-ready label.
+`valid_q1_zn_candidate` and `valid_q2b_zn_candidate` both mean static CementFF4-Zn candidates only. Neither is an MD-ready label.
 
-`md_ready_candidate` is intentionally not used. Finite-temperature core-shell MD must be validated separately before that label is introduced.
+An MD-ready classification is intentionally not used. Finite-temperature core-shell MD must be validated separately before that label is introduced.
 
 ## v1.1 Static Relaxation
 
@@ -120,6 +122,8 @@ The x-strain templates use scale factors `1.0+strain` and `1.0-strain`. They are
 ## v1.2 Quasi-Static Mechanics
 
 `examples/07_run_quasistatic_mechanics.py` starts from the v1.1 post-minimized structures and runs x-direction strain cases at +/-0.001, +/-0.002, and +/-0.003 for pure C-S-H and Q2b_Zn. It writes mechanics CSV/JSON summaries and simple SVG plots.
+
+Q1_Zn mechanics remains opt-in and should only be run after the Q1 static-relaxation path validates.
 
 This is a controlled quasi-static mechanics pipeline validation only. It is not a final elastic constants workflow, not a production mechanical-property calculation, and not finite-temperature MD.
 

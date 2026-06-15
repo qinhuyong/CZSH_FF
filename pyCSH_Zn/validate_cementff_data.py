@@ -173,7 +173,28 @@ def audit_zinc(data):
     return {"n_zinc": len(zns), "zinc_sites": records}
 
 
-def validate(path, db_path=DEFAULT_DB):
+def infer_zinc_site_type(data_file):
+    here = os.path.dirname(os.path.abspath(data_file))
+    for _ in range(4):
+        summary_path = os.path.join(here, "zinc_summary.json")
+        if os.path.exists(summary_path):
+            try:
+                with open(summary_path) as f:
+                    summary = json.load(f)
+                return summary.get("Zn_site_type")
+            except (IOError, ValueError):
+                return None
+        parent = os.path.dirname(here)
+        if parent == here:
+            break
+        here = parent
+    normalized = data_file.replace("\\", "/").lower()
+    if "/q1_zn/" in normalized or normalized.endswith("/q1_zn_cementff_zn.data"):
+        return "Q1_Zn"
+    return None
+
+
+def validate(path, db_path=DEFAULT_DB, expected_zinc_site_type=None, zinc_summary_path=None):
     data = parse_data(path)
     expected_charges = load_forcefield_charges(db_path)
     total_charge = sum(a["q"] for a in data["atoms"].values())
@@ -184,6 +205,15 @@ def validate(path, db_path=DEFAULT_DB):
     cs = audit_csinfo(data)
     water = audit_water(data)
     zinc = audit_zinc(data)
+    zinc_site_type = expected_zinc_site_type
+    if zinc_site_type is None and zinc_summary_path:
+        try:
+            with open(zinc_summary_path) as f:
+                zinc_site_type = json.load(f).get("Zn_site_type")
+        except (IOError, ValueError):
+            zinc_site_type = None
+    if zinc_site_type is None:
+        zinc_site_type = infer_zinc_site_type(path)
     reasons = []
     classification = "valid_static_candidate"
     if charge_assignment["n_bad"]:
@@ -203,8 +233,18 @@ def validate(path, db_path=DEFAULT_DB):
         reasons.append("invalid TIP4P water topology")
     elif zinc["n_zinc"]:
         if any(site["coordination_2p5"] < 4 for site in zinc["zinc_sites"]):
-            classification = "failed_zinc_geometry"
-            reasons.append("Zn has fewer than 4 O neighbors within 2.5 A")
+            if (
+                zinc_site_type == "Q1_Zn"
+                and all(site["coordination_2p5"] >= 3 for site in zinc["zinc_sites"])
+                and all(len(site["nearest_oxygen"]) >= 4 and site["nearest_oxygen"][3]["distance"] <= 3.2 for site in zinc["zinc_sites"])
+            ):
+                classification = "needs_static_relaxation"
+                reasons.append("Q1_Zn has a fourth O neighbor beyond 2.5 A but within 3.2 A")
+            else:
+                classification = "failed_zinc_geometry"
+                reasons.append("Zn has fewer than 4 O neighbors within 2.5 A")
+        elif zinc_site_type == "Q1_Zn":
+            classification = "valid_q1_zn_candidate"
         else:
             classification = "valid_q2b_zn_candidate"
     return {
@@ -222,6 +262,7 @@ def validate(path, db_path=DEFAULT_DB):
         "csinfo": {"n_pairs": cs["n_pairs"], "n_entries": cs["n_csinfo"], "n_bad_pairs": len(cs["bad_pairs"])},
         "water": {"n_water": water["n_water"], "n_bad_water": water["n_bad_water"]},
         "zinc": zinc,
+        "zinc_site_type": zinc_site_type,
     }
 
 
@@ -229,9 +270,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("data_file")
     parser.add_argument("--db", default=DEFAULT_DB)
+    parser.add_argument("--expected-zinc-site-type", default=None)
+    parser.add_argument("--zinc-summary", default=None)
     parser.add_argument("--out", default=None)
     args = parser.parse_args()
-    result = validate(args.data_file, args.db)
+    result = validate(args.data_file, args.db, args.expected_zinc_site_type, args.zinc_summary)
     out = args.out or os.path.splitext(args.data_file)[0] + "_validation.json"
     with open(out, "w") as f:
         json.dump(result, f, indent=2, sort_keys=True)

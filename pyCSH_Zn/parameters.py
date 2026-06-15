@@ -25,7 +25,7 @@ write_siesta = False
 
 enable_zinc = False
 Zn_Si_ratio = 0.0
-Zn_site_type = "mixed_Q1_Q2b_Zn"
+Zn_site_type = "Q2b_Zn"
 Zn_seed = seed
 Zn_charge_balance_mode = "hydroxylate_two_oxygens"
 allow_unbalanced_for_debug = False

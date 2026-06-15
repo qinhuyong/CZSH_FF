@@ -87,7 +87,7 @@ try: Zn_Si_ratio
 except NameError: Zn_Si_ratio = 0.0
 
 try: Zn_site_type
-except NameError: Zn_site_type = "mixed_Q1_Q2b_Zn"
+except NameError: Zn_site_type = "Q2b_Zn"
 
 try: Zn_seed
 except NameError: Zn_seed = seed

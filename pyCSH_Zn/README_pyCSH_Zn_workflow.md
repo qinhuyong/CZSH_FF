@@ -140,6 +140,12 @@ Default Q1_Zn generation now uses `PYCSH_ZN_Q1_SELECTION_MODE=ranked_static`. Th
 
 This default path does not run post-min screening and does not hard-code a site atom ID. Post-min validation is still required before any opt-in Q1 mechanics workflow.
 
+## Opt-In Q1 Mechanics Smoke Test
+
+`examples/11_run_q1_quasistatic_mechanics.py` runs the x-direction quasi-static smoke-test strain set for Q1_Zn only. It refuses to start unless the Q1 reference is the post-minimized `valid_q1_zn_candidate` from `examples/09_run_q1_static_relaxation.py`.
+
+Outputs are written under `output_Y/workflow_v1/mechanics_q1_zn/`. This is not a final elastic-constants workflow and not a production mechanical-property calculation. `examples/07_run_quasistatic_mechanics.py` still defaults to pure C-S-H and Q2b_Zn only.
+
 ## CS-Info Policy
 
 `CS-Info` contains entries for all atoms. Bonded `O_core`/`O_shell` pairs share the same CSID. Non-core-shell atoms have singleton CSIDs. The validator checks both complete CS-Info coverage and bonded core-shell pair consistency.

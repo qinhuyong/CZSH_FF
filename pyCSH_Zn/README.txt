@@ -68,6 +68,14 @@ does not hard-code a single atom ID.
 Q1_Zn is not added to default mechanics unless a screened post-minimized
 candidate validates as valid_q1_zn_candidate.
 
+For explicit Q1-only quasi-static mechanics smoke tests, run after Q1
+post-min validation:
+
+    python examples/11_run_q1_quasistatic_mechanics.py
+
+This writes output_Y/workflow_v1/mechanics_q1_zn/ and does not change the
+default pure/Q2b mechanics workflow.
+
 Outputs are written under:
 
     output_Y/workflow_v1/

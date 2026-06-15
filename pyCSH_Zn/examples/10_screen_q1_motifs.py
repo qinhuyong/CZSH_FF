@@ -33,6 +33,7 @@ from mod_zinc import (
     finalize_zinc_summary,
     inspect_zinc_candidates,
     q1_nearest_oxygen_records,
+    q1_static_rank_tuple,
     validate_no_zinc_bonds,
     vector_pbc,
     write_zinc_summary,
@@ -432,7 +433,7 @@ def main():
         if not report or not report.get("passed_preconditions"):
             continue
         valid_records.append({"site": site, "report": report})
-    valid_records.sort(key=lambda item: (-float(item["report"].get("selection_score", -1.0e9)), int(item["site"]["atom_id"])))
+    valid_records.sort(key=lambda item: q1_static_rank_tuple(item["site"], seed))
     selected = valid_records[:top_n]
     lmp = find_lammps()
     results = []

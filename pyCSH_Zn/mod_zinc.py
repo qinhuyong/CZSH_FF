@@ -2,6 +2,7 @@ import json
 import math
 import os
 import copy
+import hashlib
 
 import numpy as np
 
@@ -68,6 +69,7 @@ OXYGEN_LIKE_TYPES = {3, 4, 5, 6, 11, 12}
 ZN_COORDINATION_O_TYPES = {3, 5, 6, 11}
 Q1_ZN_O_TARGET = 1.95
 Q1_ZN_O_CUTOFF = 3.2
+SUPPORTED_Q1_SELECTION_MODES = {"ranked_static", "first_valid", "screening_debug"}
 
 
 def validate_zinc_site_type(site_type):
@@ -315,6 +317,163 @@ def q1_selection_score(geometry, precondition_score=0.0):
     if len(geometry.get("hydroxylated_in_intended_motif", [])) >= 2:
         score += 10.0
     return float(score)
+
+
+def q1_static_tie_breaker(site, seed):
+    key = "{}:{}:{}:{}".format(
+        int(seed),
+        int(site["atom_id"]),
+        site.get("piece", ""),
+        ",".join(str(x) for x in site.get("cell", [])),
+    )
+    digest = hashlib.sha256(key.encode("ascii")).hexdigest()
+    return int(digest[:12], 16) / float(0xFFFFFFFFFFFF)
+
+
+def q1_static_rank_tuple(site, seed):
+    report = site.get("q1_selection_report", {}) or {}
+    geom = report.get("q1_geometry_diagnostics", {}) or {}
+    dist = geom.get("Zn_O_distances_A", {}) or {}
+    dev = geom.get("tetrahedral_angle_deviation_deg", {}) or {}
+    hydroxylated = report.get("selected_hydroxylated_oxygen_records", [])
+    hydroxylated_safe = all(
+        item.get("oxygen_class") == "terminal/non-bridging O"
+        for item in hydroxylated
+    ) and len(hydroxylated) >= 2
+    intended_count = len(geom.get("intended_oxygen_ids", []))
+    reasonable = bool(geom.get("reasonable_zn_o2oh2_like_geometry"))
+    all_neighbors = report.get("all_nearest_zn_o_atoms", [])
+    non_motif_distances = [
+        float(item["distance"])
+        for item in all_neighbors
+        if not item.get("belongs_to_intended_motif", False)
+    ]
+    shell_isolation = min(non_motif_distances) if non_motif_distances else 999.0
+    secondary_shell_reactive_count = sum(
+        1
+        for item in all_neighbors
+        if (
+            not item.get("belongs_to_intended_motif", False)
+            and item.get("oxygen_role") in ("Oh", "Ow")
+            and float(item.get("distance", 999.0)) <= 3.7
+        )
+    )
+    def q(value, digits=6):
+        return round(float(value), digits)
+    return (
+        not bool(site.get("q1_passed_preconditions", False)),
+        not bool(hydroxylated_safe),
+        not reasonable,
+        -q(report.get("selection_score", -1.0e9)),
+        q(dist.get("max") if dist.get("max") is not None else 999.0),
+        q(abs(float(dist.get("mean") if dist.get("mean") is not None else 999.0) - Q1_ZN_O_TARGET)),
+        q(dev.get("mean") if dev.get("mean") is not None else 999.0),
+        q(dev.get("max") if dev.get("max") is not None else 999.0),
+        -int(intended_count >= 4),
+        q(shell_isolation),
+        int(secondary_shell_reactive_count),
+        -q(geom.get("minimum_O_O_separation_A") if geom.get("minimum_O_O_separation_A") is not None else -999.0),
+        q1_static_tie_breaker(site, seed),
+    )
+
+
+def q1_selection_record(site, rank, mode, seed, screened_postmin_valid_atom_ids=None):
+    report = site.get("q1_selection_report", {}) or {}
+    geom = report.get("q1_geometry_diagnostics", {}) or {}
+    dist = geom.get("Zn_O_distances_A", {}) or {}
+    dev = geom.get("tetrahedral_angle_deviation_deg", {}) or {}
+    all_neighbors = report.get("all_nearest_zn_o_atoms", [])
+    non_motif_distances = [
+        float(item["distance"])
+        for item in all_neighbors
+        if not item.get("belongs_to_intended_motif", False)
+    ]
+    shell_isolation = min(non_motif_distances) if non_motif_distances else None
+    secondary_shell_reactive_count = sum(
+        1
+        for item in all_neighbors
+        if (
+            not item.get("belongs_to_intended_motif", False)
+            and item.get("oxygen_role") in ("Oh", "Ow")
+            and float(item.get("distance", 999.0)) <= 3.7
+        )
+    )
+    screened_ids = {int(x) for x in (screened_postmin_valid_atom_ids or [])}
+    return {
+        "selection_mode": mode,
+        "rank": int(rank),
+        "selected_site_atom_id": int(site["atom_id"]),
+        "selected_piece_name": site.get("piece"),
+        "selected_cell": site.get("cell"),
+        "deterministic_tie_breaker": q1_static_tie_breaker(site, seed),
+        "score": float(report.get("selection_score", -1.0e9)),
+        "score_components": report.get("selection_score_components", {}),
+        "geometry_score_inputs": {
+            "max_intended_Zn_O_distance": dist.get("max"),
+            "mean_intended_Zn_O_distance": dist.get("mean"),
+            "mean_tetrahedral_angle_deviation_from_109p47": dev.get("mean"),
+            "max_tetrahedral_angle_deviation_from_109p47": dev.get("max"),
+            "minimum_O_O_distance_among_motif_O": geom.get("minimum_O_O_separation_A"),
+            "nearest_non_motif_O_distance": shell_isolation,
+            "secondary_shell_reactive_O_count_within_3p7A": int(secondary_shell_reactive_count),
+            "secondary_shell_policy": "prefer a compact but non-overlapping static oxygen environment; no post-min result is used",
+            "reasonable_zn_o2oh2_like_geometry": geom.get("reasonable_zn_o2oh2_like_geometry"),
+        },
+        "hydroxylated_oxygen_ids": report.get("selected_hydroxylated_oxygen_ids", []),
+        "hydroxylated_oxygen_records": report.get("selected_hydroxylated_oxygen_records", []),
+        "intended_four_oxygen_atoms": report.get("pre_minimization_nearest_four_zn_o_atoms", []),
+        "matches_previously_screened_postmin_valid_class": bool(int(site["atom_id"]) in screened_ids),
+        "note": (
+            "Normal Q1 generation uses static pre-min ranking only; post-min screening results are not required "
+            "unless examples/10_screen_q1_motifs.py is run explicitly."
+        ),
+    }
+
+
+def build_q1_selection_policy(candidates, selected_sites, seed, mode):
+    q1_sites = list(candidates.get("Q1_Zn", []))
+    ranked_sites = sorted(q1_sites, key=lambda site: q1_static_rank_tuple(site, seed))
+    selected_ids = {int(site["atom_id"]) for site in selected_sites}
+    records = []
+    selected_rank = None
+    for idx, site in enumerate(ranked_sites, start=1):
+        report = site.get("q1_selection_report", {}) or {}
+        rejection = report.get("rejection_reason")
+        if int(site["atom_id"]) in selected_ids:
+            selected_rank = idx
+            rejection = None
+        elif not site.get("q1_passed_preconditions", False):
+            rejection = rejection or "failed Q1_Zn preconditions"
+        else:
+            rejection = "lower ranked static Q1 candidate"
+        records.append(
+            {
+                "rank": idx,
+                "candidate_atom_id": int(site["atom_id"]),
+                "piece": site.get("piece"),
+                "passed_preconditions": bool(site.get("q1_passed_preconditions", False)),
+                "selection_score": site.get("q1_selection_score"),
+                "rejection_reason": rejection,
+            }
+        )
+    selected = selected_sites[0] if selected_sites else None
+    return {
+        "mode": mode,
+        "candidate_pool_size": len(q1_sites),
+        "topology_valid_candidate_count": sum(1 for site in q1_sites if site.get("q1_passed_preconditions", False)),
+        "selected_candidate_rank": selected_rank,
+        "selected_site_atom_id": None if selected is None else int(selected["atom_id"]),
+        "selected_piece_name": None if selected is None else selected.get("piece"),
+        "policy": [
+            "Q1 piece labels are only the first filter.",
+            "Candidates must pass terminal/non-bridging O hydroxylation preconditions.",
+            "ranked_static mode orders candidates by static ZnO2(OH)2 geometry score, Zn-O distances, tetrahedral angle deviation, O-O separation, and deterministic seed-based tie breaker.",
+            "For otherwise tied motifs, ranked_static prefers a compact but non-overlapping secondary oxygen shell using the nearest non-motif O distance.",
+            "No post-minimization result is used by normal generation.",
+        ],
+        "selected_record": None if selected is None else q1_selection_record(selected, selected_rank or 0, mode, seed),
+        "candidate_records": records,
+    }
 
 
 def q1_candidate_trial_report(site, entries_crystal, entries_bonds, entries_angle, supercell, allow_hydroxylate_bridging_oxygen=False, precondition_zinc_geometry=True, target_Zn_O_distance=1.95):
@@ -1072,7 +1231,7 @@ def apply_charge_balance(
     raise NotImplementedError(mode + " is not implemented in v2")
 
 
-def select_zinc_sites(candidates, n_zinc, site_type, seed, supercell, min_zn_zn_distance=3.0, site_filter=None):
+def select_zinc_sites(candidates, n_zinc, site_type, seed, supercell, min_zn_zn_distance=3.0, site_filter=None, q1_selection_mode="ranked_static"):
     validate_zinc_site_type(site_type)
     if n_zinc <= 0:
         return []
@@ -1094,15 +1253,23 @@ def select_zinc_sites(candidates, n_zinc, site_type, seed, supercell, min_zn_zn_
         )
 
     rng = np.random.default_rng(seed)
-    if site_type == "Q1_Zn" and any("q1_selection_score" in site for site in pool):
+    if site_type == "Q1_Zn" and q1_selection_mode not in SUPPORTED_Q1_SELECTION_MODES:
+        raise ValueError(
+            "Unknown Q1 selection mode {!r}. Expected one of {}".format(
+                q1_selection_mode, sorted(SUPPORTED_Q1_SELECTION_MODES)
+            )
+        )
+    if site_type == "Q1_Zn" and q1_selection_mode == "ranked_static" and any("q1_selection_score" in site for site in pool):
+        pool = sorted(pool, key=lambda item: q1_static_rank_tuple(item, seed))
+        order = range(len(pool))
+    elif site_type == "Q1_Zn" and q1_selection_mode in ("first_valid", "screening_debug"):
         tie_breakers = {int(site["atom_id"]): float(rng.random()) for site in pool}
         pool = sorted(
             pool,
             key=lambda item: (
                 not bool(item.get("q1_passed_preconditions", False)),
-                -float(item.get("q1_selection_score", -1.0e9)),
-                tie_breakers[int(item["atom_id"])],
                 int(item["atom_id"]),
+                tie_breakers[int(item["atom_id"])],
             ),
         )
         order = range(len(pool))
@@ -1579,9 +1746,18 @@ def apply_zinc_modification(
     allow_hydroxylate_bridging_oxygen=False,
     precondition_zinc_geometry=True,
     target_Zn_O_distance=1.95,
+    q1_selection_mode=None,
 ):
     validate_zinc_site_type(Zn_site_type)
     validate_charge_balance_mode(charge_balance_mode)
+    if q1_selection_mode is None:
+        q1_selection_mode = os.environ.get("PYCSH_ZN_Q1_SELECTION_MODE", "ranked_static")
+    if Zn_site_type == "Q1_Zn" and q1_selection_mode not in SUPPORTED_Q1_SELECTION_MODES:
+        raise ValueError(
+            "Unknown PYCSH_ZN_Q1_SELECTION_MODE={!r}. Expected one of {}".format(
+                q1_selection_mode, sorted(SUPPORTED_Q1_SELECTION_MODES)
+            )
+        )
     if charge_balance_mode == "hydroxylate_two_oxygens" and (entries_bonds is None or entries_angle is None):
         raise ValueError("hydroxylate_two_oxygens requires entries_bonds and entries_angle")
     candidates = inspect_zinc_candidates(crystal_dict)
@@ -1634,7 +1810,15 @@ def apply_zinc_modification(
             except ValueError:
                 return False
 
-    selected_sites = select_zinc_sites(candidates, n_zinc, Zn_site_type, Zn_seed, supercell, site_filter=site_filter)
+    selected_sites = select_zinc_sites(
+        candidates,
+        n_zinc,
+        Zn_site_type,
+        Zn_seed,
+        supercell,
+        site_filter=site_filter,
+        q1_selection_mode=q1_selection_mode,
+    )
     charge_before_zinc = total_charge(entries_crystal)
     entries_crystal, crystal_dict = apply_zinc_sites(entries_crystal, crystal_dict, selected_sites)
     charge_after_zinc = total_charge(entries_crystal)
@@ -1671,6 +1855,13 @@ def apply_zinc_modification(
     summary["precondition_zinc_geometry"] = bool(precondition_zinc_geometry)
     summary["target_Zn_O_distance"] = float(target_Zn_O_distance)
     summary["candidate_site_report"] = candidate_site_report
+    if Zn_site_type == "Q1_Zn":
+        summary["Q1_Zn_selection_policy"] = build_q1_selection_policy(
+            candidates,
+            selected_sites,
+            Zn_seed,
+            q1_selection_mode,
+        )
     summary["Q1_Zn_motif_assumption"] = (
         "Conservative static candidate: replace one Q1/terminal silicate Si center with Zn(+2), "
         "retain nearby framework O coordination, and convert two safe terminal/non-bridging O core-shell pairs "

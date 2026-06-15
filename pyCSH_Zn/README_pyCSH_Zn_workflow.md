@@ -134,6 +134,12 @@ This is a controlled quasi-static mechanics pipeline validation only. It is not 
 
 The screening writes CSV/JSON rankings under `output_Y/workflow_v1/q1_motif_screening/`. Q1_Zn remains outside the default mechanics workflow unless a screened post-minimized candidate validates as `valid_q1_zn_candidate`.
 
+## v1.3.3 Q1 Selected Static Candidate
+
+Default Q1_Zn generation now uses `PYCSH_ZN_Q1_SELECTION_MODE=ranked_static`. The generator enumerates topology-valid Q1 candidates and selects a deterministic static candidate using pre-min motif geometry, hydroxylation safety, tetrahedral angle deviation, O-O separation, and secondary-shell crowding diagnostics.
+
+This default path does not run post-min screening and does not hard-code a site atom ID. Post-min validation is still required before any opt-in Q1 mechanics workflow.
+
 ## CS-Info Policy
 
 `CS-Info` contains entries for all atoms. Bonded `O_core`/`O_shell` pairs share the same CSID. Non-core-shell atoms have singleton CSIDs. The validator checks both complete CS-Info coverage and bonded core-shell pair consistency.

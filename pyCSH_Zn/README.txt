@@ -61,6 +61,10 @@ Q1_Zn motif screening writes candidate rankings under:
 
     output_Y/workflow_v1/q1_motif_screening/
 
+Default Q1_Zn generation uses ranked_static candidate selection. It ranks
+topology-valid Q1 candidates from pre-minimization geometry diagnostics and
+does not hard-code a single atom ID.
+
 Q1_Zn is not added to default mechanics unless a screened post-minimized
 candidate validates as valid_q1_zn_candidate.
 

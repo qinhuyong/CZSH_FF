@@ -131,6 +131,17 @@ been completed. representative_models.json records selected model IDs, seeds,
 motif labels, post-min data paths, validation labels, scores, and selection
 reasons.
 
+Single-structure multi-Zn alpha generation:
+
+    python examples/15_generate_multi_zn_structure.py --mode multi_q2b --n-q2b 2 --seed 6100 --run-static-relaxation
+    python examples/15_generate_multi_zn_structure.py --mode multi_q1 --n-q1 2 --seed 6200 --run-static-relaxation
+    python examples/15_generate_multi_zn_structure.py --mode q1_q2b_single_structure_mixture --n-q1 1 --n-q2b 1 --seed 6300 --run-static-relaxation
+
+This is different from ensemble-level q1_q2b_mixture. Ensemble-level mixture
+means different generated models are assigned Q1_Zn or Q2b_Zn. Single-structure
+mixed motif means one structure contains independent Q1_Zn and Q2b_Zn motifs.
+The old mixed_Q1_Q2b_Zn site type remains unsupported.
+
 Outputs are written under:
 
     output_Y/workflow_v1/
@@ -266,3 +277,21 @@ summaries plus simple SVG plots.
 This is quasi-static mechanics pipeline validation only. It is not a final
 elastic-constant calculation and not a production mechanical-property result.
 Finite-temperature MD is not generated or run.
+
+v1.6-beta multi-Zn screening
+----------------------------
+
+examples/16_screen_multi_zn_combinations.py screens single-structure multi-Zn
+site combinations for multi_q2b, multi_q1, and q1_q2b_single_structure_mixture.
+This is not the old mixed_Q1_Q2b_Zn site type.
+
+For multi-Zn structures, post-min valid means minimum-valid: every Zn center has
+coordination >= 4 within the unchanged 2.5 Angstrom Zn-O gate. The quality label
+then records whether the candidate is ideal_fourfold, overcoordinated, or
+undercoordinated_failed. Overcoordinated minimum-valid candidates must not be
+described as ideal ZnO4 fourfold motifs.
+
+The current v1.6-beta screen finds an ideal_fourfold multi_q2b best candidate
+and overcoordinated minimum-valid best candidates for multi_q1 and
+single-structure Q1+Q2b mixed motif. Undercoordinated candidates such as 3;5 or
+5;3 remain failed_multi_zn_candidate and are not promoted as best candidates.

@@ -173,6 +173,46 @@ def audit_zinc(data):
     return {"n_zinc": len(zns), "zinc_sites": records}
 
 
+def load_zinc_summary(path):
+    if not path:
+        return None
+    try:
+        with open(path) as f:
+            return json.load(f)
+    except (IOError, ValueError):
+        return None
+
+
+def multi_zinc_site_counts(summary):
+    counts = {"Q1_Zn": 0, "Q2b_Zn": 0}
+    if not summary:
+        return counts
+    for site in summary.get("selected_sites", []):
+        motif = site.get("motif") or site.get("motif_type")
+        if motif in counts:
+            counts[motif] += 1
+    centers = summary.get("zn_centers", [])
+    if centers and not any(counts.values()):
+        for center in centers:
+            motif = center.get("motif_type")
+            if motif in counts:
+                counts[motif] += 1
+    return counts
+
+
+def multi_zinc_failed_centers(zinc):
+    failed = []
+    for site in zinc.get("zinc_sites", []):
+        if site.get("coordination_2p5", 0) < 4:
+            failed.append({
+                "zn_atom_id": site.get("Zn"),
+                "coordination_2p5": site.get("coordination_2p5"),
+                "nearest_oxygen": site.get("nearest_oxygen", []),
+                "reason": "fewer than four O neighbors within 2.5 A",
+            })
+    return failed
+
+
 def infer_zinc_site_type(data_file):
     here = os.path.dirname(os.path.abspath(data_file))
     for _ in range(4):
@@ -205,13 +245,10 @@ def validate(path, db_path=DEFAULT_DB, expected_zinc_site_type=None, zinc_summar
     cs = audit_csinfo(data)
     water = audit_water(data)
     zinc = audit_zinc(data)
+    zinc_summary = load_zinc_summary(zinc_summary_path)
     zinc_site_type = expected_zinc_site_type
-    if zinc_site_type is None and zinc_summary_path:
-        try:
-            with open(zinc_summary_path) as f:
-                zinc_site_type = json.load(f).get("Zn_site_type")
-        except (IOError, ValueError):
-            zinc_site_type = None
+    if zinc_site_type is None and zinc_summary:
+        zinc_site_type = zinc_summary.get("Zn_site_type") or zinc_summary.get("multi_Zn_mode")
     if zinc_site_type is None:
         zinc_site_type = infer_zinc_site_type(path)
     reasons = []
@@ -241,8 +278,23 @@ def validate(path, db_path=DEFAULT_DB, expected_zinc_site_type=None, zinc_summar
                 classification = "needs_static_relaxation"
                 reasons.append("Q1_Zn has a fourth O neighbor beyond 2.5 A but within 3.2 A")
             else:
-                classification = "failed_zinc_geometry"
-                reasons.append("Zn has fewer than 4 O neighbors within 2.5 A")
+                if zinc["n_zinc"] > 1 or str(zinc_site_type or "").startswith("multi_"):
+                    classification = "failed_multi_zn_candidate"
+                else:
+                    classification = "failed_zinc_geometry"
+                failed = multi_zinc_failed_centers(zinc)
+                reasons.append("Zn has fewer than 4 O neighbors within 2.5 A: {}".format(failed))
+        elif zinc["n_zinc"] > 1 or str(zinc_site_type or "").startswith("multi_"):
+            motif_counts = multi_zinc_site_counts(zinc_summary)
+            if motif_counts["Q1_Zn"] and motif_counts["Q2b_Zn"]:
+                classification = "valid_multi_q1_q2b_zn_candidate"
+            elif motif_counts["Q1_Zn"]:
+                classification = "valid_multi_q1_zn_candidate"
+            elif motif_counts["Q2b_Zn"]:
+                classification = "valid_multi_q2b_zn_candidate"
+            else:
+                classification = "failed_multi_zn_candidate"
+                reasons.append("multi-Zn motif composition could not be inferred from zinc summary")
         elif zinc_site_type == "Q1_Zn":
             classification = "valid_q1_zn_candidate"
         else:
@@ -263,6 +315,8 @@ def validate(path, db_path=DEFAULT_DB, expected_zinc_site_type=None, zinc_summar
         "water": {"n_water": water["n_water"], "n_bad_water": water["n_bad_water"]},
         "zinc": zinc,
         "zinc_site_type": zinc_site_type,
+        "multi_zinc_failed_centers": multi_zinc_failed_centers(zinc) if str(zinc_site_type or "").startswith("multi_") or zinc["n_zinc"] > 1 else [],
+        "multi_zinc_site_counts": multi_zinc_site_counts(zinc_summary),
     }
 
 

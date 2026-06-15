@@ -197,6 +197,62 @@ The analysis writes:
 
 v1.5 only performs ensemble statistics, failure reason summaries, and representative selection. It does not add finite-temperature MD, single-structure mixed Q1+Q2b, single-structure multi-Zn, final elastic constants, or production mechanical-property workflows.
 
+## v1.6-alpha Single-Structure Multi-Zn
+
+`examples/15_generate_multi_zn_structure.py` generates a minimal single-structure multi-Zn alpha candidate.
+
+Supported modes:
+
+- `multi_q2b`: two independent Q2b_Zn motifs in one C-S-H structure.
+- `multi_q1`: two independent Q1_Zn motifs in one C-S-H structure.
+- `q1_q2b_single_structure_mixture`: one Q1_Zn motif plus one Q2b_Zn motif in the same C-S-H structure.
+
+Example commands:
+
+```text
+python pyCSH_Zn/examples/15_generate_multi_zn_structure.py --mode multi_q2b --n-q2b 2 --seed 6100 --run-static-relaxation
+python pyCSH_Zn/examples/15_generate_multi_zn_structure.py --mode multi_q1 --n-q1 2 --seed 6200 --run-static-relaxation
+python pyCSH_Zn/examples/15_generate_multi_zn_structure.py --mode q1_q2b_single_structure_mixture --n-q1 1 --n-q2b 1 --seed 6300 --run-static-relaxation
+```
+
+Concepts are distinct:
+
+- Ensemble-level `q1_q2b_mixture`: different models in the ensemble are Q1_Zn or Q2b_Zn.
+- Single-structure Q1+Q2b mixed motif: one structure contains independent Q1_Zn and Q2b_Zn motifs.
+- `mixed_Q1_Q2b_Zn` site type: old prototype site type; still unsupported.
+
+v1.6-alpha requires independent motif records, no duplicate Si site, PBC Zn-Zn separation screening, no repeated hydroxylated O core-shell pair, charge balance, CS-Info validation, water topology validation, and per-center Zn-O coordination diagnostics.
+
+This alpha stage does not add finite-temperature MD, final elastic constants, `md_ready_candidate`, production mechanical-property calculation, or Q1_Zn to the default `examples/07_run_quasistatic_mechanics.py` targets.
+
+## v1.6-beta Multi-Zn Site Pair Screening
+
+`examples/16_screen_multi_zn_combinations.py` screens multiple single-structure
+multi-Zn site combinations for `multi_q2b`, `multi_q1`, and
+`q1_q2b_single_structure_mixture`. Each combination starts independently from
+the same pure C-S-H parent structure; failed candidates are recorded and do not
+stop the screen.
+
+Post-min valid multi-Zn candidates are minimum-valid candidates: every Zn center
+has at least four O neighbors within the unchanged 2.5 Angstrom validation
+threshold. This is distinct from an ideal ZnO4 fourfold result.
+
+Coordination quality labels are:
+
+- `ideal_fourfold`: every Zn center has coordination exactly 4.
+- `overcoordinated`: at least one Zn center has coordination greater than 4 and no center is undercoordinated.
+- `undercoordinated_failed`: at least one Zn center has coordination less than 4, so the structure is `failed_multi_zn_candidate`.
+- `minimum_valid`: all centers satisfy coordination >= 4 when no more specific label applies.
+
+The best candidate files only promote post-min valid candidates with the matching
+`valid_multi_*` validation label. Undercoordinated cases such as 3;5 or 5;3 are
+kept as failed candidates and are not best candidates.
+
+Current v1.6-beta screening identifies an ideal-fourfold `multi_q2b` best
+candidate, while the best `multi_q1` and single-structure Q1+Q2b mixed-motif
+candidates are overcoordinated minimum-valid candidates. They should not be
+described as ideal fourfold ZnO4 motifs.
+
 ## CS-Info Policy
 
 `CS-Info` contains entries for all atoms. Bonded `O_core`/`O_shell` pairs share the same CSID. Non-core-shell atoms have singleton CSIDs. The validator checks both complete CS-Info coverage and bonded core-shell pair consistency.

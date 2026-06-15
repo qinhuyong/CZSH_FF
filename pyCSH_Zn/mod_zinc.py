@@ -1303,6 +1303,142 @@ def select_zinc_sites(candidates, n_zinc, site_type, seed, supercell, min_zn_zn_
     return selected
 
 
+def site_hydroxylated_oxygen_ids(site, entries_crystal, entries_bonds, supercell, allow_hydroxylate_bridging_oxygen=False):
+    return {
+        int(item["atom_id"])
+        for item in select_oxygens_for_hydroxylation(
+            site,
+            entries_crystal,
+            entries_bonds,
+            supercell,
+            2,
+            allow_hydroxylate_bridging_oxygen,
+        )
+    }
+
+
+def rank_q2b_site(site, entries_crystal, entries_bonds, supercell):
+    oxy = oxygen_candidates_for_site(site, entries_crystal, entries_bonds, supercell, False)
+    safe = [item for item in oxy if item["safe_for_default_hydroxylation"]]
+    min_dist = min([float(item["distance"]) for item in safe], default=999.0)
+    return (len(safe) < 2, min_dist, int(site["atom_id"]))
+
+
+def multi_mode_counts(mode, n_q1=None, n_q2b=None):
+    if mode == "multi_q2b":
+        return 0 if n_q1 is None else int(n_q1), 2 if n_q2b is None else int(n_q2b)
+    if mode == "multi_q1":
+        return 2 if n_q1 is None else int(n_q1), 0 if n_q2b is None else int(n_q2b)
+    if mode == "q1_q2b_single_structure_mixture":
+        return 1 if n_q1 is None else int(n_q1), 1 if n_q2b is None else int(n_q2b)
+    raise ValueError("Unsupported v1.6-alpha multi-Zn mode: {}".format(mode))
+
+
+def pairwise_zn_zn_distances(selected_sites, supercell):
+    out = []
+    for i, site_i in enumerate(selected_sites):
+        for site_j in selected_sites[i + 1:]:
+            out.append({
+                "zn_atom_id_1": int(site_i["atom_id"]),
+                "zn_atom_id_2": int(site_j["atom_id"]),
+                "motif_1": site_i.get("motif"),
+                "motif_2": site_j.get("motif"),
+                "distance": float(periodic_distance(site_i["coord"], site_j["coord"], supercell)),
+            })
+    return out
+
+
+def build_multi_candidate_pools(candidates, candidate_site_report, seed, entries_crystal, entries_bonds, supercell):
+    q1_candidates = attach_q1_scores_to_candidates(copy.deepcopy(candidates), candidate_site_report).get("Q1_Zn", [])
+    q1_pool = [
+        dict(site)
+        for site in q1_candidates
+        if site.get("q1_passed_preconditions", False)
+    ]
+    q1_pool.sort(key=lambda site: q1_static_rank_tuple(site, seed))
+    q2b_reports = {
+        int(item["candidate_atom_id"]): item
+        for item in candidate_site_report.get("Q2b_Zn", [])
+    }
+    q2b_pool = []
+    for site in candidates.get("Q2b_Zn", []):
+        report = q2b_reports.get(int(site["atom_id"]), {})
+        if not report.get("passed_preconditions", False):
+            continue
+        item = dict(site)
+        item["q2b_selection_report"] = report
+        q2b_pool.append(item)
+    q2b_pool.sort(key=lambda site: rank_q2b_site(site, entries_crystal, entries_bonds, supercell))
+    return {"Q1_Zn": q1_pool, "Q2b_Zn": q2b_pool}
+
+
+def select_multi_zinc_sites(
+    candidates,
+    candidate_site_report,
+    entries_crystal,
+    entries_bonds,
+    supercell,
+    mode,
+    seed,
+    n_q1=None,
+    n_q2b=None,
+    min_zn_zn_distance=5.0,
+    max_attempts=100,
+):
+    target_q1, target_q2b = multi_mode_counts(mode, n_q1, n_q2b)
+    pools = build_multi_candidate_pools(candidates, candidate_site_report, seed, entries_crystal, entries_bonds, supercell)
+    selected = []
+    used_si = set()
+    used_hydroxylated_o = set()
+    rejected = []
+
+    def try_take(site, motif):
+        atom_id = int(site["atom_id"])
+        if atom_id in used_si:
+            return False, "duplicate substituted Si site"
+        if minimum_periodic_distance(site["coord"], [item["coord"] for item in selected], supercell) < float(min_zn_zn_distance):
+            return False, "Zn-Zn distance below {:.2f} A".format(float(min_zn_zn_distance))
+        try:
+            hydroxylated = site_hydroxylated_oxygen_ids(site, entries_crystal, entries_bonds, supercell, False)
+        except ValueError as exc:
+            return False, str(exc)
+        overlap = sorted(used_hydroxylated_o.intersection(hydroxylated))
+        if overlap:
+            return False, "would reuse hydroxylated O core-shell pair(s): {}".format(overlap)
+        accepted = dict(site)
+        accepted["motif"] = motif
+        accepted["planned_hydroxylated_oxygen_ids"] = sorted(hydroxylated)
+        selected.append(accepted)
+        used_si.add(atom_id)
+        used_hydroxylated_o.update(hydroxylated)
+        return True, None
+
+    for motif, target in (("Q1_Zn", target_q1), ("Q2b_Zn", target_q2b)):
+        attempts = 0
+        for site in pools[motif]:
+            if sum(1 for item in selected if item["motif"] == motif) >= target:
+                break
+            attempts += 1
+            if attempts > int(max_attempts):
+                break
+            ok, reason = try_take(site, motif)
+            if not ok:
+                rejected.append({
+                    "candidate_atom_id": int(site["atom_id"]),
+                    "motif": motif,
+                    "piece": site.get("piece"),
+                    "rejection_reason": reason,
+                })
+        have = sum(1 for item in selected if item["motif"] == motif)
+        if have < target:
+            raise ValueError(
+                "Could only select {} of {} requested {} sites. Rejections: {}".format(
+                    have, target, motif, rejected[-10:]
+                )
+            )
+    return selected, rejected, pools
+
+
 def apply_zinc_sites(entries_crystal, crystal_dict, selected_sites):
     selected_ids = {site["atom_id"] for site in selected_sites}
     touched = set()
@@ -1728,6 +1864,111 @@ def build_zinc_summary(
             "v2 creates a charge-balanced ZnO2(OH)2 substitutional candidate.",
             "v2 does not use guest_ions/substitute and does not randomly replace Ca-layer atoms.",
             "Zn parameters are taken from CementFF4 supplementary information.",
+        ],
+    }
+
+
+def nearest_oxygen_summary_for_site(entries_crystal, supercell, zn_id, hydroxylated_ids=None):
+    coords = coords_by_atom_id(entries_crystal)
+    atom_types = type_by_atom_id(entries_crystal)
+    zn_coord = coords[int(zn_id)]
+    hydroxylated = {int(x) for x in (hydroxylated_ids or [])}
+    records = []
+    for atom_id, specie in atom_types.items():
+        if specie not in (3, 5, 6):
+            continue
+        records.append({
+            "atom_id": int(atom_id),
+            "atom_type": int(specie),
+            "oxygen_role": oxygen_role_label(specie),
+            "distance": float(periodic_distance(zn_coord, coords[atom_id], supercell)),
+            "is_hydroxylated_oxygen": bool(int(atom_id) in hydroxylated),
+        })
+    records.sort(key=lambda item: item["distance"])
+    return records[:8]
+
+
+def build_multi_zinc_summary(
+    entries_crystal,
+    selected_sites,
+    candidates,
+    candidate_site_report,
+    rejected_candidates,
+    target_zinc_si_ratio,
+    ca_si_ratio,
+    supercell,
+    mode,
+    seed,
+    min_zn_zn_distance,
+):
+    counts = count_species(entries_crystal)
+    n_si = counts.get(2, 0) + counts.get(10, 0)
+    n_zn = counts.get(ZN_SPECIE, 0)
+    n_ca = counts.get(1, 0) + counts.get(9, 0)
+    n_si_original = n_si + n_zn
+    zn_zn = pairwise_zn_zn_distances(selected_sites, supercell)
+    selected = []
+    for site in selected_sites:
+        hydroxylated = site.get("planned_hydroxylated_oxygen_ids", [])
+        nearest = nearest_oxygen_summary_for_site(entries_crystal, supercell, site["atom_id"], hydroxylated)
+        selected.append({
+            "atom_id": int(site["atom_id"]),
+            "motif": site["motif"],
+            "motif_type": site["motif"],
+            "substituted_si_atom_id": int(site["atom_id"]),
+            "cell": site.get("cell"),
+            "piece": site.get("piece"),
+            "coord": site.get("coord"),
+            "original_specie": site.get("original_specie"),
+            "selected_O_atoms": nearest[:4],
+            "planned_hydroxylated_oxygen_ids": hydroxylated,
+            "initial_Zn_O_distances": nearest,
+            "Zn_O_coordination_2p5A": sum(1 for item in nearest if item["distance"] <= 2.5),
+            "center_passed_initial": sum(1 for item in nearest if item["distance"] <= 2.5) >= 4,
+            "q1_selection_score": site.get("q1_selection_score"),
+            "q1_selection_report": site.get("q1_selection_report"),
+            "q2b_selection_report": site.get("q2b_selection_report"),
+        })
+    return {
+        "enable_zinc": True,
+        "Zn_site_type": "multi_Zn",
+        "multi_Zn_mode": mode,
+        "requested_mode": mode,
+        "Zn_seed": int(seed),
+        "target_Zn_Si_ratio": float(target_zinc_si_ratio),
+        "actual_Zn_Si_ratio": float(n_zn / n_si) if n_si else None,
+        "actual_Zn_Si_original_ratio": float(n_zn / n_si_original) if n_si_original else None,
+        "Ca_Si_ratio": float(ca_si_ratio),
+        "N_Si_original": int(n_si_original),
+        "N_Si_final": int(n_si),
+        "N_Zn": int(n_zn),
+        "n_Zn_total": int(n_zn),
+        "N_Ca": int(n_ca),
+        "N_Q1_Zn": int(sum(1 for site in selected_sites if site["motif"] == "Q1_Zn")),
+        "N_Q2b_Zn": int(sum(1 for site in selected_sites if site["motif"] == "Q2b_Zn")),
+        "n_Q1_Zn": int(sum(1 for site in selected_sites if site["motif"] == "Q1_Zn")),
+        "n_Q2b_Zn": int(sum(1 for site in selected_sites if site["motif"] == "Q2b_Zn")),
+        "N_Q1_candidates": int(len(candidates["Q1_Zn"])),
+        "N_Q2b_candidates": int(len(candidates["Q2b_Zn"])),
+        "selected_sites": selected,
+        "zn_centers": selected,
+        "Zn_Zn_distances": zn_zn,
+        "minimum_Zn_Zn_distance": None if not zn_zn else float(min(item["distance"] for item in zn_zn)),
+        "min_zn_zn_distance_required": float(min_zn_zn_distance),
+        "rejected_candidates": rejected_candidates,
+        "candidate_site_report": candidate_site_report,
+        "total_charge_before_zinc": None,
+        "total_charge_after_zinc_before_hydroxylation": total_charge(entries_crystal),
+        "total_charge_after_hydroxylation": total_charge(entries_crystal),
+        "total_charge_residual": total_charge(entries_crystal),
+        "charge_residual_final": total_charge(entries_crystal),
+        "N_Os_converted_to_Oh": 0,
+        "N_H_added_for_Zn_OH": 0,
+        "hydroxylation_records": [],
+        "notes": [
+            "v1.6-alpha creates multiple independent Q1_Zn/Q2b_Zn motifs in one static parent structure.",
+            "This is not the unsupported mixed_Q1_Q2b_Zn site type.",
+            "Each motif remains independently selected, recorded, and validated.",
         ],
     }
 

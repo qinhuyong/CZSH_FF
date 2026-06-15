@@ -173,6 +173,30 @@ v1.4 supports one Zn motif per generated structure. Multiple Zn motifs within th
 
 This is static candidate ensemble generation, not finite-temperature MD, not final elastic constants, and not production mechanical-property calculation.
 
+## v1.5 Ensemble Analysis And Selection
+
+After generating a v1.4 ensemble, run:
+
+```text
+python pyCSH_Zn/examples/13_analyze_zn_csh_ensemble.py --ensemble-dir pyCSH_Zn/output_Y/workflow_v1/zn_csh_ensemble --top-n 5 --select-for-mechanics --prefer-balanced-q1-q2b --write-plots
+```
+
+The analysis writes:
+
+- `output_Y/workflow_v1/zn_csh_ensemble_analysis/ensemble_analysis_summary.json`
+- `output_Y/workflow_v1/zn_csh_ensemble_analysis/ensemble_analysis_summary.csv`
+- `output_Y/workflow_v1/zn_csh_ensemble_analysis/motif_survival_summary.csv`
+- `output_Y/workflow_v1/zn_csh_ensemble_analysis/failure_reason_summary.csv`
+- `output_Y/workflow_v1/zn_csh_ensemble_analysis/mechanics_ready_models.csv`
+- `output_Y/workflow_v1/zn_csh_ensemble_analysis/representative_models.json`
+- `output_Y/workflow_v1/zn_csh_ensemble_analysis/plots/*.svg`
+
+`mechanics_ready_models.csv` is a filtered input manifest for a future opt-in v1.6 batch mechanics workflow. It does not mean production mechanics, final elastic constants, or final mechanical properties have been calculated.
+
+`representative_models.json` records selected model IDs, seeds, motif types, model directories, post-min data paths, validation labels, selection scores, and the reason each model was selected.
+
+v1.5 only performs ensemble statistics, failure reason summaries, and representative selection. It does not add finite-temperature MD, single-structure mixed Q1+Q2b, single-structure multi-Zn, final elastic constants, or production mechanical-property workflows.
+
 ## CS-Info Policy
 
 `CS-Info` contains entries for all atoms. Bonded `O_core`/`O_shell` pairs share the same CSID. Non-core-shell atoms have singleton CSIDs. The validator checks both complete CS-Info coverage and bonded core-shell pair consistency.

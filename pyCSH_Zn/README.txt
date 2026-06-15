@@ -104,6 +104,33 @@ mixed_Q1_Q2b_Zn site type and does not create a single-structure mixed motif.
 v1.4 supports one Zn motif per structure; multiple Zn motifs in the same
 structure are not yet supported.
 
+Ensemble analysis and representative selection:
+
+    python examples/13_analyze_zn_csh_ensemble.py --ensemble-dir output_Y/workflow_v1/zn_csh_ensemble --top-n 5 --select-for-mechanics --prefer-balanced-q1-q2b --write-plots
+
+When running from the repository root, use:
+
+    python pyCSH_Zn/examples/13_analyze_zn_csh_ensemble.py --ensemble-dir pyCSH_Zn/output_Y/workflow_v1/zn_csh_ensemble --top-n 5 --select-for-mechanics --write-plots
+
+Outputs are written under:
+
+    output_Y/workflow_v1/zn_csh_ensemble_analysis/
+
+Key files:
+
+    ensemble_analysis_summary.json
+    motif_survival_summary.csv
+    failure_reason_summary.csv
+    mechanics_ready_models.csv
+    representative_models.json
+    plots/*.svg
+
+mechanics_ready_models.csv is a candidate input list for future opt-in batch
+mechanics. It does not mean production mechanical-property calculation has
+been completed. representative_models.json records selected model IDs, seeds,
+motif labels, post-min data paths, validation labels, scores, and selection
+reasons.
+
 Outputs are written under:
 
     output_Y/workflow_v1/

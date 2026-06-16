@@ -1,347 +1,92 @@
-pyCSH-Zn v1.0-static
-====================
+pyCSH-Zn workflow
+=================
 
-pyCSH-Zn is a focused extension of pyCSH for generating Zn-modified
-C-S-H static candidate structures and exporting CementFF4/CementFF4-Zn
-compatible LAMMPS files.
+pyCSH-Zn is a focused pyCSH-based workflow for static Zn-modified C-S-H
+candidate generation, CementFF4/CementFF4-Zn-compatible LAMMPS data output,
+validation, static minimization, ensemble screening, and quasi-static mechanics
+smoke tests.
 
-Scope
------
+Detailed reproducible commands are in FINAL_WORKFLOW.md.
 
-This release supports:
+Current scope
+-------------
 
-1. Pure C-S-H generation from the pyCSH brick workflow.
-2. Q2b_Zn candidate generation as the main Zn path.
-3. Charge-balanced ZnO2(OH)2-style Q2b_Zn candidate environments.
-4. CementFF4/CementFF4-Zn LAMMPS data output.
-5. CementFF4-Zn force-field include generation from
-   forcefields/CementFF4_Zn_parameters.json.
-6. Static validation of type maps, charge assignment, CS-Info, water topology,
-   and Zn coordination.
-7. Normalized RDF output, Zn-O coordination, selected angle summaries, and
-   water/contact summaries.
+Supported:
 
-This release does not reproduce the original CementFF4 finite-temperature MD
-workflow and does not reproduce the Morales-Melgares simulation protocol.
-Finite-temperature core-shell MD is not a v1.0-static acceptance criterion.
+- Pure C-S-H static generation.
+- Q2b_Zn and Q1_Zn single-Zn static candidates.
+- Single-Zn ensembles and representative selection.
+- Single-structure multi-Zn candidates, including independent Q1_Zn + Q2b_Zn
+  mixed-motif structures.
+- Multi-Zn ensembles and selected multi-Zn quasi-static mechanics.
 
-Do not interpret valid_q2b_zn_candidate as MD-ready. It means only that the
-generated structure is a static CementFF4-Zn candidate with valid charge
-assignment, topology, CS-Info, water topology, and Zn coordination checks.
+Not claimed:
 
-Quick start
------------
+- Finite-temperature MD.
+- MD-ready classification.
+- Final elastic constants.
+- Production mechanical properties.
+- Experimental uniqueness of any Zn local motif.
+- The old mixed_Q1_Q2b_Zn site type.
 
-Run from this directory:
+Default mechanics
+-----------------
 
-    python examples/01_generate_pure_csh.py
-    python examples/02_generate_q2b_zn.py
-    python examples/03_validate_outputs.py
-    python examples/04_build_lammps_inputs.py
-    python examples/05_postprocess_q2b_zn.py
+examples/07_run_quasistatic_mechanics.py remains the default pure/Q2b
+quasi-static mechanics runner. Its default active targets are only:
 
-For the v1.1-static-relaxation workflow, run after the first four commands:
+- pure_csh
+- q2b_zn
 
-    python examples/06_run_static_relaxation.py
+Q1_Zn mechanics and multi-Zn mechanics are opt-in workflows:
 
-For the v1.2-quasistatic-mechanics workflow, run after v1.1:
+- examples/11_run_q1_quasistatic_mechanics.py
+- examples/18_run_selected_multi_zn_mechanics.py
 
-    python examples/07_run_quasistatic_mechanics.py
+Quick smoke test
+----------------
 
-For v1.3.2 Q1_Zn motif screening:
+Run from the repository root:
 
-    python examples/10_screen_q1_motifs.py
+    python pyCSH_Zn/examples/01_generate_pure_csh.py
+    python pyCSH_Zn/examples/02_generate_q2b_zn.py
+    python pyCSH_Zn/examples/08_generate_q1_zn.py
+    python pyCSH_Zn/examples/07_run_quasistatic_mechanics.py
 
-Expected validation result:
+Recommended workflows
+---------------------
 
-    pure_csh_cementff.data  -> valid_static_candidate
-    q2b_zn_cementff_zn.data -> valid_q2b_zn_candidate
-
-Q1_Zn motif screening writes candidate rankings under:
-
-    output_Y/workflow_v1/q1_motif_screening/
-
-Default Q1_Zn generation uses ranked_static candidate selection. It ranks
-topology-valid Q1 candidates from pre-minimization geometry diagnostics and
-does not hard-code a single atom ID.
-
-Q1_Zn is not added to default mechanics unless a screened post-minimized
-candidate validates as valid_q1_zn_candidate.
-
-For explicit Q1-only quasi-static mechanics smoke tests, run after Q1
-post-min validation:
-
-    python examples/11_run_q1_quasistatic_mechanics.py
-
-This writes output_Y/workflow_v1/mechanics_q1_zn/ and does not change the
-default pure/Q2b mechanics workflow.
-
-Zn-C-S-H ensemble generation:
-
-    python examples/12_generate_zn_csh_ensemble.py --n-models 20 --seed-start 1000 --mode q1_q2b_mixture --q1-fraction 0.5 --target-zn-si 0.05 --run-static-relaxation
-
-Outputs are written under:
-
-    output_Y/workflow_v1/zn_csh_ensemble/
-
-Key files:
-
-    ensemble_manifest.json
-    ensemble_summary.csv
-    ensemble_summary.json
-    accepted_models.csv
-    rejected_models.csv
-    models/model_000001/
-
-Accepted models are post-minimized structures that validate as
-valid_q1_zn_candidate or valid_q2b_zn_candidate. Rejected models include
-generation failures, initial-validation failures, and post-min validation
-failures; one failure does not stop the ensemble.
-
-The q1_q2b_mixture mode is an ensemble-level mixture: each independently
-generated model uses either Q1_Zn or Q2b_Zn. It does not enable the old
-mixed_Q1_Q2b_Zn site type and does not create a single-structure mixed motif.
-v1.4 supports one Zn motif per structure; multiple Zn motifs in the same
-structure are not yet supported.
-
-Ensemble analysis and representative selection:
-
-    python examples/13_analyze_zn_csh_ensemble.py --ensemble-dir output_Y/workflow_v1/zn_csh_ensemble --top-n 5 --select-for-mechanics --prefer-balanced-q1-q2b --write-plots
-
-When running from the repository root, use:
-
-    python pyCSH_Zn/examples/13_analyze_zn_csh_ensemble.py --ensemble-dir pyCSH_Zn/output_Y/workflow_v1/zn_csh_ensemble --top-n 5 --select-for-mechanics --write-plots
-
-Outputs are written under:
-
-    output_Y/workflow_v1/zn_csh_ensemble_analysis/
-
-Key files:
-
-    ensemble_analysis_summary.json
-    motif_survival_summary.csv
-    failure_reason_summary.csv
-    mechanics_ready_models.csv
-    representative_models.json
-    plots/*.svg
-
-mechanics_ready_models.csv is a candidate input list for future opt-in batch
-mechanics. It does not mean production mechanical-property calculation has
-been completed. representative_models.json records selected model IDs, seeds,
-motif labels, post-min data paths, validation labels, scores, and selection
-reasons.
-
-Single-structure multi-Zn alpha generation:
-
-    python examples/15_generate_multi_zn_structure.py --mode multi_q2b --n-q2b 2 --seed 6100 --run-static-relaxation
-    python examples/15_generate_multi_zn_structure.py --mode multi_q1 --n-q1 2 --seed 6200 --run-static-relaxation
-    python examples/15_generate_multi_zn_structure.py --mode q1_q2b_single_structure_mixture --n-q1 1 --n-q2b 1 --seed 6300 --run-static-relaxation
-
-This is different from ensemble-level q1_q2b_mixture. Ensemble-level mixture
-means different generated models are assigned Q1_Zn or Q2b_Zn. Single-structure
-mixed motif means one structure contains independent Q1_Zn and Q2b_Zn motifs.
-The old mixed_Q1_Q2b_Zn site type remains unsupported.
-
-Outputs are written under:
-
-    output_Y/workflow_v1/
-
-CementFF4-Zn charges
---------------------
-
-forcefields/CementFF4_Zn_parameters.json stores CementFF4 SI Table S1 charges:
-
-    O_core      +0.84819
-    O_shell     -2.84819
-    Ow          -1.1128
-    Hw          +0.5564
-    Oh          -1.4
-    Hoh/H       +0.4
-    Zn          +2.0
-
-validate_cementff_data.py checks every atom charge against this table. A
-nonzero total charge is not the only charge gate; per-type charge assignment
-must also pass.
-
-CS-Info policy
---------------
-
-The LAMMPS data file contains a CS-Info entry for every atom.
-
-- O_core/O_shell bonded pairs share the same CSID.
-- Non-core-shell atoms receive singleton CSIDs.
-- The validator checks both CS-Info coverage and bonded core-shell pair
-  consistency.
-
-Main files
-----------
-
-- mod_zinc.py
-  Q2b_Zn site selection, substitution, hydroxylation, charge balance, and
-  zinc_summary.json generation.
-
-- mod_write_Y.py
-  CementFF4/CementFF4-Zn LAMMPS data writer with fixed type maps, molecule
-  IDs, water topology, and CS-Info.
-
-- validate_cementff_data.py
-  Static validator with per-atom charge assignment checks and orthogonal or
-  triclinic minimum-image distances.
-
-- forcefields/CementFF4_Zn_parameters.json
-  CementFF4-Zn parameter database.
-
-- forcefields/build_cementff4_zn.py
-  Generates in.CementFF4_Zn, cementff4_type_map.json, and
-  forcefield_validation_report.json.
-
-- forcefields/validate_forcefield.py
-  Audits pair_coeff syntax and pair coverage. The generated LAMMPS
-  lammps_inputs/in.read_check file should also be run with the target LAMMPS
-  executable to catch runtime pair_coeff syntax errors.
-
-- lammps_templates/build_inputs.py
-  Generates read-check, run0, static minimization, static shell relaxation,
-  and quasi-static elastic templates. It does not generate finite-temperature
-  MD inputs.
-
-- postprocess/analyze_structure.py
-  Produces normalized RDF CSV files using PBC, shell volume, number density,
-  and box volume; also writes coordination, angle, and contact summaries.
-
-Validation classes
-------------------
-
-- valid_static_candidate
-- valid_q2b_zn_candidate
-- needs_static_relaxation
-- failed_charge
-- failed_charge_assignment
-- failed_topology
-- failed_water_contacts
-- failed_zinc_geometry
-- failed_csinfo
-- experimental_md_only
-
-An MD-ready classification is intentionally not used.
-
-Post-processing outputs
------------------------
-
-examples/05_postprocess_q2b_zn.py writes:
-
-- structure_analysis.json
-- rdf_Zn_O.csv
-- rdf_Zn_Si.csv
-- rdf_Zn_Ca.csv
-- rdf_Si_O.csv
-- rdf_Ca_O.csv
-
-These RDF files are normalized g(r), not raw distance histograms.
-
-v1.1-static-relaxation
-----------------------
-
-examples/06_run_static_relaxation.py runs LAMMPS for pure C-S-H first and then
-Q2b_Zn. For each target it tests:
-
-- in.read_check
-- in.run0
-- in.minimize_static
-- in.elastic_x_plus
-- in.elastic_x_minus
-
-LAMMPS write_data output does not preserve the custom CS-Info section, so the
-runner reattaches the original CS-Info by atom ID before post-minimization
-validation. The validator semantics are unchanged.
-
-The x-direction strain templates are small-strain smoke tests for quasi-static
-input validation only. They do not claim final elastic constants or final
-mechanical-property results.
-
-The runner writes:
-
-    output_Y/workflow_v1/static_relaxation_report.json
-
-Finite-temperature MD is not run.
-
-v1.2-quasistatic-mechanics
---------------------------
-
-examples/07_run_quasistatic_mechanics.py starts from the v1.1 post-minimized
-pure C-S-H and Q2b_Zn structures. It generates x-direction +/-0.001, +/-0.002,
-and +/-0.003 strain cases, runs LAMMPS run0/deform/minimize/run0, reattaches
-CS-Info, validates each deformed minimized data file, and writes CSV/JSON
-summaries plus simple SVG plots.
-
-This is quasi-static mechanics pipeline validation only. It is not a final
-elastic-constant calculation and not a production mechanical-property result.
-Finite-temperature MD is not generated or run.
-
-v1.6-beta multi-Zn screening
-----------------------------
-
-examples/16_screen_multi_zn_combinations.py screens single-structure multi-Zn
-site combinations for multi_q2b, multi_q1, and q1_q2b_single_structure_mixture.
-This is not the old mixed_Q1_Q2b_Zn site type.
-
-For multi-Zn structures, post-min valid means minimum-valid: every Zn center has
-coordination >= 4 within the unchanged 2.5 Angstrom Zn-O gate. The quality label
-then records whether the candidate is ideal_fourfold, overcoordinated, or
-undercoordinated_failed. Overcoordinated minimum-valid candidates must not be
-described as ideal ZnO4 fourfold motifs.
-
-The current v1.6-beta screen finds an ideal_fourfold multi_q2b best candidate
-and overcoordinated minimum-valid best candidates for multi_q1 and
-single-structure Q1+Q2b mixed motif. Undercoordinated candidates such as 3;5 or
-5;3 remain failed_multi_zn_candidate and are not promoted as best candidates.
-
-v1.7 multi-Zn ensemble generator
---------------------------------
-
-examples/17_generate_multi_zn_ensemble.py generates and analyzes ensembles of
-single-structure multi-Zn candidates using the v1.6-beta site-combination
-screening logic.
-
-Example workflow:
+Single-Zn ensemble:
 
     python pyCSH_Zn/examples/12_generate_zn_csh_ensemble.py --n-models 20 --seed-start 1000 --mode q1_q2b_mixture --q1-fraction 0.5 --target-zn-si 0.05 --run-static-relaxation
     python pyCSH_Zn/examples/13_analyze_zn_csh_ensemble.py --ensemble-dir pyCSH_Zn/output_Y/workflow_v1/zn_csh_ensemble --top-n 5 --select-for-mechanics --prefer-balanced-q1-q2b --write-plots
-    python pyCSH_Zn/examples/16_screen_multi_zn_combinations.py --mode q1_q2b_single_structure_mixture --n-q1 1 --n-q2b 1 --seed 7300 --max-combinations 10 --run-static-relaxation
+
+Multi-Zn ensemble:
+
     python pyCSH_Zn/examples/17_generate_multi_zn_ensemble.py --mode mixed_multi_zn_ensemble --n-models 9 --seed-start 8400 --n-q1 1 --n-q2b 1 --max-combinations-per-model 10 --min-zn-zn-distance 5.0 --run-static-relaxation --prefer-ideal-fourfold --write-plots
 
-Supported modes are multi_q2b_ensemble, multi_q1_ensemble,
-q1_q2b_single_structure_mixed_ensemble, and mixed_multi_zn_ensemble.
+Selected multi-Zn mechanics:
 
-The output directory is output_Y/workflow_v1/multi_zn_ensemble/. It contains
-accepted/rejected summaries, representative_multi_zn_models.json,
-mechanics_ready_multi_zn_models.csv, survival and coordination-quality
-summaries, failure-reason summaries, per-model diagnostics, and optional SVG
-plots.
-
-v1.7 is not mechanics, not finite-temperature MD, not final elastic constants,
-and not production mechanical-property calculation. Overcoordinated candidates
-are minimum-valid and must be labeled as such; they are not ideal ZnO4
-tetrahedral structures.
-
-v1.8 selected multi-Zn batch mechanics
---------------------------------------
-
-examples/18_run_selected_multi_zn_mechanics.py reads a v1.7
-mechanics_ready_multi_zn_models.csv file and runs selected x-direction
-quasi-static mechanics for post-min-valid multi-Zn models.
-
-Example:
-
-    python pyCSH_Zn/examples/17_generate_multi_zn_ensemble.py --mode mixed_multi_zn_ensemble --n-models 6 --seed-start 8500 --n-q1 1 --n-q2b 1 --max-combinations-per-model 10 --min-zn-zn-distance 5.0 --run-static-relaxation --prefer-ideal-fourfold --write-plots
     python pyCSH_Zn/examples/18_run_selected_multi_zn_mechanics.py --models-csv pyCSH_Zn/output_Y/workflow_v1/multi_zn_ensemble/mechanics_ready_multi_zn_models.csv --max-models 4 --include-overcoordinated --write-plots
 
-The runner excludes failed_multi_zn_candidate, undercoordinated_failed, and
-postmin_valid=false models. Each strain case starts from the same post-min
-reference structure for the selected model; sequential strain accumulation is
-not used.
+Main references
+---------------
 
-v1.8 is not finite-temperature MD, not final elastic constants, and not
-production mechanical-property calculation. Overcoordinated models can be used
-as minimum-valid mechanics candidates when explicitly included, but they remain
-labeled separately from ideal_fourfold models.
+- FINAL_WORKFLOW.md: command recipes, script index, outputs, validation labels,
+  coordination-quality definitions, and recommended paper-scale workflows.
+- MANUSCRIPT_METHODS_DRAFT.md: manuscript-ready methods draft.
+- v1.9-final-cleanup-and-manuscript-workflow-status.md: final version summary.
+
+Coordination language
+---------------------
+
+For multi-Zn models, minimum-valid means every Zn center has at least four O
+neighbors within the unchanged 2.5 Angstrom Zn-O validation gate.
+
+- ideal_fourfold: every Zn center has coordination exactly 4.
+- overcoordinated: all centers have coordination >= 4 and at least one center
+  has coordination > 4.
+- undercoordinated_failed: at least one Zn center has coordination < 4.
+
+Overcoordinated models may be retained as minimum-valid candidates when clearly
+labeled, but they are not ideal ZnO4 tetrahedral structures.

@@ -1,0 +1,8 @@
+CZSH_FF pyCSH_Zn paper code package
+Package version: v1.11-paper-code-package
+Source repository: https://github.com/qinhuyong/CZSH_FF
+Based on repository tag: v1.10-manuscript-release-package
+Base commit: 03afb48
+Package purpose: clean paper-code snapshot for manuscript and supplementary use
+Scientific workflow status: construction, validation, ensemble screening, and selected quasi-static deformation diagnostics
+Not included: finite-temperature MD, MD-ready classification, final elastic constants, production mechanical properties

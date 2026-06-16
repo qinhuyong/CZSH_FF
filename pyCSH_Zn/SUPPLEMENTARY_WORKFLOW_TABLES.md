@@ -37,7 +37,7 @@ scientific functionality.
 | `failed_multi_zn_candidate` | One or more multi-Zn validation gates failed. |
 | `needs_static_relaxation` | Initial candidate is not post-min valid but is close enough to justify static relaxation. |
 
-No validation label in this workflow means MD-ready.
+No validation label in this workflow should be interpreted as MD-ready.
 
 ## Table S3. Coordination Quality
 

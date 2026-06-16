@@ -75,6 +75,9 @@ Main references
 - FINAL_WORKFLOW.md: command recipes, script index, outputs, validation labels,
   coordination-quality definitions, and recommended paper-scale workflows.
 - MANUSCRIPT_METHODS_DRAFT.md: manuscript-ready methods draft.
+- MANUSCRIPT_FIGURE_PLAN.md: manuscript figure structure and data sources.
+- SUPPLEMENTARY_WORKFLOW_TABLES.md: supplement-ready workflow tables.
+- RELEASE_AUDIT_v1.9.md: v1.9 release audit and boundary checklist.
 - v1.9-final-cleanup-and-manuscript-workflow-status.md: final version summary.
 
 Coordination language

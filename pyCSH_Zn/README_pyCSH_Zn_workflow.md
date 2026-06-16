@@ -15,6 +15,9 @@ validation label table, coordination-quality table, output directory map, and
 recommended paper-scale commands.
 
 Use `MANUSCRIPT_METHODS_DRAFT.md` as the manuscript methods starting point.
+Use `MANUSCRIPT_FIGURE_PLAN.md`, `SUPPLEMENTARY_WORKFLOW_TABLES.md`, and
+`RELEASE_AUDIT_v1.9.md` for manuscript figures, supplement tables, and release
+audit notes.
 
 ## Supported Workflows
 

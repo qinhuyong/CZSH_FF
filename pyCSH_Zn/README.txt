@@ -295,3 +295,31 @@ The current v1.6-beta screen finds an ideal_fourfold multi_q2b best candidate
 and overcoordinated minimum-valid best candidates for multi_q1 and
 single-structure Q1+Q2b mixed motif. Undercoordinated candidates such as 3;5 or
 5;3 remain failed_multi_zn_candidate and are not promoted as best candidates.
+
+v1.7 multi-Zn ensemble generator
+--------------------------------
+
+examples/17_generate_multi_zn_ensemble.py generates and analyzes ensembles of
+single-structure multi-Zn candidates using the v1.6-beta site-combination
+screening logic.
+
+Example workflow:
+
+    python pyCSH_Zn/examples/12_generate_zn_csh_ensemble.py --n-models 20 --seed-start 1000 --mode q1_q2b_mixture --q1-fraction 0.5 --target-zn-si 0.05 --run-static-relaxation
+    python pyCSH_Zn/examples/13_analyze_zn_csh_ensemble.py --ensemble-dir pyCSH_Zn/output_Y/workflow_v1/zn_csh_ensemble --top-n 5 --select-for-mechanics --prefer-balanced-q1-q2b --write-plots
+    python pyCSH_Zn/examples/16_screen_multi_zn_combinations.py --mode q1_q2b_single_structure_mixture --n-q1 1 --n-q2b 1 --seed 7300 --max-combinations 10 --run-static-relaxation
+    python pyCSH_Zn/examples/17_generate_multi_zn_ensemble.py --mode mixed_multi_zn_ensemble --n-models 9 --seed-start 8400 --n-q1 1 --n-q2b 1 --max-combinations-per-model 10 --min-zn-zn-distance 5.0 --run-static-relaxation --prefer-ideal-fourfold --write-plots
+
+Supported modes are multi_q2b_ensemble, multi_q1_ensemble,
+q1_q2b_single_structure_mixed_ensemble, and mixed_multi_zn_ensemble.
+
+The output directory is output_Y/workflow_v1/multi_zn_ensemble/. It contains
+accepted/rejected summaries, representative_multi_zn_models.json,
+mechanics_ready_multi_zn_models.csv, survival and coordination-quality
+summaries, failure-reason summaries, per-model diagnostics, and optional SVG
+plots.
+
+v1.7 is not mechanics, not finite-temperature MD, not final elastic constants,
+and not production mechanical-property calculation. Overcoordinated candidates
+are minimum-valid and must be labeled as such; they are not ideal ZnO4
+tetrahedral structures.

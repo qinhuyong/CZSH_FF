@@ -291,6 +291,35 @@ means all Zn centers have coordination exactly 4, while `overcoordinated`
 candidates are only minimum-valid and must not be described as ideal ZnO4
 tetrahedral structures.
 
+## v1.8 Selected Multi-Zn Batch Mechanics
+
+`examples/18_run_selected_multi_zn_mechanics.py` reads the v1.7
+`mechanics_ready_multi_zn_models.csv` manifest and runs x-direction
+quasi-static mechanics for selected post-min-valid multi-Zn models.
+
+Example:
+
+```text
+python pyCSH_Zn/examples/17_generate_multi_zn_ensemble.py --mode mixed_multi_zn_ensemble --n-models 6 --seed-start 8500 --n-q1 1 --n-q2b 1 --max-combinations-per-model 10 --min-zn-zn-distance 5.0 --run-static-relaxation --prefer-ideal-fourfold --write-plots
+python pyCSH_Zn/examples/18_run_selected_multi_zn_mechanics.py --models-csv pyCSH_Zn/output_Y/workflow_v1/multi_zn_ensemble/mechanics_ready_multi_zn_models.csv --max-models 4 --include-overcoordinated --write-plots
+```
+
+The runner refuses `failed_multi_zn_candidate`, `undercoordinated_failed`, and
+`postmin_valid = false` models. Each strain case starts independently from the
+same post-min reference structure; sequential strain accumulation is not used.
+
+Outputs are written under
+`output_Y/workflow_v1/selected_multi_zn_mechanics/`, including batch summary
+CSV/JSON files, accepted/failed mechanics model CSV files, stress-strain
+summaries by model and mode, failure-reason summaries, per-model strain case
+directories, and optional SVG plots.
+
+v1.8 is a selected multi-Zn quasi-static mechanics pipeline. It is not
+finite-temperature MD, not final elastic constants, and not a production
+mechanical-property workflow. `ideal_fourfold` and `overcoordinated` references
+are recorded separately in mechanics summaries; overcoordinated models are
+minimum-valid candidates, not ideal ZnO4 tetrahedra.
+
 ## CS-Info Policy
 
 `CS-Info` contains entries for all atoms. Bonded `O_core`/`O_shell` pairs share the same CSID. Non-core-shell atoms have singleton CSIDs. The validator checks both complete CS-Info coverage and bonded core-shell pair consistency.

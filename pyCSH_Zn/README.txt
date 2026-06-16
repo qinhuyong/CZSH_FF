@@ -323,3 +323,25 @@ v1.7 is not mechanics, not finite-temperature MD, not final elastic constants,
 and not production mechanical-property calculation. Overcoordinated candidates
 are minimum-valid and must be labeled as such; they are not ideal ZnO4
 tetrahedral structures.
+
+v1.8 selected multi-Zn batch mechanics
+--------------------------------------
+
+examples/18_run_selected_multi_zn_mechanics.py reads a v1.7
+mechanics_ready_multi_zn_models.csv file and runs selected x-direction
+quasi-static mechanics for post-min-valid multi-Zn models.
+
+Example:
+
+    python pyCSH_Zn/examples/17_generate_multi_zn_ensemble.py --mode mixed_multi_zn_ensemble --n-models 6 --seed-start 8500 --n-q1 1 --n-q2b 1 --max-combinations-per-model 10 --min-zn-zn-distance 5.0 --run-static-relaxation --prefer-ideal-fourfold --write-plots
+    python pyCSH_Zn/examples/18_run_selected_multi_zn_mechanics.py --models-csv pyCSH_Zn/output_Y/workflow_v1/multi_zn_ensemble/mechanics_ready_multi_zn_models.csv --max-models 4 --include-overcoordinated --write-plots
+
+The runner excludes failed_multi_zn_candidate, undercoordinated_failed, and
+postmin_valid=false models. Each strain case starts from the same post-min
+reference structure for the selected model; sequential strain accumulation is
+not used.
+
+v1.8 is not finite-temperature MD, not final elastic constants, and not
+production mechanical-property calculation. Overcoordinated models can be used
+as minimum-valid mechanics candidates when explicitly included, but they remain
+labeled separately from ideal_fourfold models.
